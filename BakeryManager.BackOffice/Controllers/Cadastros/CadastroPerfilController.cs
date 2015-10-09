@@ -36,11 +36,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        // GET: CadastroPerfil/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+      
 
         // GET: CadastroPerfil/Create
         public ActionResult Create()
@@ -64,11 +60,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        // GET: CadastroPerfil/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+    
 
         // POST: CadastroPerfil/Edit/5
         [HttpPost]
@@ -86,11 +78,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        // GET: CadastroPerfil/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+     
 
         // POST: CadastroPerfil/Delete/5
         [HttpPost]
