@@ -1,0 +1,83 @@
+﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroPerfilModel
+@using BakeryManager.BackOffice.Models.Cadastros
+@using Kendo.Mvc.UI
+@using BakeryManager.InfraEstrutura.Helpers
+
+@{
+    ViewBag.Title = "Cadastro de Perfis";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> Perfis
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-xs-12">
+
+            @*<div class="text-right">
+                <a href="@Url.Action("Create")" class="btn btn-default btn-sm">Criar Novo Perfil</a>
+            </div>*@
+
+            @(Html.Kendo().Grid<CadastroPerfilModel>()
+
+                .Name("grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.Nome).Title("Perfil");
+
+                    columns.Bound(c => c.Atribuicao).Title("Atribuição");
+
+                    columns.Bound(c => c.Ativo).Title("Ativo?").Width("60")
+                    .ClientTemplate(
+                                      "# if (Ativo) { #" +
+                                      "#= 'Sim' #" +
+                                      "# } " + "else {#" + "#= 'Não'#" + "# }#"
+                                  ); ;
+                    columns.Command(c => { c.Edit().Text("Editar"); c.Destroy().Text("Excluir"); }).Width("160");
+
+                })
+
+                .ToolBar(toolbar => toolbar.Create().Text("Criar Novo Perfil"))
+                .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                .Pageable()
+                .Sortable()
+                .Scrollable()
+                .DataSource( ds => ds
+                     .Ajax()
+                     .PageSize(30)
+                     .Events(events => events.Error("error_handler"))
+                     .Model(model => {
+
+                         model.Id(p => p.IdPerfil);
+                         model.Field(f => f.Nome);
+                         model.Field(f => f.Atribuicao);
+                         model.Field(f => f.Ativo);
+
+                     })
+                     .Create(create => create.Action("Create","CadastroPerfil"))
+                     .Read(read => read.Action("Read","CadastroPerfil"))
+                     .Update(update => update.Action("Edit", "CadastroPerfil"))
+                     .Destroy(destroy => destroy.Action("Delete", "CadastroPerfil"))
+
+                )
+            )
+
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

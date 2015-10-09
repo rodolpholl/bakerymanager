@@ -1,0 +1,58 @@
+﻿@using BakeryManager.BackOffice.Controllers;
+@using BakeryManager.Entities.Seguranca.Enums;
+
+
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        @*<li>
+                <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+            </li>
+            <li>
+                <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+            </li>
+            <li>
+                <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+            </li>
+            <li>
+                <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+            </li>
+            <li>
+                <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+            </li>
+            <li>
+                <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+            </li>*@
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li id="liMenu">
+
+            </li>
+
+            <script type="text/javascript">
+
+                $(function () {
+                    $.ajax({
+
+                        url: "@Url.Action("GetMenuLateral", "Shared")",
+                        data: { Atribuicao: window.localStorage.atribuicaoUsuarioLogado },
+                        method: "POST",
+                        dataType: "json",
+                        success: function (result) {
+                            
+                            $("#liMenu").html(result)
+                        }
+                    });
+                });
+
+            </script>
+
+        }
+
+        @*<li class="active">
+                <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+            </li>
+            <li>
+                <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+            </li>*@
+    </ul>
+</div>
