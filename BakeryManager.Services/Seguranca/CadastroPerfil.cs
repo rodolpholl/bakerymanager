@@ -11,7 +11,7 @@ namespace BakeryManager.Services.Seguranca
     public class CadastroPerfil: BusinessProcessBase, IDisposable
     {
         private PerfilBM perfilBm;
-
+        
         public CadastroPerfil()
         {
             perfilBm = GetObject<PerfilBM>();
