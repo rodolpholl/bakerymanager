@@ -282,6 +282,7 @@
     <Content Include="Scripts\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo.aspnetmvc.min.js.map" />
     <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
+    <Content Include="Views\CadastroPerfil\EditorTemplates\AtribuicaoEditor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

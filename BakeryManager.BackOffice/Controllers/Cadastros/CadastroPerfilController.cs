@@ -6,18 +6,41 @@ using System.Web.Mvc;
 using Kendo.Mvc;
 using Kendo.Mvc.UI;
 using BakeryManager.Services.Seguranca;
+using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models.Cadastros;
 using Kendo.Mvc.Extensions;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
+    [Authorize]
     public class CadastroPerfilController : Controller
     {
         // GET: CadastroPerfil
         public ActionResult Index()
         {
+
+
+            var listaAtribuicaoPerfil = new AtribuicaoPerfilModel[]
+           { new AtribuicaoPerfilModel() {
+               Nome = "Administrativo",
+               IdAtribuicaoPerfil = 1
+           },
+           new AtribuicaoPerfilModel() {
+               Nome = "Operador",
+               IdAtribuicaoPerfil = 2
+           },
+           new AtribuicaoPerfilModel() {
+               Nome = "Cliente",
+               IdAtribuicaoPerfil = 3
+           }
+           };
+
+            ViewData["ListaAtribuicaoPerfil"] = listaAtribuicaoPerfil.AsEnumerable();
+
             return View();
         }
+
+
 
         public ActionResult Read([DataSourceRequest] DataSourceRequest request)
         {
@@ -28,29 +51,78 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 {
                     IdPerfil = x.IdPerfil,
                     Ativo = x.Ativo,
-                    AtribuicaoPerfilEnum = (AtribuicaoPerfil)int.Parse(x.Atribuicao.ToString()),
+                    Atribuicao = GetAtribuicaoPerfil(x.Atribuicao),
                     Nome = x.Nome
                 }).ToList();
 
                 return Json(listaPerfil.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
-        
-        // GET: CadastroPerfil/Create
-        public ActionResult Create()
+
+
+        private AtribuicaoPerfilModel GetAtribuicaoPerfil(byte atribuicao)
         {
-            return View();
+            switch (atribuicao)
+            {
+
+                case 1:
+                    return new AtribuicaoPerfilModel()
+                    {
+                        Nome = "Administrativo",
+                        IdAtribuicaoPerfil = 1
+                    };
+
+                case 2:
+                    return new AtribuicaoPerfilModel()
+                    {
+                        Nome = "Operador",
+                        IdAtribuicaoPerfil = 2
+                    };
+
+                default:
+                    return new AtribuicaoPerfilModel()
+                    {
+                        Nome = "Cliente",
+                        IdAtribuicaoPerfil = 3
+                    };
+
+            }
         }
 
+
+
         // POST: CadastroPerfil/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Create([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<CadastroPerfilModel> ListaPerfil)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ListaPerfil != null && ModelState.IsValid)
+                {
 
-                return RedirectToAction("Index");
+                    using (var cadastroPerfil = new CadastroPerfil())
+                    {
+
+                        foreach (var p in ListaPerfil)
+                        {
+
+
+                            var perfil = new Perfil()
+                            {
+                                Ativo = p.Ativo,
+                                Atribuicao = byte.Parse(p.Atribuicao.IdAtribuicaoPerfil.ToString()),
+                                Nome = p.Nome
+                            };
+
+                            cadastroPerfil.InserirPerfil(perfil);
+
+                        }
+
+                    };
+
+                }
+
+                return Json(ListaPerfil.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
             }
             catch
             {
@@ -58,17 +130,40 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-    
+
 
         // POST: CadastroPerfil/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Edit([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<CadastroPerfilModel> ListaPerfil)
         {
             try
             {
                 // TODO: Add update logic here
+                if (ListaPerfil != null && ModelState.IsValid)
+                {
 
-                return RedirectToAction("Index");
+                    using (var cadastroPerfil = new CadastroPerfil())
+                    {
+
+                        foreach (var p in ListaPerfil)
+                        {
+
+                            var perfil = cadastroPerfil.GetPerfilById(p.IdPerfil);
+
+
+                            perfil.Ativo = p.Ativo;
+                            perfil.Atribuicao = byte.Parse(p.Atribuicao.IdAtribuicaoPerfil.ToString());
+                            perfil.Nome = p.Nome;
+
+
+                            cadastroPerfil.AlterarPerfil(perfil);
+
+                        }
+
+                    };
+
+                }
+                return Json(ListaPerfil.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
             }
             catch
             {
@@ -76,17 +171,31 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-     
+
 
         // POST: CadastroPerfil/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Delete([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<CadastroPerfilModel> ListaPerfil)
         {
             try
             {
-                // TODO: Add delete logic here
+                // TODO: Add update logic here
+                if (ListaPerfil != null && ModelState.IsValid)
+                {
 
-                return RedirectToAction("Index");
+                    using (var cadastroPerfil = new CadastroPerfil())
+                    {
+
+                        foreach (var p in ListaPerfil)
+                            cadastroPerfil.ExcluirPerfil(p.IdPerfil);
+
+                       
+
+                    }
+
+                }
+
+                return Json(ListaPerfil.ToDataSourceResult(request, ModelState), JsonRequestBehavior.AllowGet);
             }
             catch
             {

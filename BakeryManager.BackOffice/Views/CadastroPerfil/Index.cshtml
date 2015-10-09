@@ -29,49 +29,59 @@
         <div class="col-xs-12">
 
             @*<div class="text-right">
-                <a href="@Url.Action("Create")" class="btn btn-default btn-sm">Criar Novo Perfil</a>
-            </div>*@
+                    <a href="@Url.Action("Create")" class="btn btn-default btn-sm">Criar Novo Perfil</a>
+                </div>*@
 
             @(Html.Kendo().Grid<CadastroPerfilModel>()
 
-                .Name("grid")
-                .Columns(columns =>
-                {
-                    columns.Bound(c => c.Nome).Title("Perfil");
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.Nome).Title("Perfil");
 
-                    columns.Bound(c => c.Atribuicao).Title("Atribuição");
+                columns.Bound(c => c.Atribuicao).EditorTemplateName("AtribuicaoEditor").ClientTemplate("#=Atribuicao.Nome#").Title("Atribuição");
 
-                    columns.Bound(c => c.Ativo).Title("Ativo?").Width("60")
-                    .ClientTemplate(
-                                      "# if (Ativo) { #" +
-                                      "#= 'Sim' #" +
-                                      "# } " + "else {#" + "#= 'Não'#" + "# }#"
-                                  ); ;
-                    columns.Command(c => { c.Edit().Text("Editar"); c.Destroy().Text("Excluir"); }).Width("160");
+                columns.Bound(c => c.Ativo).Title("Ativo?").Width("60")
+                .ClientTemplate(
+                                  "# if (Ativo) { #" +
+                                  "#= 'Sim' #" +
+                                  "# } " + "else {#" + "#= 'Não'#" + "# }#"
+                              ).Width("80"); 
 
-                })
+                columns.Command(c =>  c.Destroy()).Title(" ").Width("40");
 
-                .ToolBar(toolbar => toolbar.Create().Text("Criar Novo Perfil"))
-                .Editable(editable => editable.Mode(GridEditMode.PopUp))
+            })
+
+            .ToolBar(toolbar =>
+            {
+                toolbar.Create();
+                toolbar.Save();
+            })
+                .Editable(editable => editable.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(false))
                 .Pageable()
                 .Sortable()
+                .Selectable()
+                .Navigatable()
                 .Scrollable()
-                .DataSource( ds => ds
-                     .Ajax()
-                     .PageSize(30)
-                     .Events(events => events.Error("error_handler"))
-                     .Model(model => {
+                .DataSource(ds => ds
+                    .Ajax()
+                    .PageSize(30)
+                    .ServerOperation(false)
+                    .Batch(true)
+                    .Events(events => events.Error("error_handler"))
+                    .Model(model =>
+                    {
 
-                         model.Id(p => p.IdPerfil);
-                         model.Field(f => f.Nome);
-                         model.Field(f => f.Atribuicao);
-                         model.Field(f => f.Ativo);
+                        model.Id(p => p.IdPerfil);
+                        model.Field(f => f.Nome);
+                        model.Field(f => f.Atribuicao).DefaultValue(new AtribuicaoPerfilModel() { IdAtribuicaoPerfil = 2, Nome = "Operador" });
+                        model.Field(f => f.Ativo).DefaultValue(true);
 
-                     })
-                     .Create(create => create.Action("Create","CadastroPerfil"))
-                     .Read(read => read.Action("Read","CadastroPerfil"))
-                     .Update(update => update.Action("Edit", "CadastroPerfil"))
-                     .Destroy(destroy => destroy.Action("Delete", "CadastroPerfil"))
+                    })
+                    .Create(create => create.Action("Create", "CadastroPerfil"))
+                    .Read(read => read.Action("Read", "CadastroPerfil"))
+                    .Update(update => update.Action("Edit", "CadastroPerfil"))
+                    .Destroy(destroy => destroy.Action("Delete", "CadastroPerfil"))
 
                 )
             )

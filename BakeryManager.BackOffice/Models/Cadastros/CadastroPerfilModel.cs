@@ -8,38 +8,34 @@ using BakeryManager.InfraEstrutura.Helpers;
 
 namespace BakeryManager.BackOffice.Models.Cadastros
 {
-    public enum AtribuicaoPerfil
+    public class AtribuicaoPerfilModel
     {
-        [Display(Description = "Adminstrador")]
-        Administrador = 1,
-        [Display(Description = "Operador")]
-        Operador = 2,
-        [Display(Description = "Cliente")]
-        Cliente = 3
+
+        public int IdAtribuicaoPerfil { get; set; }
+        public string Nome { get; set; }
+
+        
     }
+    
+
     public class CadastroPerfilModel
     {
 
         [ScaffoldColumn(false)]
-        [Required(ErrorMessage = "Campo Obrigatório")]
         public  int IdPerfil { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatório")]
         public string Nome { get; set; }
-
-        [ScaffoldColumn(false)]
-        [Required(ErrorMessage = "Campo Obrigatório")]
-        public AtribuicaoPerfil AtribuicaoPerfilEnum { get; set; }
-
         
         [Display(Name = "Atribuição")]
-        public  string Atribuicao { get
-            {
-                return AtribuicaoPerfilEnum.GetDescription();
-
-            }
-        }
+        [Required(ErrorMessage = "Campo Obrigatório")]
+        public AtribuicaoPerfilModel Atribuicao { get; set; }
 
         public bool Ativo { get; set; }
+
+        public CadastroPerfilModel()
+        {
+            Atribuicao = new AtribuicaoPerfilModel();
+        }
     }
 }
