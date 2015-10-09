@@ -35,9 +35,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 return Json(listaPerfil.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
-
-      
-
+        
         // GET: CadastroPerfil/Create
         public ActionResult Create()
         {
