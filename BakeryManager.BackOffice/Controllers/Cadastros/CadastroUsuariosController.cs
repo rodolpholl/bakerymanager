@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BakeryManager.BackOffice.Models.Cadastros;
+using BakeryManager.Services.Seguranca;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,24 +13,18 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         // GET: CadastroUsuarios
         public ActionResult Index()
         {
-            return View();
+            using (var cadUsuario = new CadastroUsuario())
+            {
+                ViewData["ListaPerfil"] = cadUsuario.GetListaPerfil();
+                return View();
+            }
+            
         }
-
-        // GET: CadastroUsuarios/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: CadastroUsuarios/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        
 
         // POST: CadastroUsuarios/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(CadastroUsuarioModel Usuario)
         {
             try
             {
@@ -42,15 +38,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        // GET: CadastroUsuarios/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CadastroUsuarios/Edit/5
+    
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CadastroUsuarioModel Usuario)
         {
             try
             {
@@ -64,15 +54,11 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        // GET: CadastroUsuarios/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+  
 
         // POST: CadastroUsuarios/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int IdUsuario)
         {
             try
             {

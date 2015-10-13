@@ -188,8 +188,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                         foreach (var p in ListaPerfil)
                             cadastroPerfil.ExcluirPerfil(p.IdPerfil);
-
-                       
+                        
 
                     }
 

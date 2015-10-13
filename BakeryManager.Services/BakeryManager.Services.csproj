@@ -81,6 +81,7 @@
     <Compile Include="CadastrarIngredientes.cs" />
     <Compile Include="Seguranca\CadastroPerfil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seguranca\CadastroUsuario.cs" />
     <Compile Include="Seguranca\ControleAcesso.cs" />
   </ItemGroup>
   <ItemGroup>

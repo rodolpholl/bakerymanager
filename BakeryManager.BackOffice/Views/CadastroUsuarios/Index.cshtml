@@ -1,0 +1,121 @@
+﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroUsuarioModel
+@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros
+
+
+@{
+    ViewBag.Title = "Cadastro de Usuários";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> Usuários
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-xs-12">
+
+            @*<div class="text-right">
+                    <a href="@Url.Action("Create")" class="btn btn-default btn-sm">Criar Novo Perfil</a>
+                </div>*@
+
+            @(Html.Kendo().Grid<CadastroUsuarioModel>()
+
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.Nome).Title("Nome");
+                columns.Bound(c => c.Login).Title("Login");
+                columns.Bound(c => c.Perfil).ClientTemplate("#= Perfil.Nome #").Title("Perfil");
+
+                columns.Bound(c => c.Ativo).Title("Ativo?").Width("60")
+                .ClientTemplate(
+                                  "# if (Ativo) { #" +
+                                  "#= 'Sim' #" +
+                                  "# } " + "else {#" + "#= 'Não'#" + "# }#"
+                              ).Width("80");
+                columns.Bound(c => c.Telefone).Title("Telefone");
+                columns.Bound(c => c.Email).Title("E-mail");
+
+                columns.Bound(c => c.IdUsuario).ClientTemplate("<a href='#' onclick='Delete(#=IdUsuario#); class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' aria-hidden='true'/>&nbsp;Excluir</a>").Filterable(false);
+
+            })
+
+            .ToolBar(toolbar =>
+            {
+                toolbar.Create();
+            })
+                .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("Cadastro").Window(w => w.Title("Cadastro do Usuário").Name("editUsuario")))
+                .Pageable()
+                .Sortable()
+                .Selectable()
+                .Navigatable()
+                .Scrollable()
+                .DataSource(ds => ds
+                    .Ajax()
+                    .PageSize(30)
+                    .Events(events => events.Error("error_handler"))
+                    .ServerOperation(false)
+                    .Model(model =>
+                    {
+
+                        model.Id(p => p.IdUsuario);
+                        model.Field(f => f.Nome);
+                        model.Field(f => f.Login);
+                        model.Field(f => f.Telefone);
+                        model.Field(f => f.Email);
+                        model.Field(f => f.Ativo).DefaultValue(true);
+                        model.Field(f => f.Perfil).DefaultValue(new CadastroPerfilModel() { Ativo = true });
+
+                    })
+                    .Create(create => create.Action("Create", "CadastroUsuarios"))
+                    .Read(read => read.Action("Read", "CadastroUsuarios"))
+                    .Update(update => update.Action("Edit", "CadastroUsuarios"))
+                    .Destroy(destroy => destroy.Action("Delete", "CadastroUsuarios"))
+
+                )
+            )
+
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+@section scripts 
+{
+    <script type="text/javascript">
+
+        function Delete(IdUsuario) {
+            confirm("Deseja Realmente Excluir este Registro?", function () {
+
+                $.ajax({
+
+                    url: '@Url.Action("Delete")',
+                    data: { IdUsuario: IdUsuario },
+                    method: "POST",
+                    dataType: "json",
+                    sucess: function () {
+                        window.location.href = '@Url.Action("Index")';
+                    }
+                });
+
+            });
+        }
+
+    </script>   
+    
+}

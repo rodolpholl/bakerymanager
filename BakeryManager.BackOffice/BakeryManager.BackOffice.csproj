@@ -283,6 +283,9 @@
     <Content Include="Scripts\kendo.aspnetmvc.min.js.map" />
     <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
     <Content Include="Views\CadastroPerfil\EditorTemplates\AtribuicaoEditor.cshtml" />
+    <Content Include="Views\CadastroUsuarios\Index.cshtml" />
+    <Content Include="Views\CadastroUsuarios\EditorTemplates\Cadastro.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Telefone.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -292,7 +295,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\CadastroUsuarios\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">
