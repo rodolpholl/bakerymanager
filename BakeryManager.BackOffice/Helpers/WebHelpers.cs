@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using BakeryManager.Services.Seguranca;
 using BakeryManager.Entities.Seguranca;
-using BakeryManager.BackOffice.Models;
+using BakeryManager.BackOffice.Controllers;
 using BakeryManager.Entities.Seguranca.Enums;
 using System.Web;
 using System.Web.Security;
+using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice.Helpers
 {

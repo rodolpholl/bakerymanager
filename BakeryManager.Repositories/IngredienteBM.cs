@@ -14,5 +14,26 @@ namespace BakeryManager.Repositories
         {
             return this.Query().FirstOrDefault(x => x.CodigoTACO.Equals(int.Parse(Codigo)));
         }
+
+        public IList<Ingrediente> GetListaIngredientesByFiltro(string textoPesquisa)
+        {
+
+            if (string.IsNullOrWhiteSpace(textoPesquisa))
+                return GetAll();
+
+            IList<Ingrediente> result;
+            int codigoTACO = 0;
+
+            int.TryParse(textoPesquisa, out codigoTACO);
+
+            if (codigoTACO > 0)
+                result = Query().Where(x => x.CodigoTACO.Equals(codigoTACO)).ToList();
+            else
+                result = Query().Where(x => x.Abreviatura.ToUpper().Contains(textoPesquisa.ToUpper()) ||
+                                                x.Nome.ToUpper().Contains(textoPesquisa.ToUpper()) ||
+                                                x.NomeTACO.ToUpper().Contains(textoPesquisa.ToUpper())).ToList();
+            return result;
+
+        }
     }
 }

@@ -236,8 +236,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WebHelpers.cs" />
+    <Compile Include="Controllers\Cadastros\CadastroIngredientesController.cs" />
+    <Compile Include="Models\Cadastros\Ingredientes\CadastroIngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
+    <Compile Include="Models\Cadastros\Ingredientes\TabelaNutricionalModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
     <Compile Include="Models\Login\LoginModel.cs" />
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
@@ -285,6 +288,8 @@
     <Content Include="Views\CadastroPerfil\EditorTemplates\AtribuicaoEditor.cshtml" />
     <Content Include="Views\CadastroUsuarios\Index.cshtml" />
     <Content Include="Views\CadastroUsuarios\EditorTemplates\Cadastro.cshtml" />
+    <Content Include="Views\Shared\_MenuOperador.cshtml" />
+    <Content Include="Views\CadastroIngredientes\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

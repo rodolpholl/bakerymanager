@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace BakeryManager.BackOffice.Controllers
 {
-    public class SharedController : Controller
+    public class SharedController : System.Web.Mvc.Controller
     {
         // GET: Shared
         public JsonResult GetLoginInformation()

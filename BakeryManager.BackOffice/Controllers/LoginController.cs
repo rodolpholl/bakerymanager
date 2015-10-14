@@ -1,5 +1,5 @@
 ﻿using BakeryManager.BackOffice.Helpers;
-using BakeryManager.BackOffice.Models;
+using BakeryManager.BackOffice.Controllers;
 using BakeryManager.BackOffice.Models.Login;
 using BakeryManager.Infraestrutura.Base.BusinessProcess;
 using BakeryManager.Services.Seguranca;
@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using BakeryManager.BackOffice.Models.Login;
+using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice.Controllers
 {
 
-    public class LoginController : Controller
+    public class LoginController : System.Web.Mvc.Controller
     {
 
         // GET: Login

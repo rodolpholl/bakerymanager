@@ -1,4 +1,5 @@
-﻿using BakeryManager.BackOffice.Models.Cadastros;
+﻿using BakeryManager.BackOffice.Controllers.Cadastros;
+using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.Entities;
 using BakeryManager.Services.Seguranca;
 using Kendo.Mvc.Extensions;
@@ -12,7 +13,7 @@ using System.Web.Mvc;
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
     [Authorize]
-    public class CadastroUsuariosController : Controller
+    public class CadastroUsuariosController : System.Web.Mvc.Controller
     {
         // GET: CadastroUsuarios
         public ActionResult Index()

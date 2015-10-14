@@ -9,5 +9,6 @@ namespace BakeryManager.Entities
         public virtual string NomeTACO { get; set; }
         public virtual string Abreviatura { get; set; }
         public virtual int CodigoTACO { get; set; }
+        public virtual bool Ativo { get; set; }
     }
 }

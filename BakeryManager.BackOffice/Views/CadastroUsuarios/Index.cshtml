@@ -60,7 +60,7 @@
                     });
 
                     columns.Bound(c => c.Ativo).Title("").ClientTemplate("# if (Ativo) { #" +
-                                  "<a href=\"javascript:void(0);\" onclick=\"Desativar(#=IdUsuario#);\" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Desativar</a>" +
+                                  "<a href=\"javascript:void(0);\" onclick=\"Desativar(#=IdUsuario#);\" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Desativar</a>" +
                                   "# } else {#" +
                                   "<a href=\"javascript:void(0);\" onclick=\"Reativar(#=IdUsuario#);\" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" + "# }#");
 

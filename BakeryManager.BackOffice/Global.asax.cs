@@ -1,5 +1,5 @@
 ﻿using BakeryManager.BackOffice.Helpers;
-using BakeryManager.BackOffice.Models;
+using BakeryManager.BackOffice.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice
 {
@@ -18,12 +19,18 @@ namespace BakeryManager.BackOffice
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
+        protected void Session_End()
+        {
+            WebHelpers.LogOut();
+
+        }
+
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
 
             if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                
+
                 var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
                 dynamic perfil = WebHelpers.ObterPerfilUsuario(HttpContext.Current.User.Identity.Name);
 
