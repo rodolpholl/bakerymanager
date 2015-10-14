@@ -27,5 +27,7 @@ namespace BakeryManager.Entities
         public virtual bool AutenticaSenhaDia { get; set; }
 
         public virtual string Email { get; set; }
+
+        public virtual string Telefone { get; set; }
     }
 }

@@ -23,5 +23,8 @@ namespace BakeryManager.BackOffice.Models.Cadastros
         [Display(Name = "Perfil")]
         public CadastroPerfilModel Perfil { get; set; }
         public bool Ativo { get; set; }
+        [Display(Name = "Senha do dia?")]
+        public bool AutenticaSenhaDia { get; set; } 
+
     }
 }

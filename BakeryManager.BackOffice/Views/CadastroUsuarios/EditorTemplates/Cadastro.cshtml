@@ -3,50 +3,53 @@
 
 <div class="row">
     <div class="col-lg-10">
-        <form class="form-horizontal" role="form">
+        <form  role="form">
 
             <div class="form-group">
-                @Html.LabelFor(x => x.Nome, new {@class = "col-sm-2 control-label" })
+                @Html.LabelFor(x => x.Nome, new {@class = "col-sm-6 control-label" })
                 <div class="col-sm-12">
-                    @Html.EditorFor(x => x.Nome, new { @class = "form-control" })
+                    @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new { @class = "form-control", style= "width:300px" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(x => x.Login, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(x => x.Login, new { @class = "col-sm-6 control-label" })
                 <div class="col-sm-12">
-                    @Html.EditorFor(x => x.Nome, new { @class = "form-control" })
+                    @(Html.Kendo().TextBoxFor(x => x.Login).HtmlAttributes(new { style = "width:300px; text-transform: uppercase;" }))
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(x => x.Email, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(x => x.Email, new { @class = "col-sm-6 control-label" })
                 <div class="col-sm-12">
-                    @Html.EditorFor(x => x.Email, new { @class = "form-control" })
+                    @(Html.Kendo().TextBoxFor(x => x.Email).HtmlAttributes(new { @class = "form-control", style = "width:300px", type="email" })
+                    )
+                    
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(x => x.Telefone, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(x => x.Telefone, new { @class = "col-sm-6 control-label" })
                 <div class="col-sm-12">
-                    @Html.EditorFor(x => x.Telefone, new { @class = "form-control" })
+                    @Html.Kendo().MaskedTextBoxFor(m => m.Telefone).Mask("(99) 9000-0000").HtmlAttributes(new {style = "width:300px" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(x => x.Perfil, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(x => x.Perfil, new { @class = "col-sm-6 control-label" })
                 <div class="col-sm-12">
                     @(
                         Html.Kendo().DropDownListFor(x => x.Perfil).DataSource(x => x.Read("GetListaPerfil", "CadastroUsuarios"))
                         .DataTextField("Nome").DataValueField("IdPerfil").OptionLabel("Selecione...")
-                        .HtmlAttributes(new { @class = "form-control" })
+                        .HtmlAttributes(new { @class = "form-control", style = "width:300px" })
                     )
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(x => x.Ativo, new { @class = "col-sm-2 control-label" })
+                @Html.LabelFor(x => x.AutenticaSenhaDia, new { @class = "col-sm-6 control-label" })
                 <div class="col-lg-12">
-                    @Html.EditorFor(x => x.Ativo, new { @class = "form-control" })
+                    @Html.EditorFor(x => x.AutenticaSenhaDia, new { @class = "form-control"})
                 </div>
             </div>
 
         </form>
     </div>
 </div>
+

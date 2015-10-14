@@ -14,5 +14,6 @@ namespace BakeryManager.Repositories.Seguranca
         {
             return this.Query().FirstOrDefault(x => x.Login == Login);
         }
+        
     }
 }

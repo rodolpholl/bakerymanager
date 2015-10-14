@@ -32,36 +32,50 @@
                     <a href="@Url.Action("Create")" class="btn btn-default btn-sm">Criar Novo Perfil</a>
                 </div>*@
 
-            @(Html.Kendo().Grid<CadastroUsuarioModel>()
 
-            .Name("grid")
-            .Columns(columns =>
-            {
-                columns.Bound(c => c.Nome).Title("Nome");
-                columns.Bound(c => c.Login).Title("Login");
-                columns.Bound(c => c.Perfil).ClientTemplate("#= Perfil.Nome #").Title("Perfil");
 
-                columns.Bound(c => c.Ativo).Title("Ativo?").Width("60")
-                .ClientTemplate(
-                                  "# if (Ativo) { #" +
-                                  "#= 'Sim' #" +
-                                  "# } " + "else {#" + "#= 'Não'#" + "# }#"
-                              ).Width("80");
-                columns.Bound(c => c.Telefone).Title("Telefone");
-                columns.Bound(c => c.Email).Title("E-mail");
 
-                columns.Bound(c => c.IdUsuario).ClientTemplate("<a href='#' onclick='Delete(#=IdUsuario#); class='btn btn-default btn-sm'><span class='glyphicon glyphicon-remove' aria-hidden='true'/>&nbsp;Excluir</a>").Filterable(false);
+            @(
+                Html.Kendo().Grid<CadastroUsuarioModel>()
 
-            })
+                .Name("grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.Nome).Title("Nome");
+                    columns.Bound(c => c.Login).Title("Login");
+                    columns.Bound(c => c.Perfil).ClientTemplate("#= Perfil.Nome #").Title("Perfil");
+
+                    columns.Bound(c => c.Telefone).Title("Telefone");
+                    columns.Bound(c => c.Email).Title("E-mail");
+                    columns.Bound(c => c.Ativo).Title("Ativo?").Width("60")
+                    .ClientTemplate(
+                                      "# if (Ativo) { #" +
+                                      "#= 'Sim' #" +
+                                      "# } " + "else {#" + "#= 'Não'#" + "# }#"
+                                  );
+
+                    columns.Command(c =>
+                    {
+                        c.Edit().Text("Editar");
+                    });
+
+                    columns.Bound(c => c.Ativo).Title("").ClientTemplate("# if (Ativo) { #" +
+                                  "<a href=\"javascript:void(0);\" onclick=\"Desativar(#=IdUsuario#);\" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Desativar</a>" +
+                                  "# } else {#" +
+                                  "<a href=\"javascript:void(0);\" onclick=\"Reativar(#=IdUsuario#);\" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" + "# }#");
+
+
+                })
 
             .ToolBar(toolbar =>
             {
                 toolbar.Create();
             })
-                .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("Cadastro").Window(w => w.Title("Cadastro do Usuário").Name("editUsuario")))
+                .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("Cadastro").Window(w => w.Title("Cadastro do Usuário").Name("editUsuario").Width(435)))
                 .Pageable()
                 .Sortable()
                 .Selectable()
+                //.Events(e => e.DataBound("doDataBound"))
                 .Navigatable()
                 .Scrollable()
                 .DataSource(ds => ds
@@ -78,13 +92,14 @@
                         model.Field(f => f.Telefone);
                         model.Field(f => f.Email);
                         model.Field(f => f.Ativo).DefaultValue(true);
+                        model.Field(f => f.AutenticaSenhaDia).DefaultValue(false);
                         model.Field(f => f.Perfil).DefaultValue(new CadastroPerfilModel() { Ativo = true });
 
                     })
-                    .Create(create => create.Action("Create", "CadastroUsuarios"))
-                    .Read(read => read.Action("Read", "CadastroUsuarios"))
-                    .Update(update => update.Action("Edit", "CadastroUsuarios"))
-                    .Destroy(destroy => destroy.Action("Delete", "CadastroUsuarios"))
+                    .Create(create => create.Action("Create", "CadastroUsuarios").Type(HttpVerbs.Post))
+                    .Read(read => read.Action("Read", "CadastroUsuarios").Type(HttpVerbs.Post))
+                    .Update(update => update.Action("Edit", "CadastroUsuarios").Type(HttpVerbs.Post))
+                    .Destroy(destroy => destroy.Action("Delete", "CadastroUsuarios").Type(HttpVerbs.Post))
 
                 )
             )
@@ -95,27 +110,67 @@
 </div>
 <!-- /.container-fluid -->
 
-@section scripts 
+@section scripts
 {
+
+
     <script type="text/javascript">
+        /*function doDataBound(e) {
 
-        function Delete(IdUsuario) {
-            confirm("Deseja Realmente Excluir este Registro?", function () {
 
+            //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            //e.preventDefault();
+
+            var dataView = $("#grid");
+            for (var i = 0; i < dataView._data.length; i++) {
+
+
+                var dataItem = dataView._data[i];
+                var tr = $("#grid").find("[data-uid='" + dataItem.uid + "']");
+                if (dataItem.Ativo) {
+                    $(tr).find("#btnReativar").remove();
+                } else {
+                    $(tr).find("#btnDesativar").remove();
+                }
+            }
+
+
+        } */
+
+        function Desativar(IdUsuario) {
+            confirm("Deseja realmente <strong>desativar</strong> este usuario?", function () {
                 $.ajax({
 
-                    url: '@Url.Action("Delete")',
-                    data: { IdUsuario: IdUsuario },
+                    url: '@Url.Action("Desativar")',
+                    data: { pIdUsuario: IdUsuario },
                     method: "POST",
                     dataType: "json",
-                    sucess: function () {
-                        window.location.href = '@Url.Action("Index")';
+                    success: function () {
+                        $("#grid").data('kendoGrid').dataSource.read();
+                        //window.location.href = '@Url.Action("Index")';
                     }
                 });
-
-            });
+            })
         }
 
-    </script>   
-    
+        function Reativar(IdUsuario) {
+            confirm("Deseja realmente <strong>reativar</strong> este usuario?", function () {
+                $.ajax({
+
+                    url: '@Url.Action("Reativar")',
+                    data: { pIdUsuario: IdUsuario },
+                    method: "POST",
+                    dataType: "json",
+                    success: function () {
+                        $("#grid").data('kendoGrid').dataSource.read();
+                        //window.location.href = '@Url.Action("Index")';
+                    }
+                });
+            })
+        }
+
+
+    </script>
+
 }
