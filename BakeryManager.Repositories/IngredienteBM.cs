@@ -27,7 +27,10 @@ namespace BakeryManager.Repositories
             int.TryParse(textoPesquisa, out codigoTACO);
 
             if (codigoTACO > 0)
-                result = Query().Where(x => x.CodigoTACO.Equals(codigoTACO)).ToList();
+                if (Query().Any(x => x.CodigoTACO == codigoTACO))
+                    result = Query().Where(x => x.CodigoTACO == codigoTACO).ToList();
+                else
+                    result = new List<Ingrediente>();
             else
                 result = Query().Where(x => x.Abreviatura.ToUpper().Contains(textoPesquisa.ToUpper()) ||
                                                 x.Nome.ToUpper().Contains(textoPesquisa.ToUpper()) ||

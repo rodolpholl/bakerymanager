@@ -31,9 +31,8 @@
 
                 $.getJSON('@Url.Action("GetLoginInformation", "Shared")',
                           function (data) {
-                              window.localStorage.nomeUsuarioLogado = data.Nome;
-                              window.localStorage.loginUsuarioLogado = data.Login;
-                              window.localStorage.atribuicaoUsuarioLogado = data.Atribuicao;
+                              setUserLogedData(data.Nome, data.Login, data.Atribuicao);
+                              $("#lblNome").text(window.localStorage.nomeUsuarioLogado);
                           });
             }
             

@@ -21,7 +21,13 @@ namespace BakeryManager.BackOffice
 
         protected void Session_End()
         {
-            WebHelpers.LogOut();
+            try {
+                if (User != null)
+                    if (User.Identity != null)
+                        if (User.Identity.IsAuthenticated)
+                            WebHelpers.LogOut();
+            }
+            catch {}
 
         }
 

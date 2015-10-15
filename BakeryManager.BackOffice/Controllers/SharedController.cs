@@ -33,7 +33,6 @@ namespace BakeryManager.BackOffice.Controllers
        
 
         [Authorize]
-        [HttpPost]
         public JsonResult GetMenuLateral(byte Atribuicao)
         {
             

@@ -10,6 +10,7 @@ using BakeryManager.Entities.Seguranca.Enums;
 using System.Web;
 using System.Web.Security;
 using BakeryManager.BackOffice.Models;
+using BakeryManager.Entities;
 
 namespace BakeryManager.BackOffice.Helpers
 {
@@ -33,21 +34,22 @@ namespace BakeryManager.BackOffice.Helpers
 
             }
         }
+        
 
         internal static void LogOut()
         {
-            if (HttpContext.Current.Session != null)
-            {
-                HttpContext.Current.Session.Contents.Clear();
-                HttpContext.Current.Session.Contents.RemoveAll();
-                HttpContext.Current.Session.Abandon();
-            }
-
+            
             FormsAuthentication.SignOut();
             
-
             if (HttpContext.Current != null)
             {
+                if (HttpContext.Current.Session != null)
+                {
+                    HttpContext.Current.Session.Contents.Clear();
+                    HttpContext.Current.Session.Contents.RemoveAll();
+                    HttpContext.Current.Session.Abandon();
+                }
+
                 HttpContext.Current.Response.Cookies.Clear();
                 
                 HttpContext.Current.Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, "")

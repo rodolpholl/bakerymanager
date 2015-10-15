@@ -1,5 +1,6 @@
 ﻿using BakeryManager.Entities;
 using BakeryManager.Repositories;
+using BakeryManager.Repositories.Seguranca;
 using LinqToExcel;
 using System;
 using System.Collections.Generic;
@@ -7,15 +8,19 @@ using System.Linq;
 
 namespace BakeryManager.Services
 {
-    public class CadastrarIngredientes : BusinessProcessBase, IDisposable
+    public class CadastroIngredientes : BusinessProcessBase, IDisposable
     {
         private IngredienteBM ingreditenteBm;
         private TabelaNutricionalBM tabelaNutricionalBm;
+        private IngredienteHistoricoDesativacaoBM historicoDesativacaoReativacaoBm;
+        private UsuarioBM usuarioBm;
 
-        public CadastrarIngredientes()
+        public CadastroIngredientes()
         {
             ingreditenteBm = base.GetObject<IngredienteBM>();
             tabelaNutricionalBm = base.GetObject<TabelaNutricionalBM>();
+            historicoDesativacaoReativacaoBm = GetObject<IngredienteHistoricoDesativacaoBM>();
+            usuarioBm = GetObject<UsuarioBM>();
         }
 
         public void InserirIngrediente(Ingrediente Ingrediente)
@@ -112,6 +117,11 @@ namespace BakeryManager.Services
 
         }
 
+        public Ingrediente GetIngredienteById(int pIdIngrediente)
+        {
+            return ingreditenteBm.GetByID(pIdIngrediente);
+        }
+
         private double TratarInformacaoTAbela(string Texto)
         {
             return Texto.ToUpper() == "NA" ? 0 : 
@@ -125,6 +135,43 @@ namespace BakeryManager.Services
         {
             ingreditenteBm.Dispose();
             tabelaNutricionalBm.Dispose();
+            historicoDesativacaoReativacaoBm.Dispose();
+            usuarioBm.Dispose();
         }
+
+        public Usuario GetUsuarioByLogin(string name)
+        {
+            return usuarioBm.GetByLogin(name);
+        }
+
+        public void DesativarIngrediente(Ingrediente pIngrediente, Usuario pUsuario, string Ip)
+        {
+            pIngrediente.Ativo = false;
+            ingreditenteBm.Update(pIngrediente);
+            RegistrarHistóricoDesabilitarHabilitar(pIngrediente.IdIngrediente, pUsuario.IdUsuario, Ip, TipoOpracaoDesativacaoIngrediente.Desativar);
+        }
+
+       
+        public void ReativarIngrediente(Ingrediente pIngrediente, Usuario pUsuario, string Ip)
+        {
+            pIngrediente.Ativo = true;
+            ingreditenteBm.Update(pIngrediente);
+            RegistrarHistóricoDesabilitarHabilitar(pIngrediente.IdIngrediente, pUsuario.IdUsuario, Ip, TipoOpracaoDesativacaoIngrediente.Reativar);
+        }
+
+        private void RegistrarHistóricoDesabilitarHabilitar(int pIngrediente, int pUsuario, string Ip, TipoOpracaoDesativacaoIngrediente TipoOperacao)
+        {
+            var hist = new IngredienteHistoricoDesativacao()
+            {
+                DataHoraOperacao = DateTime.Now,
+                Ingrediente = ingreditenteBm.GetByID(pIngrediente),
+                UsuarioOperacao = usuarioBm.GetByID(pUsuario),
+                IpOperacao = Ip,
+                TipoOperacao = (int)TipoOperacao
+            };
+
+            historicoDesativacaoReativacaoBm.Insert(hist);
+        }
+
     }
 }

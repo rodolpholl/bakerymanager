@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IngredienteBM.cs" />
+    <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\PerfilBM.cs" />
     <Compile Include="Seguranca\RegistroAcessoBM.cs" />

@@ -44,6 +44,7 @@
     <Compile Include="Formula.cs" />
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteFormula.cs" />
+    <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="Pedido.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,7 +13,7 @@ namespace BakeryManager.BusinessProcessTests
         public void InserirIngrediente()
         {
             try {
-                using (var cadIngediente = new CadastrarIngredientes())
+                using (var cadIngediente = new CadastroIngredientes())
                 {
                     var ingrediente = new Ingrediente()
                     {
@@ -39,7 +39,7 @@ namespace BakeryManager.BusinessProcessTests
         {
             try
             {
-                using (var cadIngediente = new CadastrarIngredientes())
+                using (var cadIngediente = new CadastroIngredientes())
                 {
                     
                     cadIngediente.CarregarTabelaNutricional("C:\\Projetos\\BakeryManager\\trunk\\Tabela_TACO_2011.xlsx");

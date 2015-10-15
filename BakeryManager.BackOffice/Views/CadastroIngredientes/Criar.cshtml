@@ -1,0 +1,83 @@
+﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroIngredientesModel
+
+@{
+    ViewBag.Title = "Novo Ingrediente";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> Ingredientes
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.AntiForgeryToken()
+
+        @using (Html.BeginForm("Criar", "CadastroIngredientes", FormMethod.Post, new { id = "frmCriar", @class = "form-horizontal " }))
+         {
+            
+                @Html.Partial("Form", Model)
+
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <hr />
+                <button class="btn btn-primary" type="button" id="btnSalvar">Salvar</button>
+                Ou
+                <button class="btn btn-default" onclick="window.history.back(-1);">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+        
+
+        $(function () {
+
+            $("#btnSalvar").click(function () {
+
+                $.ajax({
+
+                    url: '@Url.Action("Criar")',
+                    data: $("form#frmCriar").serialize(),
+                    method: "POST",
+                    dataType: "json",
+                    success: function(data){
+                        alert(data.Mensagem, function () {
+                            if (data.URLDestino != undefined)
+                                window.location.href = data.URLDestino;
+                        },data.TipoMensagem);
+                    }
+
+
+                });
+
+            });
+
+        });
+    </script>
+
+
+}

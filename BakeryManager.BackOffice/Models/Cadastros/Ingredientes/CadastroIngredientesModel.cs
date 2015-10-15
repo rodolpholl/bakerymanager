@@ -22,8 +22,7 @@ namespace BakeryManager.BackOffice.Models.Cadastros
         [Display(Name = "Abreviatura")]
         public string Abreviatura { get; set; }
         [Display(Name = "Cód. TACO" )]
-        public int CodigoTACO { get; set; }
-
+        public int? CodigoTACO { get; set; }
         public bool Ativo { get; set; }
 
 

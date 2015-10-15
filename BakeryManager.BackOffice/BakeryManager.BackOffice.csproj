@@ -290,6 +290,9 @@
     <Content Include="Views\CadastroUsuarios\EditorTemplates\Cadastro.cshtml" />
     <Content Include="Views\Shared\_MenuOperador.cshtml" />
     <Content Include="Views\CadastroIngredientes\Index.cshtml" />
+    <Content Include="Views\CadastroIngredientes\Criar.cshtml" />
+    <Content Include="Views\CadastroIngredientes\Form.cshtml" />
+    <Content Include="Views\CadastroIngredientes\Editar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

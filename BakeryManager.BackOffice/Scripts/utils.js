@@ -36,7 +36,14 @@
     }
 
 
+
     return true;
 
 
+}
+
+function setUserLogedData(Nome,Login,Atribuicao) {
+    window.localStorage.nomeUsuarioLogado = Nome;
+    window.localStorage.loginUsuarioLogado = Login;
+    window.localStorage.atribuicaoUsuarioLogado = Atribuicao;
 }

@@ -29,7 +29,7 @@ namespace BakeryManager.BackOffice.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(FormCollection Login)
+        public JsonResult Index(LoginModel Login)
         {
             if (ModelState.IsValid)
             {
@@ -37,49 +37,55 @@ namespace BakeryManager.BackOffice.Controllers
                 {
                     try
                     {
-                        var ra = controleAcesso.RegistrarLogin(Login["Login"], Login["Senha"], Request.ServerVariables["REMOTE_ADDR"]);
+                        var ra = controleAcesso.RegistrarLogin(Login.Login, Login.Senha, Request.ServerVariables["REMOTE_ADDR"]);
 
 
-                        FormsAuthentication.SetAuthCookie(Login["Login"], false);
+                        FormsAuthentication.SetAuthCookie(Login.Login, false);
 
 
-                        if (ra.NovoAcesso)
-                            return RedirectToAction("NovoAcesso");
-                        else
+                        //if (ra.NovoAcesso)
+                        //    return RedirectToAction("NovoAcesso");
+                        //else
 
-                            return RedirectToAction("Index", "Home");
+                        //    return RedirectToAction("Index", "Home");
 
-                        //return Json(
-                        //       new
-                        //       {
-                        //           TipoMensagem = TipoMensagemRetorno.Ok,
-                        //           Mensagem = string.Empty,
-                        //           URLDestino = Url.Action("Index","Home")
+                        return Json(
+                               new
+                               {
+                                   TipoMensagem = TipoMensagemRetorno.Ok,
+                                   Mensagem = ra.NovoAcesso ? "NovoAcesso" : string.Empty,
+                                   URLDestino = Url.Action("Index", "Home")
 
-                        //       }, "text/html", JsonRequestBehavior.AllowGet);
+                               }, "text/html", JsonRequestBehavior.AllowGet);
                     }
                     catch (BusinessProcessException ex)
                     {
-                        return View(new LoginModel()
-                        {
-                            Login = Login["Login"],
-                            ErrorMensage = ex.Message
-                        });
+                        return Json(
+                               new
+                               {
+                                   TipoMensagem = TipoMensagemRetorno.Erro,
+                                   Mensagem = ex.Message
+                                   
+                               }, "text/html", JsonRequestBehavior.AllowGet);
                     }
                 }
             }
-
-
-            return View(new LoginModel()
+            else
             {
-                Login = Login["Login"],
-                ErrorMensage = "Erro no preenchimento dos dados. Verifique e tente novamente realizar o login."
-            });
+                return Json(
+                               new
+                               {
+                                   TipoMensagem = TipoMensagemRetorno.Erro,
+                                   Mensagem = "Formulário Inválido! Verifique os dados enviados.",
+                                   URLDestino = Url.Action("Index", "Home")
+
+                               }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+
 
         }
 
         [Authorize]
-        
         public ActionResult NovoAcesso()
         {
             return View();
