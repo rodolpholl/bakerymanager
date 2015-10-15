@@ -27,7 +27,10 @@
         @Html.LabelFor(x => x.CodigoTACO, new { @class = "col-sm-2 control-label" })
 
         <div class="col-sm-10">
-            @Html.TextBoxFor(x => x.CodigoTACO, new { @class = "form-control", style = "width:100px" })
+            @(Html.Kendo().MaskedTextBoxFor(x => x.CodigoTACO)
+                .HtmlAttributes(new { @class = "form-control", style = "width:100px" })
+                .Mask("9999999")
+                .PromptChar(" "))
             @Html.ValidationMessageFor(x => x.CodigoTACO)
         </div>
     </div>
