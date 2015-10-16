@@ -240,6 +240,7 @@
     <Compile Include="Models\Cadastros\Ingredientes\CadastroIngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
+    <Compile Include="Models\Cadastros\Ingredientes\HistoricoDesativacaoReativacaoModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\TabelaNutricionalModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
     <Compile Include="Models\Login\LoginModel.cs" />
@@ -293,6 +294,7 @@
     <Content Include="Views\CadastroIngredientes\Criar.cshtml" />
     <Content Include="Views\CadastroIngredientes\Form.cshtml" />
     <Content Include="Views\CadastroIngredientes\Editar.cshtml" />
+    <Content Include="Views\CadastroIngredientes\HistoricoDesativarReativar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

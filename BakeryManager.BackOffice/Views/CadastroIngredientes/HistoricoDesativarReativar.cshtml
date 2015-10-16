@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BakeryManager.BackOffice.Models.Cadastros.HistoricoDesativacaoReativacaoModel>
+@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Histórico de Desativação e Reativação</h4>
+        </div>
+
+        <div class="modal-body">
+            @(
+                Html.Kendo().Grid<HistoricoDesativacaoReativacaoModel>((IEnumerable<HistoricoDesativacaoReativacaoModel>)Model)
+                .Name("gridHistorico")
+                .Columns(column =>
+                {
+                    column.Bound(c => c.UsuarioAtualizacao);
+                    column.Bound(c => c.TipoOperacao).HtmlAttributes(new  { @class="tipoOperacao" });
+                    column.Bound(c => c.DataHoraOperacao).Format("{0:dd/MM/yyyy hh:mm:ss}");
+                    column.Bound(c => c.IpOperacao);
+
+                })
+
+                .Sortable()
+                .Navigatable()
+                .Scrollable(scr => scr.Height(430))
+                .DataSource(ds => ds
+                    .Ajax()
+                    .ServerOperation(false)
+                    .Batch(false)
+                    .Model(model =>
+                    {
+                        model.Id(m => m.IdHistoricoDesativacaoReativacao);
+                        model.Field(m => m.TipoOperacao);
+                        model.Field(m => m.IpOperacao);
+                        model.Field(m => m.TipoOperacao);
+                        model.Field(m => m.UsuarioAtualizacao);
+                    })
+
+                )
+
+
+        )
+
+        </div>
+
+        <div class="modal-footer" >
+            <button type="button" class="btn btn-default" data-dismiss="modal" >Fechar</button>
+        </div>
+    </div>
+</div>
+

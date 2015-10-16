@@ -9,6 +9,7 @@ using BakeryManager.Services;
 using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models;
+using BakeryManager.Infraestrutura.Helpers;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -243,6 +244,26 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                                 Mensagem = ex.Message
 
                             }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetHistoricoDesativacaoReativacao(int IdIngrediente)
+        {
+            using (var cadIngrediente = new CadastroIngredientes())
+            {
+                var historico = cadIngrediente.GetHistoricoDesativacaoReativacaoById(IdIngrediente).Select(x => new HistoricoDesativacaoReativacaoModel()
+                {
+                    IdHistoricoDesativacaoReativacao = x.IdIngredienteHistoricoDesativacao,
+                    DataHoraOperacao = x.DataHoraOperacao,
+                    IpOperacao = x.IpOperacao,
+                    TipoOperacao = x.TipoOperacao == (int)TipoOpracaoDesativacaoIngrediente.Desativar ? "Desativação" : "Reativação",
+                    UsuarioAtualizacao = x.UsuarioOperacao.Nome                    
+                }).ToList();
+                
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroIngredientes/HistoricoDesativarReativar.cshtml"), historico), JsonRequestBehavior.AllowGet);
+
+                
             }
         }
     }

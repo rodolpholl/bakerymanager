@@ -173,5 +173,9 @@ namespace BakeryManager.Services
             historicoDesativacaoReativacaoBm.Insert(hist);
         }
 
+        public IList<IngredienteHistoricoDesativacao> GetHistoricoDesativacaoReativacaoById(int idIngrediente)
+        {
+            return historicoDesativacaoReativacaoBm.GetHistoricoDesativacaoByIngrediente(GetIngredienteById(idIngrediente));
+        }
     }
 }
