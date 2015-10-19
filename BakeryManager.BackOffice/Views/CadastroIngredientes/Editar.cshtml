@@ -23,14 +23,23 @@
     </div>
 
     <div class="row">
+
+        <ul class="nav nav-tabs" data-tabs="tabs">
+            <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais</a></li>
+            <li role="presentation"><a href="#tabelanutricional" data-toggle="tab">Tabela Nutricional</a></li>
+        </ul>
         @Html.AntiForgeryToken()
 
         @using (Html.BeginForm("Editar", "CadastroIngredientes", FormMethod.Post, new { id = "frmEditar", @class = "form-horizontal " }))
         {
-           
-                @Html.Partial("Form", Model)
+
+
+            @Html.Partial("Form", Model)
+
 
         }
+
+        @*End row*@
     </div>
 
     <div class="row">
@@ -62,13 +71,14 @@
 
                     url: '@Url.Action("Editar")',
                     data: $("form#frmEditar").serialize(),
+
                     method: "POST",
                     dataType: "json",
-                    success: function(data){
+                    success: function (data) {
                         alert(data.Mensagem, function () {
                             if (data.URLDestino != undefined)
                                 window.location.href = data.URLDestino;
-                        },data.TipoMensagem);
+                        }, data.TipoMensagem);
                     }
 
 

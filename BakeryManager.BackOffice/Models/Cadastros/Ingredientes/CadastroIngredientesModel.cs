@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,6 +25,15 @@ namespace BakeryManager.BackOffice.Models.Cadastros
         [Display(Name = "Cód. TACO" )]
         public int? CodigoTACO { get; set; }
         public bool Ativo { get; set; }
+        public TabelaNutricionalModel TabelaNutricional { get; set; }
+
+        public CadastroIngredientesModel()
+        {
+            TabelaNutricional = new TabelaNutricionalModel()
+            {
+                Ingrediente = this
+            };
+        }
 
 
 

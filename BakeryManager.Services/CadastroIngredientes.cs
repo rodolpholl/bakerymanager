@@ -28,9 +28,20 @@ namespace BakeryManager.Services
             ingreditenteBm.Insert(Ingrediente);
         }
 
+        public void InserirIngrediente(Ingrediente Ingrediente, TabelaNutricional pTabelaNutricioanl)
+        {
+            ingreditenteBm.Insert(Ingrediente);
+            AtualizarTAbelaNutricional(Ingrediente, pTabelaNutricioanl);
+        }
+
         public IList<Ingrediente> GetListaIngredientes()
         {
             return ingreditenteBm.GetAll();
+        }
+
+        public IList<TabelaNutricional> GetTabelaNutricionalAll()
+        {
+            return tabelaNutricionalBm.GetAll();
         }
 
         public IList<Ingrediente> GetListaIngredientesByFiltro(string textoPesquisa)
@@ -42,9 +53,24 @@ namespace BakeryManager.Services
 
         }
 
-        public void AlterarIngrediente(Ingrediente Ingrediente)
+        public void AlterarIngrediente(Ingrediente Ingrediente, TabelaNutricional pTabelaNutricioanl)
         {
             ingreditenteBm.Update(Ingrediente);
+            AtualizarTAbelaNutricional(Ingrediente, pTabelaNutricioanl);
+        }
+
+        private void AtualizarTAbelaNutricional(Ingrediente ingrediente, TabelaNutricional pTabelaNutricional)
+        {
+            
+
+            var tabelaAntiga = tabelaNutricionalBm.GetByIngrediente(ingrediente.IdIngrediente);
+
+            if (tabelaAntiga != null)
+                tabelaNutricionalBm.Delete(tabelaAntiga);
+            
+            pTabelaNutricional.Ingrediente = GetIngredienteById(ingrediente.IdIngrediente);
+            tabelaNutricionalBm.Insert(pTabelaNutricional);
+            
         }
 
         public void CarregarTabelaNutricional(string FileName)
@@ -115,6 +141,11 @@ namespace BakeryManager.Services
 
 
 
+        }
+
+        public TabelaNutricional GetTabelaNutricionalByIdIngrediente(int idIngrediente)
+        {
+            return tabelaNutricionalBm.GetByIngrediente(idIngrediente);
         }
 
         public Ingrediente GetIngredienteById(int pIdIngrediente)

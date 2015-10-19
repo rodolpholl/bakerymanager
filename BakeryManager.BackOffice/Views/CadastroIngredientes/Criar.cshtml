@@ -23,14 +23,21 @@
     </div>
 
     <div class="row">
+
+        <ul class="nav nav-tabs" data-tabs="tabs">
+            <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais</a></li>
+            <li role="presentation"><a href="#tabelanutricional" data-toggle="tab">Tabela Nutricional</a></li>
+        </ul>
+
+
+
         @Html.AntiForgeryToken()
 
         @using (Html.BeginForm("Criar", "CadastroIngredientes", FormMethod.Post, new { id = "frmCriar", @class = "form-horizontal " }))
-         {
-            
-                @Html.Partial("Form", Model)
-
+        {
+            @Html.Partial("Form", Model)
         }
+
     </div>
 
     <div class="row">
@@ -52,7 +59,7 @@
 @section scripts {
 
     <script type="text/javascript">
-        
+
 
         $(function () {
 
@@ -64,11 +71,11 @@
                     data: $("form#frmCriar").serialize(),
                     method: "POST",
                     dataType: "json",
-                    success: function(data){
+                    success: function (data) {
                         alert(data.Mensagem, function () {
                             if (data.URLDestino != undefined)
                                 window.location.href = data.URLDestino;
-                        },data.TipoMensagem);
+                        }, data.TipoMensagem);
                     }
 
 

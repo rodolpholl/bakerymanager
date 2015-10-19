@@ -6,40 +6,270 @@
 
 @Html.HiddenFor(x => x.IdIngrediente)
 
-<div class="col-lg-8">
-    <div class="form-group">
-        @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
 
-        <div class="col-sm-10">
-            @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
-            @Html.ValidationMessageFor(x => x.Nome)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Abreviatura, new { @class = "col-sm-2 control-label" })
+<div class="tab-content">
 
-        <div class="col-sm-10">
-            @Html.TextBoxFor(x => x.Abreviatura, new { @class = "form-control", style = "width:100px" })
-            @Html.ValidationMessageFor(x => x.Abreviatura)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.CodigoTACO, new { @class = "col-sm-2 control-label" })
+    <div class="tab-pane active" id="dadosgerais">
 
-        <div class="col-sm-10">
-            @(Html.Kendo().MaskedTextBoxFor(x => x.CodigoTACO)
+        <div class="col-lg-8">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Nome)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Abreviatura, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(x => x.Abreviatura, new { @class = "form-control", style = "width:100px" })
+                    @Html.ValidationMessageFor(x => x.Abreviatura)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.CodigoTACO, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @(Html.Kendo().MaskedTextBoxFor(x => x.CodigoTACO)
                 .HtmlAttributes(new { @class = "form-control", style = "width:100px" })
                 .Mask("9999999")
                 .PromptChar(" "))
-            @Html.ValidationMessageFor(x => x.CodigoTACO)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.NomeTACO, new { @class = "col-sm-2 control-label" })
+                    @Html.ValidationMessageFor(x => x.CodigoTACO)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.NomeTACO, new { @class = "col-sm-2 control-label" })
 
-        <div class="col-sm-10">
-            @Html.TextBoxFor(x => x.NomeTACO, new { @class = "form-control" })
-            @Html.ValidationMessageFor(x => x.NomeTACO)
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(x => x.NomeTACO, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.NomeTACO)
+                </div>
+            </div>
         </div>
+
+
     </div>
+    <div class="tab-pane" id="tabelanutricional">
+
+
+
+        <div class="col-lg-8">
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Umidade, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Umidade).Max(100).Min(0).Step(1).Format("{0:#.00 '%' }").Decimals(2).Culture("pt-BR").Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Umidade)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.EnergiaKCAL, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.EnergiaKCAL).Min(0).Step(1).Format("#.00 kcal").Decimals(2).Culture("pt-BR")
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.EnergiaKCAL)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.EnergiaKJ, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.EnergiaKJ).Min(0).Step(1).Format("#.00 kj").Decimals(2).Culture("pt-BR")
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.EnergiaKJ)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Proteina, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Proteina).Min(0).Step(1).Format("#.00 g").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Proteina)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Lipidio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Lipidio).Min(0).Step(1).Format("#.00 g").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Lipidio)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Colesterol, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Colesterol).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Colesterol)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Carbidrato, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Carbidrato).Min(0).Step(1).Format("#.00 g").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Carbidrato)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.FibraAlimentar, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.FibraAlimentar).Min(0).Step(1).Format("#.00 g").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.FibraAlimentar)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Cinzas, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Cinzas).Min(0).Step(1).Format("#.00 g").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Cinzas)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Calcio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Calcio).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Calcio)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Magnesio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Magnesio).Min(0).Step(1).Format("#.00 mg"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Magnesio)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Fosforo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Fosforo).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Fosforo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Ferro, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Ferro).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Ferro)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Manganes, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Manganes).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Manganes)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Sodio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Sodio).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Sodio)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Potassio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Potassio).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Potassio)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Cobre, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Cobre).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Cobre)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Zinco, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Zinco).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Zinco)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Retinol, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Retinol).Min(0).Step(1).Format("#.00 mcg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Retinol)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.RE, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.RE).Min(0).Step(1).Format("#.00 mcg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.RE)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.RAE, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.RAE).Min(0).Step(1).Format("#.00 mcg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.RAE)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Tiamina, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Tiamina).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Tiamina)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Piridoxina, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Piridoxina).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Piridoxina)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Riboflavina, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Riboflavina).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Riboflavina)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.Niacina, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.Niacina).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.Niacina)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TabelaNutricional.VitaminaC, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().NumericTextBoxFor(x => x.TabelaNutricional.VitaminaC).Min(0).Step(1).Format("#.00 mg").Decimals(2).Culture("pt-BR"))
+                    @Html.ValidationMessageFor(model => model.TabelaNutricional.VitaminaC)
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
 </div>
+
+
