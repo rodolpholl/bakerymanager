@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessProcessBase.cs" />
+    <Compile Include="CadastroCategoriaIngrediente.cs" />
     <Compile Include="CadastroIngredientes.cs" />
     <Compile Include="Seguranca\CadastroPerfil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriaIngredienteBM.cs" />
     <Compile Include="IngredienteBM.cs" />
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
