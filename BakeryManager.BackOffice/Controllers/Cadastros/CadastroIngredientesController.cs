@@ -23,6 +23,18 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             return View();
         }
 
+        public JsonResult GetCategoriaIngredienteAll()
+        {
+            using (var cadIngredientes = new CadastroIngredientes())
+            {
+                return Json(cadIngredientes.GetCategoriaAll().Select(x => new CategoriaIngredienteModel()
+                {
+                    IdCategoriaIngrediente = x.IdCategoriaIngrediente,
+                    Nome = x.Nome
+                }).ToList(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult Read([DataSourceRequest] DataSourceRequest request, string textoPesquisa)
         {
             using (var cadIngredientes = new CadastroIngredientes())
@@ -43,9 +55,14 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                                    Nome = i.Nome,
                                    NomeTACO = i.NomeTACO,
                                    Ativo = i.Ativo,
+                                   Categoria = new CategoriaIngredienteModel()
+                                   {
+                                       IdCategoriaIngrediente = i.Categoria.IdCategoriaIngrediente,
+                                       Nome = i.Categoria.Nome 
+                                   },
                                    TabelaNutricional = ParseTabelaNutricionalModel(t)
                                }).AsEnumerable();
-                
+
                 return Json(retorno.ToDataSourceResult(request)
                 , JsonRequestBehavior.AllowGet);
             }
@@ -66,7 +83,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Ativo = true,
                         CodigoTACO = IngredienteModel.CodigoTACO,
                         Nome = IngredienteModel.Nome,
-                        NomeTACO = IngredienteModel.NomeTACO
+                        NomeTACO = IngredienteModel.NomeTACO,
+                        Categoria = cadCliente.GetCategoriaById(IngredienteModel.Categoria.IdCategoriaIngrediente)
 
                     };
 
@@ -102,7 +120,16 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         public ActionResult Criar()
         {
-            return View(new CadastroIngredientesModel());
+            using (var cadCliente = new CadastroIngredientes())
+            {
+                ViewData["ListaCategoria"] = cadCliente.GetCategoriaAll().Select(x => new CategoriaIngredienteModel()
+                {
+                    Nome = x.Nome,
+                    IdCategoriaIngrediente = x.IdCategoriaIngrediente
+                }).OrderBy(x => x.Nome).ToList();
+
+                return View(new CadastroIngredientesModel());
+            }
         }
 
 
@@ -111,6 +138,13 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         {
             using (var cadCliente = new CadastroIngredientes())
             {
+
+                ViewData["ListaCategoria"] = cadCliente.GetCategoriaAll().Select(x => new CategoriaIngredienteModel()
+                {
+                    Nome = x.Nome,
+                    IdCategoriaIngrediente = x.IdCategoriaIngrediente
+                }).OrderBy(x => x.Nome).ToList();
+
                 var ingrediente = cadCliente.GetIngredienteById(Id);
                 var tabelaNutricional = cadCliente.GetTabelaNutricionalByIdIngrediente(Id);
 
@@ -121,6 +155,11 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Nome = ingrediente.Nome,
                     NomeTACO = ingrediente.NomeTACO,
                     IdIngrediente = ingrediente.IdIngrediente,
+                    Categoria = new CategoriaIngredienteModel()
+                    {
+                        IdCategoriaIngrediente = ingrediente.Categoria.IdCategoriaIngrediente,
+                        Nome = ingrediente.Categoria.Nome
+                    },
                     TabelaNutricional = (ParseTabelaNutricionalModel(tabelaNutricional))
                 };
 
@@ -147,12 +186,12 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     ingrediete.CodigoTACO = IngredienteModel.CodigoTACO;
                     ingrediete.Nome = IngredienteModel.Nome;
                     ingrediete.NomeTACO = IngredienteModel.NomeTACO;
+                    ingrediete.Categoria = cadCliente.GetCategoriaById(IngredienteModel.Categoria.IdCategoriaIngrediente);
 
 
+                    cadCliente.AlterarIngrediente(ingrediete, ParseTabelaNutricional(IngredienteModel.TabelaNutricional));
 
-                    cadCliente.AlterarIngrediente(ingrediete,ParseTabelaNutricional(IngredienteModel.TabelaNutricional));
 
-                    
 
 
                     return Json(
@@ -181,7 +220,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-   
+
 
         [HttpPost]
         public JsonResult Desativar(int Id)
@@ -274,12 +313,36 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     DataHoraOperacao = x.DataHoraOperacao,
                     IpOperacao = x.IpOperacao,
                     TipoOperacao = x.TipoOperacao == (int)TipoOpracaoDesativacaoIngrediente.Desativar ? "Desativação" : "Reativação",
-                    UsuarioAtualizacao = x.UsuarioOperacao.Nome                    
+                    UsuarioAtualizacao = x.UsuarioOperacao.Nome
                 }).ToList();
-                
+
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroIngredientes/HistoricoDesativarReativar.cshtml"), historico), JsonRequestBehavior.AllowGet);
 
-                
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetTabelaNutricional(int IdIngrediente)
+        {
+            using (var cadIngrediente = new CadastroIngredientes())
+            {
+                var ingrediente = cadIngrediente.GetIngredienteById(IdIngrediente);
+
+                var TabelaTACO = ParseTabelaNutricionalModel(cadIngrediente.GetTabelaNutricionalByIdIngrediente(ingrediente.IdIngrediente));
+                TabelaTACO.Ingrediente = new CadastroIngredientesModel()
+                {
+                    IdIngrediente = ingrediente.IdIngrediente,
+                    NomeTACO = ingrediente.NomeTACO,
+                    Nome = ingrediente.Nome,
+                    CodigoTACO = ingrediente.CodigoTACO,
+                    Ativo = ingrediente.Ativo,
+                    Abreviatura = ingrediente.Abreviatura
+                };
+
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroIngredientes/TabelaNutricional.cshtml"), TabelaTACO), JsonRequestBehavior.AllowGet);
+
+
             }
         }
 

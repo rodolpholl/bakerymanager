@@ -1,5 +1,6 @@
 ﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroIngredientesModel
 @using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Ingredientes
 
 
 @Html.ValidationSummary(true)
@@ -21,6 +22,21 @@
                 </div>
             </div>
             <div class="form-group">
+                @Html.LabelFor(x => x.Categoria, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+
+                    @(Html.Kendo().DropDownListFor(x => x.Categoria.IdCategoriaIngrediente).DataTextField("Nome").DataValueField("IdCategoriaIngrediente")
+                        .Animation(true)
+                        .HtmlAttributes(new { style = "width: 350px"})
+                        .Filter(FilterType.StartsWith)
+                        .DataSource(dataSource =>
+                        {
+                            dataSource.Read(read => read.Action("GetCategoriaIngredienteAll", "CadastroIngredientes"));
+                        }))
+                    @Html.ValidationMessageFor(x => x.Categoria)
+                </div>
+            </div>
+            <div class="form-group">
                 @Html.LabelFor(x => x.Abreviatura, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
@@ -32,10 +48,7 @@
                 @Html.LabelFor(x => x.CodigoTACO, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @(Html.Kendo().MaskedTextBoxFor(x => x.CodigoTACO)
-                .HtmlAttributes(new { @class = "form-control", style = "width:100px" })
-                .Mask("9999999")
-                .PromptChar(" "))
+                    @Html.Kendo().NumericTextBoxFor(x => x.CodigoTACO).Decimals(0).Min(1).Placeholder("Insira apenas números").Spinners(false).Format("{0:0}")
                     @Html.ValidationMessageFor(x => x.CodigoTACO)
                 </div>
             </div>

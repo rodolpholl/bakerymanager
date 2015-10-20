@@ -113,8 +113,10 @@
                     method: "POST",
                     success: function (data) {
 
-                        if (data.TipoMensagem == 1)
+                        if (data.TipoMensagem == 1) {
                             alert(data.Mensagem, null, data.TipoMensagem);
+                            $("#Senha").val("");
+                        }
 
                         else {
 

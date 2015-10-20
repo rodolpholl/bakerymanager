@@ -9,11 +9,14 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Ingredientes
 {
     public class CategoriaIngredienteModel
     {
-        public virtual int IdCategoriaIngrediente { get; set; }
+        public  int IdCategoriaIngrediente { get; set; }
+
         [Display(Name="Nome")]
         [Required(ErrorMessage ="Campo Obrigatório!")]
         [StringLength(200)]
-        public virtual string Nome { get; set; }
+        public string Nome { get; set; }
+
+       
 
         public virtual bool PermiteExclusao { get; set; }
     }

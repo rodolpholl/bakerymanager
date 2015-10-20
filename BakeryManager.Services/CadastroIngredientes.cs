@@ -14,6 +14,7 @@ namespace BakeryManager.Services
         private TabelaNutricionalBM tabelaNutricionalBm;
         private IngredienteHistoricoDesativacaoBM historicoDesativacaoReativacaoBm;
         private UsuarioBM usuarioBm;
+        private CategoriaIngredienteBM categoriaIngredienteBm;
 
         public CadastroIngredientes()
         {
@@ -21,11 +22,17 @@ namespace BakeryManager.Services
             tabelaNutricionalBm = base.GetObject<TabelaNutricionalBM>();
             historicoDesativacaoReativacaoBm = GetObject<IngredienteHistoricoDesativacaoBM>();
             usuarioBm = GetObject<UsuarioBM>();
+            categoriaIngredienteBm = GetObject<CategoriaIngredienteBM>();
         }
 
         public void InserirIngrediente(Ingrediente Ingrediente)
         {
             ingreditenteBm.Insert(Ingrediente);
+        }
+
+        public IList<CategoriaIngrediente> GetCategoriaAll()
+        {
+            return categoriaIngredienteBm.GetAll().OrderBy(x => x.Nome).ToList();
         }
 
         public void InserirIngrediente(Ingrediente Ingrediente, TabelaNutricional pTabelaNutricioanl)
@@ -143,6 +150,11 @@ namespace BakeryManager.Services
 
         }
 
+        public CategoriaIngrediente GetCategoriaById(int idCategoriaIngrediente)
+        {
+            return categoriaIngredienteBm.GetByID(idCategoriaIngrediente);
+        }
+
         public TabelaNutricional GetTabelaNutricionalByIdIngrediente(int idIngrediente)
         {
             return tabelaNutricionalBm.GetByIngrediente(idIngrediente);
@@ -168,6 +180,7 @@ namespace BakeryManager.Services
             tabelaNutricionalBm.Dispose();
             historicoDesativacaoReativacaoBm.Dispose();
             usuarioBm.Dispose();
+            categoriaIngredienteBm.Dispose();
         }
 
         public Usuario GetUsuarioByLogin(string name)

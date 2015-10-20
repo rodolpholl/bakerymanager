@@ -32,8 +32,10 @@ namespace BakeryManager.Repositories
                 else
                     result = new List<Ingrediente>();
             else
+
                 result = Query().Where(x => x.Abreviatura.ToUpper().Contains(textoPesquisa.ToUpper()) ||
                                                 x.Nome.ToUpper().Contains(textoPesquisa.ToUpper()) ||
+                                                x.Categoria.Nome.ToUpper().Contains(textoPesquisa.ToUpper()) ||
                                                 x.NomeTACO.ToUpper().Contains(textoPesquisa.ToUpper())).ToList();
             return result;
 
