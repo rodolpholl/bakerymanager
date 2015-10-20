@@ -329,7 +329,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
             using (var cadIngrediente = new CadastroIngredientes())
             {
-                
+
                 var ListaComponentesNutricionais = cadIngrediente.GetInformacaoNutricional(IdIngrediente);
 
                 if (IdIngrediente == 0)
@@ -344,39 +344,44 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                             UnidadeMedida = x.Componente.UnidadeMedida
                         },
                         Valor = 0
-                    } ).ToList().ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                    }).ToList().ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(ListaComponentesNutricionais.Select(x => new IngredienteTabelaNutricionalModel()
-                    {
-                        IdIngredienteTabelaNutricional = x.IdIngredienteTabelaNutricional,
-                        Valor = x.Valor,
-                        Ingrediente = new CadastroIngredientesModel()
-                        {
-                            IdIngrediente = x.Ingrediente.IdIngrediente,
-                            Abreviatura = x.Ingrediente.Abreviatura,
-                            Nome = x.Ingrediente.Nome,
-                            Ativo = x.Ingrediente.Ativo,
-                            Categoria = new CategoriaIngredienteModel()
-                            {
-                                IdCategoriaIngrediente = x.Ingrediente.Categoria.IdCategoriaIngrediente,
-                                Nome = x.Ingrediente.Categoria.Nome
-                            },
-                            CodigoTACO = x.Ingrediente.CodigoTACO,
-                            NomeTACO = x.Ingrediente.NomeTACO
-
-                        },
-                        ComponenteNutricional = new TabelaNutricionalModel()
-                        {
-                            IdTabelaNutricionalModel = x.Componente.IdTabelaNutricional,
-                            Nome = x.Componente.Nome,
-                            UnidadeMedida = x.Componente.UnidadeMedida
-                        }
-
-                    }).ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                    return Json(ListaComponentesNutricionais.Select(x => ParseIngredienteTabelaNutricionalModel(x)).ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
                 }
             }
+        }
+
+        private IngredienteTabelaNutricionalModel ParseIngredienteTabelaNutricionalModel(IngredienteTabelaNutricional pIngrediente)
+        {
+            return new IngredienteTabelaNutricionalModel()
+            {
+                IdIngredienteTabelaNutricional = pIngrediente.IdIngredienteTabelaNutricional,
+                Valor = pIngrediente.Valor,
+                Ingrediente = new CadastroIngredientesModel()
+                {
+                    IdIngrediente = pIngrediente.Ingrediente.IdIngrediente,
+                    Abreviatura = pIngrediente.Ingrediente.Abreviatura,
+                    Nome = pIngrediente.Ingrediente.Nome,
+                    Ativo = pIngrediente.Ingrediente.Ativo,
+                    Categoria = new CategoriaIngredienteModel()
+                    {
+                        IdCategoriaIngrediente = pIngrediente.Ingrediente.Categoria.IdCategoriaIngrediente,
+                        Nome = pIngrediente.Ingrediente.Categoria.Nome
+                    },
+                    CodigoTACO = pIngrediente.Ingrediente.CodigoTACO,
+                    NomeTACO = pIngrediente.Ingrediente.NomeTACO
+
+                },
+                ComponenteNutricional = new TabelaNutricionalModel()
+                {
+                    IdTabelaNutricionalModel = pIngrediente.Componente.IdTabelaNutricional,
+                    Nome = pIngrediente.Componente.Nome,
+                    UnidadeMedida = pIngrediente.Componente.UnidadeMedida
+                }
+
+            };
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -410,6 +415,16 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
+        [HttpPost]
+        public JsonResult GetPainelTabelaNutricional(int IdIngrediente)
+        {
+            using (var cadIngrediente = new CadastroIngredientes())
+            {
+                var retorno = cadIngrediente.GetInformacaoNutricional(IdIngrediente).Select(x => ParseIngredienteTabelaNutricionalModel(x)).AsEnumerable();
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroIngredientes/TabelaNutricional.cshtml"), retorno), JsonRequestBehavior.AllowGet);
+            }
+
+        }
     }
 }
 

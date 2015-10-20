@@ -1,8 +1,8 @@
-﻿@model BakeryManager.BackOffice.Models.Cadastros.Ingredientes.TabelaNutricionalModel
+﻿@model IEnumerable<BakeryManager.BackOffice.Models.Cadastros.Ingredientes.IngredienteTabelaNutricionalModel>
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Tabela Nutricional para o Ingreditente <strong>@(string.IsNullOrWhiteSpace(Model.Ingrediente.Nome) ? Model.Ingrediente.NomeTACO : Model.Ingrediente.Nome)</strong></h4>
+            <h4 class="modal-title" id="myModalLabel">Tabela Nutricional para o Ingreditente <strong>@(string.IsNullOrWhiteSpace(Model.FirstOrDefault().Ingrediente.Nome) ? Model.FirstOrDefault().Ingrediente.NomeTACO : Model.FirstOrDefault().Ingrediente.Nome)</strong></h4>
         </div>
         <div class="modal-body">
 
@@ -11,10 +11,10 @@
 
             <table class="table table-striped">
                 <caption>
-                    <p>@Html.LabelFor(model => model.Ingrediente.CodigoTACO): @Html.DisplayFor(model => model.Ingrediente.CodigoTACO)</p>
-                    @if (!string.IsNullOrWhiteSpace(Model.Ingrediente.Nome))
+                    <p>@Html.LabelFor(model => model.FirstOrDefault().Ingrediente.CodigoTACO): @Html.DisplayFor(model => model.FirstOrDefault().Ingrediente.CodigoTACO)</p>
+                    @if (!string.IsNullOrWhiteSpace(Model.FirstOrDefault().Ingrediente.Nome))
                     {
-                        <p>@Html.LabelFor(model => model.Ingrediente.NomeTACO): @Html.DisplayFor(model => model.Ingrediente.NomeTACO)</p>
+                        <p>@Html.LabelFor(model => model.FirstOrDefault().Ingrediente.NomeTACO): @Html.DisplayFor(model => model.FirstOrDefault().Ingrediente.NomeTACO)</p>
                     }
                 </caption>
                 <thead>
@@ -24,215 +24,14 @@
                     </tr>
                 </thead>
                 <tbody>
+                @foreach(var comp in Model)
+                {
                     <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Umidade)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Umidade) %
-                        </td>
+                        <td>@comp.ComponenteNutricional.Nome</td>
+                        <td>@comp.Valor.ToString("#0.00") @comp.ComponenteNutricional.UnidadeMedida</td>
                     </tr>
-                    
-                    <tr rowspan="2" >
-                        <td><label>Energia</label></td>
-                        <td>
-                            <table class"table table-striped">
-                                <tr>
-                                    <td>
-                                        @Html.LabelFor(x => x.EnergiaKCAL)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(x => x.EnergiaKCAL) kcal
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        @Html.LabelFor(x => x.EnergiaKJ)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(x => x.EnergiaKJ) kj
-                                    </td>
 
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Proteina)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Proteina) g
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Lipidio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Lipidio) g
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Colesterol)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Colesterol) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Carbidrato)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Carbidrato) g
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.FibraAlimentar)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.FibraAlimentar) g
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Cinzas)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Cinzas) g
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Calcio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Calcio) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Magnesio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Magnesio) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Fosforo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Fosforo) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Ferro)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Ferro) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Sodio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Sodio) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Potassio)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Potassio) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Cobre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Cobre) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Zinco)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Zinco ) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Retinol)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Retinol ) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.RE)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.RE) mcg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.RAE)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.RAE) mcg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Tiamina)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Tiamina) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Riboflavina)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Riboflavina) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Piridoxina)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Piridoxina) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Niacina)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.Niacina) mg
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.VitaminaC)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(model => model.VitaminaC) mg
-                        </td>
-                    </tr>
+                }
                 </tbody>
             </table>
 
