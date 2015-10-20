@@ -63,6 +63,7 @@
     <Compile Include="IngredienteTabelaNutricionalBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\ParametrosGeraisBM.cs" />
+    <Compile Include="Seguranca\ParametroTabelaNutricionalBM.cs" />
     <Compile Include="Seguranca\PerfilBM.cs" />
     <Compile Include="Seguranca\RegistroAcessoBM.cs" />
     <Compile Include="Seguranca\SenhaDiaBM.cs" />

@@ -9,6 +9,7 @@ namespace BakeryManager.Entities
     public class ParametrosGerais
     {
         public virtual int IdParametrosGerais { get; set; }
+        public virtual string Nome { get; set; }
 
         
     }

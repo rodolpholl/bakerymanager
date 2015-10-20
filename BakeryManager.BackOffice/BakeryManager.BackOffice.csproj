@@ -237,7 +237,7 @@
     <Compile Include="Controllers\Cadastros\CadastroUsuariosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\ParametrosController.cs" />
+    <Compile Include="Controllers\ManterParametrosController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -308,6 +308,7 @@
     <Content Include="Views\CadastroIngredientes\TabelaNutricional.cshtml" />
     <Content Include="Views\CadastroCategoriaIngredientes\Index.cshtml" />
     <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
+    <Content Include="Views\ManterParametros\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -318,7 +319,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\CadastroProduto\" />
-    <Folder Include="Views\Parametros\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">
