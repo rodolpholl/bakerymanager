@@ -14,6 +14,7 @@ using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
+    [Authorize]
     public class CadastroCategoriaIngredientesController : Controller
     {
         // GET: CadastroCategoriaIngredientes

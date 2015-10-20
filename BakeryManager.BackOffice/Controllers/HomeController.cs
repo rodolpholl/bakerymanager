@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace BakeryManager.BackOffice.Controllers
 {
+    [Authorize]
     public class HomeController : System.Web.Mvc.Controller
     {
         // GET: Home
