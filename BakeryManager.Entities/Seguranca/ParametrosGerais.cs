@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.Entities
 {
-    public class Produto
+    public class ParametrosGerais
     {
-        public virtual int IdProduto { get; set; }
-        public virtual string Nome { get; set; }
-        public virtual bool Ativo { get; set; }
+        public virtual int IdParametrosGerais { get; set; }
+
         
     }
 }

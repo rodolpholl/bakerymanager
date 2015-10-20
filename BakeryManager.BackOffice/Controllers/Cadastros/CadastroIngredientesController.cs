@@ -11,6 +11,8 @@ using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models;
 using BakeryManager.Infraestrutura.Helpers;
 using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -44,9 +46,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
 
                 var retorno = (from i in ingredientes
-                               join tn in TabelaNutricional on
-                                  i.IdIngrediente equals tn.Ingrediente.IdIngrediente into tnj
-                               from t in tnj.DefaultIfEmpty()
+
                                select new CadastroIngredientesModel()
                                {
                                    Abreviatura = i.Abreviatura,
@@ -58,9 +58,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                                    Categoria = new CategoriaIngredienteModel()
                                    {
                                        IdCategoriaIngrediente = i.Categoria.IdCategoriaIngrediente,
-                                       Nome = i.Categoria.Nome 
-                                   },
-                                   TabelaNutricional = ParseTabelaNutricionalModel(t)
+                                       Nome = i.Categoria.Nome
+                                   }
+
                                }).AsEnumerable();
 
                 return Json(retorno.ToDataSourceResult(request)
@@ -88,14 +88,16 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                     };
 
-                    cadCliente.InserirIngrediente(ingrediete, ParseTabelaNutricional(IngredienteModel.TabelaNutricional));
+                    cadCliente.InserirIngrediente(ingrediete);
+
 
                     return Json(
                                 new
                                 {
                                     TipoMensagem = TipoMensagemRetorno.Ok,
                                     Mensagem = "Ingrediente Inserido com sucesso!",
-                                    URLDestino = Url.Action("Criar")
+                                    URLDestino = Url.Action("Criar"),
+                                    IdIngrediente = ingrediete.IdIngrediente
 
                                 }, "text/html", JsonRequestBehavior.AllowGet);
 
@@ -146,7 +148,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 }).OrderBy(x => x.Nome).ToList();
 
                 var ingrediente = cadCliente.GetIngredienteById(Id);
-                var tabelaNutricional = cadCliente.GetTabelaNutricionalByIdIngrediente(Id);
+
 
                 var ingredienteModel = new CadastroIngredientesModel()
                 {
@@ -160,10 +162,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         IdCategoriaIngrediente = ingrediente.Categoria.IdCategoriaIngrediente,
                         Nome = ingrediente.Categoria.Nome
                     },
-                    TabelaNutricional = (ParseTabelaNutricionalModel(tabelaNutricional))
+
                 };
 
-                ingredienteModel.TabelaNutricional.Ingrediente = ingredienteModel;
 
                 return View(ingredienteModel);
             }
@@ -189,7 +190,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     ingrediete.Categoria = cadCliente.GetCategoriaById(IngredienteModel.Categoria.IdCategoriaIngrediente);
 
 
-                    cadCliente.AlterarIngrediente(ingrediete, ParseTabelaNutricional(IngredienteModel.TabelaNutricional));
+                    //cadCliente.AlterarIngrediente(ingrediete, ParseTabelaNutricional(IngredienteModel.TabelaNutricional));
 
 
 
@@ -323,107 +324,92 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         }
 
         [HttpPost]
-        public JsonResult GetTabelaNutricional(int IdIngrediente)
+        public JsonResult GetTabelaNutricional([DataSourceRequest] DataSourceRequest request, int IdIngrediente)
         {
+
             using (var cadIngrediente = new CadastroIngredientes())
             {
-                var ingrediente = cadIngrediente.GetIngredienteById(IdIngrediente);
+                
+                var ListaComponentesNutricionais = cadIngrediente.GetInformacaoNutricional(IdIngrediente);
 
-                var TabelaTACO = ParseTabelaNutricionalModel(cadIngrediente.GetTabelaNutricionalByIdIngrediente(ingrediente.IdIngrediente));
-                TabelaTACO.Ingrediente = new CadastroIngredientesModel()
+                if (IdIngrediente == 0)
                 {
-                    IdIngrediente = ingrediente.IdIngrediente,
-                    NomeTACO = ingrediente.NomeTACO,
-                    Nome = ingrediente.Nome,
-                    CodigoTACO = ingrediente.CodigoTACO,
-                    Ativo = ingrediente.Ativo,
-                    Abreviatura = ingrediente.Abreviatura
-                };
+                    return Json(ListaComponentesNutricionais.Select(x => new IngredienteTabelaNutricionalModel()
+                    {
+                        Ingrediente = new CadastroIngredientesModel(),
+                        ComponenteNutricional = new TabelaNutricionalModel()
+                        {
+                            IdTabelaNutricionalModel = x.Componente.IdTabelaNutricional,
+                            Nome = x.Componente.Nome,
+                            UnidadeMedida = x.Componente.UnidadeMedida
+                        },
+                        Valor = 0
+                    } ).ToList().ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(ListaComponentesNutricionais.Select(x => new IngredienteTabelaNutricionalModel()
+                    {
+                        IdIngredienteTabelaNutricional = x.IdIngredienteTabelaNutricional,
+                        Valor = x.Valor,
+                        Ingrediente = new CadastroIngredientesModel()
+                        {
+                            IdIngrediente = x.Ingrediente.IdIngrediente,
+                            Abreviatura = x.Ingrediente.Abreviatura,
+                            Nome = x.Ingrediente.Nome,
+                            Ativo = x.Ingrediente.Ativo,
+                            Categoria = new CategoriaIngredienteModel()
+                            {
+                                IdCategoriaIngrediente = x.Ingrediente.Categoria.IdCategoriaIngrediente,
+                                Nome = x.Ingrediente.Categoria.Nome
+                            },
+                            CodigoTACO = x.Ingrediente.CodigoTACO,
+                            NomeTACO = x.Ingrediente.NomeTACO
 
-                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroIngredientes/TabelaNutricional.cshtml"), TabelaTACO), JsonRequestBehavior.AllowGet);
+                        },
+                        ComponenteNutricional = new TabelaNutricionalModel()
+                        {
+                            IdTabelaNutricionalModel = x.Componente.IdTabelaNutricional,
+                            Nome = x.Componente.Nome,
+                            UnidadeMedida = x.Componente.UnidadeMedida
+                        }
 
-
+                    }).ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                }
             }
         }
 
-        private TabelaNutricionalModel ParseTabelaNutricionalModel(TabelaNutricional pTabelaNutricional)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult UpdateTabelaNutricional(string strListaComponentes, int IdIngrediente)
         {
-            if (pTabelaNutricional == null)
+
+            using (var cadIngrediente = new CadastroIngredientes())
             {
-                return new TabelaNutricionalModel();
-            }
-            else
-            {
-                return new TabelaNutricionalModel()
+
+                var ListaComponentes = JsonConvert.DeserializeObject<IEnumerable<IngredienteTabelaNutricionalModel>>(strListaComponentes);
+
+                var ListaIngredienteTabela = ListaComponentes.Select(x => new IngredienteTabelaNutricional()
                 {
-                    Calcio = pTabelaNutricional.Calcio,
-                    Cinzas = pTabelaNutricional.Cinzas,
-                    Carbidrato = pTabelaNutricional.Carbidrato,
-                    Cobre = pTabelaNutricional.Cobre,
-                    Colesterol = pTabelaNutricional.Colesterol,
-                    EnergiaKCAL = pTabelaNutricional.EnergiaKCAL,
-                    EnergiaKJ = pTabelaNutricional.EnergiaKJ,
-                    Ferro = pTabelaNutricional.Ferro,
-                    FibraAlimentar = pTabelaNutricional.FibraAlimentar,
-                    Fosforo = pTabelaNutricional.Fosforo,
-                    Lipidio = pTabelaNutricional.Lipidio,
-                    Magnesio = pTabelaNutricional.Magnesio,
-                    Manganes = pTabelaNutricional.Manganes,
-                    Niacina = pTabelaNutricional.Niacina,
-                    Piridoxina = pTabelaNutricional.Piridoxina,
-                    Potassio = pTabelaNutricional.Potassio,
-                    Proteina = pTabelaNutricional.Proteina,
-                    RAE = pTabelaNutricional.RAE,
-                    RE = pTabelaNutricional.RE,
-                    Retinol = pTabelaNutricional.Retinol,
-                    Riboflavina = pTabelaNutricional.Riboflavina,
-                    Sodio = pTabelaNutricional.Sodio,
-                    Tiamina = pTabelaNutricional.Tiamina,
-                    Umidade = pTabelaNutricional.Umidade,
-                    VitaminaC = pTabelaNutricional.VitaminaC,
-                    Zinco = pTabelaNutricional.Zinco
-                };
+                    IdIngredienteTabelaNutricional = x.IdIngredienteTabelaNutricional,
+                    Componente = cadIngrediente.GetTabelaNutricionalById(x.ComponenteNutricional.IdTabelaNutricionalModel),
+                    Ingrediente = cadIngrediente.GetIngredienteById(IdIngrediente),
+                    Valor = x.Valor
+                }).ToList();
+
+
+                cadIngrediente.AtualizarTabelaNutricional(ListaIngredienteTabela);
+
+
+                return Json(new
+                {
+                    TipoMensagem = TipoMensagemRetorno.Ok,
+                    Mensagem = "Ingrediente Alterado com sucesso!",
+                    URLDestino = Url.Action("Index")
+
+                }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
 
-        private TabelaNutricional ParseTabelaNutricional(TabelaNutricionalModel pTabelaNutricionalModel)
-        {
-            if (pTabelaNutricionalModel == null)
-            {
-                return new TabelaNutricional();
-            }
-            else
-            {
-                return new TabelaNutricional()
-                {
-                    Calcio = pTabelaNutricionalModel.Calcio,
-                    Cinzas = pTabelaNutricionalModel.Cinzas,
-                    Carbidrato = pTabelaNutricionalModel.Carbidrato,
-                    Cobre = pTabelaNutricionalModel.Cobre,
-                    Colesterol = pTabelaNutricionalModel.Colesterol,
-                    EnergiaKCAL = pTabelaNutricionalModel.EnergiaKCAL,
-                    EnergiaKJ = pTabelaNutricionalModel.EnergiaKJ,
-                    Ferro = pTabelaNutricionalModel.Ferro,
-                    FibraAlimentar = pTabelaNutricionalModel.FibraAlimentar,
-                    Fosforo = pTabelaNutricionalModel.Fosforo,
-                    Lipidio = pTabelaNutricionalModel.Lipidio,
-                    Magnesio = pTabelaNutricionalModel.Magnesio,
-                    Manganes = pTabelaNutricionalModel.Manganes,
-                    Niacina = pTabelaNutricionalModel.Niacina,
-                    Piridoxina = pTabelaNutricionalModel.Piridoxina,
-                    Potassio = pTabelaNutricionalModel.Potassio,
-                    Proteina = pTabelaNutricionalModel.Proteina,
-                    RAE = pTabelaNutricionalModel.RAE,
-                    RE = pTabelaNutricionalModel.RE,
-                    Retinol = pTabelaNutricionalModel.Retinol,
-                    Riboflavina = pTabelaNutricionalModel.Riboflavina,
-                    Sodio = pTabelaNutricionalModel.Sodio,
-                    Tiamina = pTabelaNutricionalModel.Tiamina,
-                    Umidade = pTabelaNutricionalModel.Umidade,
-                    VitaminaC = pTabelaNutricionalModel.VitaminaC,
-                    Zinco = pTabelaNutricionalModel.Zinco
-                };
-            }
-        }
     }
 }
+

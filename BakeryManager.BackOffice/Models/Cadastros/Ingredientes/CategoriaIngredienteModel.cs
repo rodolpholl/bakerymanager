@@ -19,5 +19,10 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Ingredientes
        
 
         public virtual bool PermiteExclusao { get; set; }
+
+        public static implicit operator CategoriaIngredienteModel(CadastroIngredientesModel v)
+        {
+            return new CategoriaIngredienteModel();
+        }
     }
 }

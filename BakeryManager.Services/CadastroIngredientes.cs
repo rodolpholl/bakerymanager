@@ -10,24 +10,36 @@ namespace BakeryManager.Services
 {
     public class CadastroIngredientes : BusinessProcessBase, IDisposable
     {
-        private IngredienteBM ingreditenteBm;
+        private IngredienteBM ingredienteBm;
         private TabelaNutricionalBM tabelaNutricionalBm;
         private IngredienteHistoricoDesativacaoBM historicoDesativacaoReativacaoBm;
         private UsuarioBM usuarioBm;
         private CategoriaIngredienteBM categoriaIngredienteBm;
+        private IngredienteTabelaNutricionalBM ingredienteTabelaNutricionalBm;
 
         public CadastroIngredientes()
         {
-            ingreditenteBm = base.GetObject<IngredienteBM>();
+            ingredienteBm = base.GetObject<IngredienteBM>();
             tabelaNutricionalBm = base.GetObject<TabelaNutricionalBM>();
             historicoDesativacaoReativacaoBm = GetObject<IngredienteHistoricoDesativacaoBM>();
             usuarioBm = GetObject<UsuarioBM>();
             categoriaIngredienteBm = GetObject<CategoriaIngredienteBM>();
+            ingredienteTabelaNutricionalBm = GetObject<IngredienteTabelaNutricionalBM>();
+        }
+
+        public void Dispose()
+        {
+            ingredienteBm.Dispose();
+            tabelaNutricionalBm.Dispose();
+            historicoDesativacaoReativacaoBm.Dispose();
+            usuarioBm.Dispose();
+            categoriaIngredienteBm.Dispose();
+            ingredienteTabelaNutricionalBm.Dispose();
         }
 
         public void InserirIngrediente(Ingrediente Ingrediente)
         {
-            ingreditenteBm.Insert(Ingrediente);
+            ingredienteBm.Insert(Ingrediente);
         }
 
         public IList<CategoriaIngrediente> GetCategoriaAll()
@@ -35,15 +47,15 @@ namespace BakeryManager.Services
             return categoriaIngredienteBm.GetAll().OrderBy(x => x.Nome).ToList();
         }
 
-        public void InserirIngrediente(Ingrediente Ingrediente, TabelaNutricional pTabelaNutricioanl)
+        public void InserirIngrediente(Ingrediente Ingrediente, IList<IngredienteTabelaNutricional> pTabelaNutricioanl)
         {
-            ingreditenteBm.Insert(Ingrediente);
-            AtualizarTAbelaNutricional(Ingrediente, pTabelaNutricioanl);
+            ingredienteBm.Insert(Ingrediente);
+           
         }
 
         public IList<Ingrediente> GetListaIngredientes()
         {
-            return ingreditenteBm.GetAll();
+            return ingredienteBm.GetAll();
         }
 
         public IList<TabelaNutricional> GetTabelaNutricionalAll()
@@ -56,98 +68,23 @@ namespace BakeryManager.Services
             if (textoPesquisa.Length > 0 && textoPesquisa.Length < 3)
                 return new List<Ingrediente>();
 
-            return ingreditenteBm.GetListaIngredientesByFiltro(textoPesquisa);
+            return ingredienteBm.GetListaIngredientesByFiltro(textoPesquisa);
 
         }
 
-        public void AlterarIngrediente(Ingrediente Ingrediente, TabelaNutricional pTabelaNutricioanl)
+        public void AlterarIngrediente(Ingrediente Ingrediente, IList<IngredienteTabelaNutricional> pTabelaNutricioanl)
         {
-            ingreditenteBm.Update(Ingrediente);
-            AtualizarTAbelaNutricional(Ingrediente, pTabelaNutricioanl);
+            ingredienteBm.Update(Ingrediente);
+           
         }
 
-        private void AtualizarTAbelaNutricional(Ingrediente ingrediente, TabelaNutricional pTabelaNutricional)
-        {
-            
-
-            var tabelaAntiga = tabelaNutricionalBm.GetByIngrediente(ingrediente.IdIngrediente);
-
-            if (tabelaAntiga != null)
-                tabelaNutricionalBm.Delete(tabelaAntiga);
-            
-            pTabelaNutricional.Ingrediente = GetIngredienteById(ingrediente.IdIngrediente);
-            tabelaNutricionalBm.Insert(pTabelaNutricional);
-            
-        }
+        
 
         public void CarregarTabelaNutricional(string FileName)
         {
-
-
-            var excelFile = new ExcelQueryFactory(FileName);
-            var result = from a in excelFile.Worksheet("Tabela_TACO") select a;
-            foreach (var r in result)
-            {
-
-
-                var ingrediente = ingreditenteBm.GetByCodigoTACO(r["CodigoTACO"]);
-
-                if (ingrediente == null)
-                {
-                    ingrediente = new Ingrediente()
-                    {
-                        CodigoTACO = int.Parse(r["CodigoTACO"]),
-                        NomeTACO = r["NomeTACO"],
-                        Ativo = true
-                    };
-
-                    ingreditenteBm.Insert(ingrediente);
-                }
-
-                var tabelaNutricional = tabelaNutricionalBm.GetByIngrediente(ingrediente.IdIngrediente);
-
-                if (tabelaNutricional == null)
-                {
-                    tabelaNutricional = new TabelaNutricional()
-                    {
-                        Ingrediente = ingrediente
-                    };
-
-                    tabelaNutricionalBm.Insert(tabelaNutricional);
-                }
-
-                tabelaNutricional.Umidade = TratarInformacaoTAbela(r["Umidade"]);
-                tabelaNutricional.EnergiaKCAL = TratarInformacaoTAbela(r["EnergiaKcal"]);
-                tabelaNutricional.EnergiaKJ = TratarInformacaoTAbela(r["EnergiaKJ"]);
-                tabelaNutricional.Proteina = TratarInformacaoTAbela(r["Proteina"]);
-                tabelaNutricional.Lipidio = TratarInformacaoTAbela(r["Lipideos"]);
-                tabelaNutricional.Colesterol = TratarInformacaoTAbela(r["Colesterol"]);
-                tabelaNutricional.Carbidrato = TratarInformacaoTAbela(r["Carboidrato"]);
-                tabelaNutricional.FibraAlimentar = TratarInformacaoTAbela(r["FibrasAlimentares"]);
-                tabelaNutricional.Cinzas = TratarInformacaoTAbela(r["Cinzas"]);
-                tabelaNutricional.Calcio = TratarInformacaoTAbela(r["Calcio"]);
-                tabelaNutricional.Magnesio = TratarInformacaoTAbela(r["Magnesio"]);
-                tabelaNutricional.Manganes = TratarInformacaoTAbela(r["Manganes"]);
-                tabelaNutricional.Fosforo = TratarInformacaoTAbela(r["Fosforo"]);
-                tabelaNutricional.Ferro = TratarInformacaoTAbela(r["Ferro"]);
-                tabelaNutricional.Sodio = TratarInformacaoTAbela(r["Sodio"]);
-                tabelaNutricional.Potassio = TratarInformacaoTAbela(r["Potassio"]);
-                tabelaNutricional.Cobre = TratarInformacaoTAbela(r["Cobre"]);
-                tabelaNutricional.Zinco = TratarInformacaoTAbela(r["Zinco"]);
-                tabelaNutricional.Retinol = TratarInformacaoTAbela(r["Retinol"]);
-                tabelaNutricional.RE = TratarInformacaoTAbela(r["RE"]);
-                tabelaNutricional.RAE = TratarInformacaoTAbela(r["REA "]);
-                tabelaNutricional.Tiamina = TratarInformacaoTAbela(r["Tiamina"]);
-                tabelaNutricional.Riboflavina = TratarInformacaoTAbela(r["Riboflavina"]);
-                tabelaNutricional.Piridoxina = TratarInformacaoTAbela(r["Piridoxina"]);
-                tabelaNutricional.Niacina = TratarInformacaoTAbela(r["Niacina"]);
-                tabelaNutricional.VitaminaC = TratarInformacaoTAbela(r["VitaminaC"]);
-                tabelaNutricionalBm.Update(tabelaNutricional);
-
-            }
-
-
-
+            
+            throw new NotImplementedException();
+            
         }
 
         public CategoriaIngrediente GetCategoriaById(int idCategoriaIngrediente)
@@ -155,14 +92,11 @@ namespace BakeryManager.Services
             return categoriaIngredienteBm.GetByID(idCategoriaIngrediente);
         }
 
-        public TabelaNutricional GetTabelaNutricionalByIdIngrediente(int idIngrediente)
-        {
-            return tabelaNutricionalBm.GetByIngrediente(idIngrediente);
-        }
+       
 
         public Ingrediente GetIngredienteById(int pIdIngrediente)
         {
-            return ingreditenteBm.GetByID(pIdIngrediente);
+            return ingredienteBm.GetByID(pIdIngrediente);
         }
 
         private double TratarInformacaoTAbela(string Texto)
@@ -174,14 +108,7 @@ namespace BakeryManager.Services
                    double.Parse(Texto);
         }
 
-        public void Dispose()
-        {
-            ingreditenteBm.Dispose();
-            tabelaNutricionalBm.Dispose();
-            historicoDesativacaoReativacaoBm.Dispose();
-            usuarioBm.Dispose();
-            categoriaIngredienteBm.Dispose();
-        }
+        
 
         public Usuario GetUsuarioByLogin(string name)
         {
@@ -191,7 +118,7 @@ namespace BakeryManager.Services
         public void DesativarIngrediente(Ingrediente pIngrediente, Usuario pUsuario, string Ip)
         {
             pIngrediente.Ativo = false;
-            ingreditenteBm.Update(pIngrediente);
+            ingredienteBm.Update(pIngrediente);
             RegistrarHistóricoDesabilitarHabilitar(pIngrediente.IdIngrediente, pUsuario.IdUsuario, Ip, TipoOpracaoDesativacaoIngrediente.Desativar);
         }
 
@@ -199,7 +126,7 @@ namespace BakeryManager.Services
         public void ReativarIngrediente(Ingrediente pIngrediente, Usuario pUsuario, string Ip)
         {
             pIngrediente.Ativo = true;
-            ingreditenteBm.Update(pIngrediente);
+            ingredienteBm.Update(pIngrediente);
             RegistrarHistóricoDesabilitarHabilitar(pIngrediente.IdIngrediente, pUsuario.IdUsuario, Ip, TipoOpracaoDesativacaoIngrediente.Reativar);
         }
 
@@ -208,7 +135,7 @@ namespace BakeryManager.Services
             var hist = new IngredienteHistoricoDesativacao()
             {
                 DataHoraOperacao = DateTime.Now,
-                Ingrediente = ingreditenteBm.GetByID(pIngrediente),
+                Ingrediente = ingredienteBm.GetByID(pIngrediente),
                 UsuarioOperacao = usuarioBm.GetByID(pUsuario),
                 IpOperacao = Ip,
                 TipoOperacao = (int)TipoOperacao
@@ -220,6 +147,36 @@ namespace BakeryManager.Services
         public IList<IngredienteHistoricoDesativacao> GetHistoricoDesativacaoReativacaoById(int idIngrediente)
         {
             return historicoDesativacaoReativacaoBm.GetHistoricoDesativacaoByIngrediente(GetIngredienteById(idIngrediente));
+        }
+
+        public IList<IngredienteTabelaNutricional> GetInformacaoNutricional(int idIngrediente)
+        {
+
+            if (idIngrediente == 0)
+                return tabelaNutricionalBm.GetAll().Select(x => new IngredienteTabelaNutricional()
+                {
+                    Componente = x,
+                    Valor = 0,
+                    Ingrediente = new Ingrediente()
+                }).ToList();
+            else
+                return ingredienteTabelaNutricionalBm.GetInformacoesNutricionaisByIngrediente(GetIngredienteById(idIngrediente));
+        }
+
+        public TabelaNutricional GetTabelaNutricionalById(int idTabelaNutricionalModel)
+        {
+            return tabelaNutricionalBm.GetByID(idTabelaNutricionalModel);
+        }
+
+        public void AtualizarTabelaNutricional(List<IngredienteTabelaNutricional> listaIngredienteTabela)
+        {
+            foreach(var comp in listaIngredienteTabela)
+            {
+                if (comp.IdIngredienteTabelaNutricional != 0)
+                    ingredienteTabelaNutricionalBm.Update(comp);
+                else
+                    ingredienteTabelaNutricionalBm.Insert(comp);
+            }
         }
     }
 }

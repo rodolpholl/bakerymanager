@@ -25,18 +25,13 @@ namespace BakeryManager.BackOffice.Models.Cadastros
         [Display(Name = "Cód. TACO" )]
         public int? CodigoTACO { get; set; }
         public bool Ativo { get; set; }
-        public TabelaNutricionalModel TabelaNutricional { get; set; }
-
+   
         [Display(Name = "Categoria")]
         [Required(ErrorMessage = "Campo Obrigatório")]
         public CategoriaIngredienteModel Categoria { get; set; }
 
         public CadastroIngredientesModel()
         {
-            TabelaNutricional = new TabelaNutricionalModel()
-            {
-                Ingrediente = this
-            };
 
             Categoria = new CategoriaIngredienteModel();
             

@@ -66,6 +66,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
@@ -229,9 +233,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroPerfilController.cs" />
+    <Compile Include="Controllers\Cadastros\CadastroProdutoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroUsuariosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ParametrosController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -243,7 +249,9 @@
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\CategoriaIngredienteModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\HistoricoDesativacaoReativacaoModel.cs" />
-    <Compile Include="Models\Cadastros\Ingredientes\TabelaNutricionalModel.cs" />
+    <Compile Include="Models\Cadastros\Ingredientes\IngredienteTabelaNutricionalModel.cs" />
+    <Compile Include="Models\Cadastros\ParametrosModel.cs" />
+    <Compile Include="Models\Cadastros\TabelaNutricionalModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
     <Compile Include="Models\Login\LoginModel.cs" />
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
@@ -299,6 +307,7 @@
     <Content Include="Views\CadastroIngredientes\HistoricoDesativarReativar.cshtml" />
     <Content Include="Views\CadastroIngredientes\TabelaNutricional.cshtml" />
     <Content Include="Views\CadastroCategoriaIngredientes\Index.cshtml" />
+    <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -308,6 +317,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\CadastroProduto\" />
+    <Folder Include="Views\Parametros\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

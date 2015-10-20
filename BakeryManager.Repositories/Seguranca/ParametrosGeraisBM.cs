@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BakeryManager.Repositories
+namespace BakeryManager.Repositories.Seguranca
 {
-    public class TabelaNutricionalBM : BusinessManagementBase<TabelaNutricional>
+    public class ParametrosGeraisBM : BusinessManagementBase<ParametrosGerais>
     {
-        
     }
 }

@@ -72,10 +72,11 @@
                     method: "POST",
                     dataType: "json",
                     success: function (data) {
-                        alert(data.Mensagem, function () {
-                            if (data.URLDestino != undefined)
-                                window.location.href = data.URLDestino;
-                        }, data.TipoMensagem);
+                        
+                        $("#IdIngrediente").val(data.IdIngrediente);
+
+                        AtualizaTabelaNutricional(data);
+
                     }
 
 

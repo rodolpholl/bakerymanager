@@ -46,10 +46,13 @@
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteFormula.cs" />
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
+    <Compile Include="IngredienteTabelaNutricional.cs" />
+    <Compile Include="Seguranca\ParametrosGerais.cs" />
     <Compile Include="Pedido.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\Enums\Rule.cs" />
+    <Compile Include="Seguranca\ParametroTabelaNutricional.cs" />
     <Compile Include="Seguranca\Perfil.cs" />
     <Compile Include="Seguranca\RegistroAcesso.cs" />
     <Compile Include="Seguranca\SenhaDia.cs" />
