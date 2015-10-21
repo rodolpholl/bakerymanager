@@ -251,6 +251,7 @@
     <Compile Include="Models\Cadastros\Ingredientes\HistoricoDesativacaoReativacaoModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredienteTabelaNutricionalModel.cs" />
     <Compile Include="Models\Cadastros\ParametrosModel.cs" />
+    <Compile Include="Models\Cadastros\Produtos\ProdutoModel.cs" />
     <Compile Include="Models\Cadastros\TabelaNutricionalModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
     <Compile Include="Models\Login\LoginModel.cs" />

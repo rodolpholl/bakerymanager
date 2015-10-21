@@ -11,6 +11,8 @@ namespace BakeryManager.Entities
         public virtual int IdProduto { get; set; }
         public virtual string Nome { get; set; }
         public virtual bool Ativo { get; set; }
+        public virtual string GTIN { get; set; } //Código de Barras
+        public virtual CategoriaProduto Categoria { get; set; }
         
     }
 }
