@@ -88,7 +88,7 @@
             </div>
 
             <div class="col-md-offset-7">
-                <div class="panel panel-primary CustomPanelHeight">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Componentes Selecionados para Visualização</h3>
                     </div>
@@ -128,4 +128,46 @@
     function placeholder(element) {
         return $("<li class='list-item' id='placeholder'>Solte aqui!</li>");
     }
+
+    $(function () {
+
+        $("#btnSalvar").click(function () {
+
+                var listaExibicao = $("#listaExibicao").children();
+                var listaEnvio = [];
+
+
+                $.each(listaExibicao, function (index, listItem) {
+
+                listaEnvio.push({
+                    IdTabelaNutricionalModel: $(listItem).attr('data-IdTabelaNutricional'),
+                    Nome: $(listItem).text(),
+                    UnidadeMedida: ''
+                });
+
+
+
+                });
+
+                $.ajax({
+                    url: '@Url.Action("SalvarConfiguracao")',
+                    data: { ListaComponentes: listaEnvio },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+
+                        alert(data.Mensagem, function () {
+                            if (data.URLDestino != undefined)
+                                window.location.href = data.URLDestino;
+                        }, data.TipoMensagem);
+
+                    }
+
+                });
+
+
+        });
+
+    });
+
 </script>

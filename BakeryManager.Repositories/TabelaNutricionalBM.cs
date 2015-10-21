@@ -10,6 +10,9 @@ namespace BakeryManager.Repositories
 {
     public class TabelaNutricionalBM : BusinessManagementBase<TabelaNutricional>
     {
-        
+        public IList<TabelaNutricional> GetComponentesForaDaLista(IList<int> listaExibicao)
+        {
+            return  Query().Where(x => !listaExibicao.Contains(x.IdTabelaNutricional)).ToList();
+        }
     }
 }

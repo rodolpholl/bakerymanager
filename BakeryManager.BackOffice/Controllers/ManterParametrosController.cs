@@ -1,5 +1,6 @@
 ﻿using BakeryManager.BackOffice.Models;
 using BakeryManager.BackOffice.Models.Cadastros;
+using BakeryManager.Entities;
 using BakeryManager.Services.Seguranca;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace BakeryManager.BackOffice.Controllers
 {
+    [Authorize]
     public class ManterParametrosController : Controller
     {
         // GET: Parametros
@@ -41,10 +43,51 @@ namespace BakeryManager.BackOffice.Controllers
 
                 ViewData["ListaTabelaNaoExibicao"] = ListaTabelaNaoExibicao;
 
-               
+
                 param.ParametrosNutricionais = ListaTabelaExibicao;
 
                 return View(param);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SalvarConfiguracao(IList<TabelaNutricionalModel> ListaComponentes)
+        {
+            try
+            {
+                using (var parametros = new ManterParametros())
+                {
+                    parametros.SalvarConfiguracao((ListaComponentes ?? new List<TabelaNutricionalModel>()).Select(x => new ParametroTabelaNutricional() {
+                        Compoonente = new TabelaNutricional()
+                        {
+
+                            IdTabelaNutricional = x.IdTabelaNutricionalModel,
+                            Nome = x.Nome,
+                            UnidadeMedida = x.UnidadeMedida
+                        },
+                        Parametros = new ParametrosGerais() { IdParametrosGerais = 1}
+                    }).ToList());
+
+                    return Json(
+                                new
+                                {
+                                    TipoMensagem = TipoMensagemRetorno.Ok,
+                                    Mensagem = "Cofiguração Salva com Sucesso!!",
+                                    URLDestino = Url.Action("Index")
+
+                                }, "text/html", JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Erro,
+                                Mensagem = ex.Message
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
     }
