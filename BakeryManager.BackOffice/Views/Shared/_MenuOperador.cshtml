@@ -2,8 +2,20 @@
 <a href="javascript:;" data-toggle="collapse" data-target="#MenuOperador"><i class="fa fa-fw fa-table"></i> Cadastros <i class="fa fa-fw fa-caret-down"></i></a>
 <ul id="MenuOperador" class="collapse">
     <li>
-        <a href="@Url.Action("Index","CadastroCategoriaIngredientes")">Categorias de Ingredientes</a>
-        <a href="@Url.Action("Index","CadastroIngredientes")">Ingredientes</a>
+        <a href="#" data-toggle="collapse" data-target="#MenuCadastroIngrediente">Ingredientes<i class="fa fa-fw fa-caret-down"></i></a>
+        <ul id="MenuCadastroIngrediente" class="collapse">
+            <li>
+                <a href="@Url.Action("Index","CadastroCategoriaIngredientes")">Categorias</a>
+                <a href="@Url.Action("Index","CadastroIngredientes")">Ingredientes</a>
+            </li>
+        </ul>
+        <a href="#" data-toggle="collapse" data-target="#MenuCadastroProduto">Produtos<i class="fa fa-fw fa-caret-down"></i></a>
+        <ul id="MenuCadastroProduto" class="collapse">
+            <li>
+                <a href="@Url.Action("Index","CadastroCategoriaProduto")">Categorias</a>
+                <a href="@Url.Action("Index","CadastroProduto")">Produtos</a>
+            </li>
+        </ul>
     </li>
    
 </ul>

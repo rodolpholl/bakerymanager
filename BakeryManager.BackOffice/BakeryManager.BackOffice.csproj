@@ -232,6 +232,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
+    <Compile Include="Controllers\Cadastros\CadastroCategoriaProdutoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroPerfilController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroProdutoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroUsuariosController.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Models\Cadastros\Ingredientes\HistoricoDesativacaoReativacaoModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredienteTabelaNutricionalModel.cs" />
     <Compile Include="Models\Cadastros\ParametrosModel.cs" />
+    <Compile Include="Models\Cadastros\Produtos\CategoriaProdutoModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\ProdutoModel.cs" />
     <Compile Include="Models\Cadastros\TabelaNutricionalModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
@@ -310,6 +312,7 @@
     <Content Include="Views\CadastroCategoriaIngredientes\Index.cshtml" />
     <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
     <Content Include="Views\ManterParametros\Index.cshtml" />
+    <Content Include="Views\CadastroCategoriaProduto\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

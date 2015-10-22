@@ -123,7 +123,8 @@ ul.alert-dropdown {
         padding-bottom: 40px;
     }
 
-    .side-nav>li>a {
+    .side-nav>li>a,
+    .side-nav>li>ul>li>a {
         width: 225px;
     }
 
@@ -134,20 +135,29 @@ ul.alert-dropdown {
     }
 }
 
-.side-nav>li>ul {
+.side-nav>li>ul,
+.side-nav>li>ul>li>ul {
     padding: 0;
 }
 
-.side-nav>li>ul>li>a {
+.side-nav>li>ul>li>a,
+.side-nav>li>ul>li>ul>li>a {
     display: block;
     padding: 10px 15px 10px 38px;
     text-decoration: none;
     color: #999;
 }
 
-.side-nav>li>ul>li>a:hover {
+.side-nav>li>ul>li>ul>li>a {
+    padding: 10px 15px 10px 48px;
+}
+
+.side-nav>li>ul>li>a:hover,
+.side-nav>li>ul>li>ul>li>a:hover {
     color: #fff;
 }
+
+
 
 /* Flot Chart Containers */
 

@@ -56,6 +56,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         };
 
                         cadCategoria.InserirCategoriaIngrediente(categoria);
+                        categoriaModel.IdCategoriaIngrediente = categoria.IdCategoriaIngrediente;
                     }
                 }
             }

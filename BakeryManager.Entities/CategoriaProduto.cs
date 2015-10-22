@@ -11,6 +11,5 @@ namespace BakeryManager.Entities
         public virtual int IdCategoriaProduto { get; set; }
         public virtual string Nome { get; set; }
         
-
     }
 }

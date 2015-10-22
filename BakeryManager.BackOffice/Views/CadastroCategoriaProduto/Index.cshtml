@@ -1,9 +1,10 @@
-﻿@using Kendo.Mvc.UI
-@using BakeryManager.BackOffice.Models.Cadastros.Ingredientes
+﻿@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+@model CategoriaProdutoModel
 
 
 @{
-    ViewBag.Title = "Cadastro de Categorias de Ingredientes";
+    ViewBag.Title = "Cadastro de Categorias de Produto";
 }
 
 
@@ -28,16 +29,16 @@
     <div class="row">
         <div class="col-xs-12">
 
-           
 
-            @(Html.Kendo().Grid<CategoriaIngredienteModel>()
+
+            @(Html.Kendo().Grid<CategoriaProdutoModel>()
 
             .Name("grid")
             .Columns(columns =>
             {
                 columns.Bound(c => c.Nome);
-                columns.Bound(c => c.PermiteExclusao).Title("").Width(130).ClientTemplate("#if (PermiteExclusao) {#"+
-                                                                     "<a href=\"javascript:void(0);\" onclick=\"Excluir(#=IdCategoriaIngrediente#);\" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Excluir</a> #}#");
+                columns.Bound(c => c.PermiteExclusao).Title("").Width(130).ClientTemplate("#if (PermiteExclusao) {#" +
+                                                                     "<a href=\"javascript:void(0);\" onclick=\"Excluir(#=IdCategoriaProduto#);\" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Excluir</a> #}#");
 
             })
 
@@ -55,23 +56,24 @@
                 .DataSource(ds => ds
                     .Ajax()
                     .PageSize(30)
-                    .ServerOperation(true)
+                    .ServerOperation(false)
                     .Batch(true)
                     .Events(events => events.Error("error_handler"))
                     .Model(model =>
                     {
 
-                        model.Id(p => p.IdCategoriaIngrediente);
+                        model.Id(p => p.IdCategoriaProduto);
+                        model.Field(p => p.IdCategoriaProduto);
                         model.Field(f => f.Nome);
-                        model.Field(f => f.PermiteExclusao).Editable(false);
+                        model.Field(f => f.PermiteExclusao).Editable(false).DefaultValue(true);
 
                     })
-                    .Create(create => create.Action("Create", "CadastroCategoriaIngredientes"))
-                    .Update(update => update.Action("Edit", "CadastroCategoriaIngredientes"))
-                    .Read(read => read.Action("Read", "CadastroCategoriaIngredientes")))
+                    .Create(create => create.Action("Create", "CadastroCategoriaProduto"))
+                    .Update(update => update.Action("Edit", "CadastroCategoriaProduto"))
+                    .Read(read => read.Action("Read", "CadastroCategoriaProduto")))
 
-                )
-            
+            )
+
 
         </div>
     </div>
@@ -81,8 +83,8 @@
 
 
 @section scripts{
-    
-<script type="text/javascript">
+
+    <script type="text/javascript">
 
     function Excluir(idCategoria) {
         confirm("Deseja Realmente Excluir essa Categoria?", function () {
@@ -100,7 +102,7 @@
                             $("#grid").data("kendoGrid").dataSource.read();
 
                     },data.TipoMensagem)
-                    
+
                 }
             })
 
@@ -108,7 +110,7 @@
         }, 2);
     }
 
-</script>    
-    
-    
+    </script>
+
+
 }

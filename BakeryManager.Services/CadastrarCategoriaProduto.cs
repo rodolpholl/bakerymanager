@@ -1,4 +1,5 @@
 ﻿using BakeryManager.Entities;
+using BakeryManager.Infraestrutura.Base.BusinessProcess;
 using BakeryManager.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,18 @@ namespace BakeryManager.Services
     public class CadastrarCategoriaProduto : BusinessProcessBase, IDisposable
     {
         private CategoriaProdutoBM categoriaProdutoBm;
+        private ProdutoBM produtoBm;
 
         public CadastrarCategoriaProduto()
         {
             categoriaProdutoBm = GetObject<CategoriaProdutoBM>();
+            produtoBm = GetObject<ProdutoBM>();
         }
 
         public void Dispose()
         {
             categoriaProdutoBm.Dispose();
+            produtoBm.Dispose();
         }
 
         public IList<CategoriaProduto> GetCategoriaProdutoAll()
@@ -32,14 +36,30 @@ namespace BakeryManager.Services
             categoriaProdutoBm.Insert(pCategoria);
         }
 
-        public void EditarCategoriaProduto(CategoriaProduto pCategoria)
+        public void AlterarCategoriaProduto(CategoriaProduto pCategoria)
         {
             categoriaProdutoBm.Update(pCategoria);
         }
 
+        public CategoriaProduto GetCategoriaProdutoById(int IdCategoriaProduto)
+        {
+            return categoriaProdutoBm.GetByID(IdCategoriaProduto);
+        }
+
+        public bool ValidaProdutoContidoCategoriaProduto(int IdCategoriaProduto)
+        {
+            return (!produtoBm.GetProdutoByCategoria(categoriaProdutoBm.GetByID(IdCategoriaProduto)).Any());
+        }
+
         public void ExcluirCategoriaProduto(CategoriaProduto pCategoria)
         {
-            categoriaProdutoBm.Insert(pCategoria);
+
+            if (produtoBm.GetProdutoByCategoria(pCategoria).Count > 0)
+                throw new BusinessProcessException("Existem produtos vinculados a esta Categoria");
+
+            categoriaProdutoBm.Delete(pCategoria);
         }
+
+        
     }
 }
