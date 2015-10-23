@@ -1,4 +1,4 @@
-﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroIngredientesModel
+﻿@model BakeryManager.BackOffice.Models.Cadastros.IngredientesModel
 
 @{
     ViewBag.Title = "Novo Ingrediente";
@@ -63,27 +63,33 @@
 
     <script type="text/javascript">
 
+        var validator = $("#frmCriar").kendoValidator().data("kendoValidator");
 
         $(function () {
 
-            $("#btnSalvar").click(function () {
+            $("#btnSalvar").click(function(evt) {
 
-                $.ajax({
+                evt.preventDefault();
+                if (validator.validate()) {
 
-                    url: '@Url.Action("Criar")',
-                    data: $("form#frmCriar").serialize(),
-                    method: "POST",
-                    dataType: "json",
-                    success: function (data) {
-                        
-                        $("#IdIngrediente").val(data.IdIngrediente);
+                    $.ajax({
 
-                        AtualizaTabelaNutricional(data);
+                        url: '@Url.Action("Criar")',
+                        data: $("form#frmCriar").serialize(),
+                        method: "POST",
+                        dataType: "json",
+                        success: function (data) {
 
-                    }
+                            $("#IdIngrediente").val(data.IdIngrediente);
+
+                            AtualizaTabelaNutricional(data);
+
+                        }
 
 
-                });
+                    });
+
+                }
 
             });
 

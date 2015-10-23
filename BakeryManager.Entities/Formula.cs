@@ -15,7 +15,7 @@ namespace BakeryManager.Entities
         public virtual bool EmUso { get; set; }
         public virtual string Descricao { get; set; }
         public virtual DateTime? DataFimValidade { get; set; }
-       [StringLength(4000)]
+        [StringLength(4000)]
         public virtual string DescricaoReceita { get; set; }
         public virtual double RendimentoPadrao { get; set; }
 

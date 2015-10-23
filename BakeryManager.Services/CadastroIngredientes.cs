@@ -72,7 +72,7 @@ namespace BakeryManager.Services
 
         }
 
-        public void AlterarIngrediente(Ingrediente Ingrediente, IList<IngredienteTabelaNutricional> pTabelaNutricioanl)
+        public void AlterarIngrediente(Ingrediente Ingrediente)
         {
             ingredienteBm.Update(Ingrediente);
            

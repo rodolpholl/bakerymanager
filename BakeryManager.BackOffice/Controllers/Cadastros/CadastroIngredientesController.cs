@@ -47,7 +47,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                 var retorno = (from i in ingredientes
 
-                               select new CadastroIngredientesModel()
+                               select new IngredientesModel()
                                {
                                    Abreviatura = i.Abreviatura,
                                    CodigoTACO = i.CodigoTACO,
@@ -70,7 +70,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
 
         [HttpPost]
-        public JsonResult Criar(CadastroIngredientesModel IngredienteModel)
+        public JsonResult Criar(IngredientesModel IngredienteModel)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     IdCategoriaIngrediente = x.IdCategoriaIngrediente
                 }).OrderBy(x => x.Nome).ToList();
 
-                return View(new CadastroIngredientesModel());
+                return View(new IngredientesModel());
             }
         }
 
@@ -150,7 +150,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 var ingrediente = cadCliente.GetIngredienteById(Id);
 
 
-                var ingredienteModel = new CadastroIngredientesModel()
+                var ingredienteModel = new IngredientesModel()
                 {
                     Abreviatura = ingrediente.Abreviatura,
                     CodigoTACO = ingrediente.CodigoTACO,
@@ -171,7 +171,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         }
 
         [HttpPost]
-        public JsonResult Editar(CadastroIngredientesModel IngredienteModel)
+        public JsonResult Editar(IngredientesModel IngredienteModel)
         {
             try
             {
@@ -190,7 +190,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     ingrediete.Categoria = cadCliente.GetCategoriaById(IngredienteModel.Categoria.IdCategoriaIngrediente);
 
 
-                    //cadCliente.AlterarIngrediente(ingrediete, ParseTabelaNutricional(IngredienteModel.TabelaNutricional));
+                    cadCliente.AlterarIngrediente(ingrediete);
 
 
 
@@ -336,7 +336,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 {
                     return Json(ListaComponentesNutricionais.Select(x => new IngredienteTabelaNutricionalModel()
                     {
-                        Ingrediente = new CadastroIngredientesModel(),
+                        Ingrediente = new IngredientesModel(),
                         ComponenteNutricional = new TabelaNutricionalModel()
                         {
                             IdTabelaNutricionalModel = x.Componente.IdTabelaNutricional,
@@ -359,7 +359,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             {
                 IdIngredienteTabelaNutricional = pIngrediente.IdIngredienteTabelaNutricional,
                 Valor = pIngrediente.Valor,
-                Ingrediente = new CadastroIngredientesModel()
+                Ingrediente = new IngredientesModel()
                 {
                     IdIngrediente = pIngrediente.Ingrediente.IdIngrediente,
                     Abreviatura = pIngrediente.Ingrediente.Abreviatura,

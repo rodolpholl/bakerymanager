@@ -242,13 +242,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManterParametrosController.cs" />
+    <Compile Include="Controllers\ManterReceituarioController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Controllers\Cadastros\CadastroIngredientesController.cs" />
-    <Compile Include="Models\Cadastros\Ingredientes\CadastroIngredientesModel.cs" />
+    <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\CategoriaIngredienteModel.cs" />
@@ -256,6 +257,8 @@
     <Compile Include="Models\Cadastros\Ingredientes\IngredienteTabelaNutricionalModel.cs" />
     <Compile Include="Models\Cadastros\ParametrosModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\CategoriaProdutoModel.cs" />
+    <Compile Include="Models\ManteReceita\FormulaModel.cs" />
+    <Compile Include="Models\ManteReceita\IngredienteFormulaModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\ProdutoModel.cs" />
     <Compile Include="Models\Cadastros\TabelaNutricionalModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
@@ -320,6 +323,7 @@
     <Content Include="Views\CadastroProduto\Criar.cshtml" />
     <Content Include="Views\CadastroProduto\Form.cshtml" />
     <Content Include="Views\CadastroProduto\Editar.cshtml" />
+    <Content Include="Views\ManterReceituario\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

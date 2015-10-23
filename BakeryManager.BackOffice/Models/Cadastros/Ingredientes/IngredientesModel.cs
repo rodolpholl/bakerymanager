@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.BackOffice.Models.Cadastros
 {
-    public class CadastroIngredientesModel
+    public class IngredientesModel
     {
 
         public int IdIngrediente { get; set; }
@@ -30,7 +30,7 @@ namespace BakeryManager.BackOffice.Models.Cadastros
         [Required(ErrorMessage = "Campo Obrigatório")]
         public CategoriaIngredienteModel Categoria { get; set; }
 
-        public CadastroIngredientesModel()
+        public IngredientesModel()
         {
 
             Categoria = new CategoriaIngredienteModel();

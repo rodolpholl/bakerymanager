@@ -13,7 +13,7 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Ingredientes
 
      
         [Display(Name = "Ingrediente")]
-        public CadastroIngredientesModel Ingrediente { get; set; }
+        public IngredientesModel Ingrediente { get; set; }
 
         [Required(ErrorMessage = "Campo Obrigatório!")]
         [Display(Name = "Componente Nutricional")]

@@ -1,4 +1,4 @@
-﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroIngredientesModel
+﻿@model BakeryManager.BackOffice.Models.Cadastros.IngredientesModel
 @using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Cadastros.Ingredientes
 
@@ -17,7 +17,7 @@
                 @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
+                    @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new { style = "width: 450px" })
                     @Html.ValidationMessageFor(x => x.Nome)
                 </div>
             </div>
@@ -27,7 +27,8 @@
 
                     @(Html.Kendo().DropDownListFor(x => x.Categoria.IdCategoriaIngrediente).DataTextField("Nome").DataValueField("IdCategoriaIngrediente")
                         .Animation(true)
-                        .HtmlAttributes(new { style = "width: 350px"})
+                        .HtmlAttributes(new { style = "width: 450px"})
+                        .OptionLabel("Selecione -")
                         .Filter(FilterType.StartsWith)
                         .DataSource(dataSource =>
                         {
@@ -40,7 +41,7 @@
                 @Html.LabelFor(x => x.Abreviatura, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(x => x.Abreviatura, new { @class = "form-control", style = "width:100px" })
+                    @Html.Kendo().TextBoxFor(x => x.Abreviatura).HtmlAttributes(new { style = "width:80px" })
                     @Html.ValidationMessageFor(x => x.Abreviatura)
                 </div>
             </div>
@@ -56,7 +57,7 @@
                 @Html.LabelFor(x => x.NomeTACO, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.TextBoxFor(x => x.NomeTACO, new { @class = "form-control" })
+                    @Html.Kendo().TextBoxFor(x => x.NomeTACO).HtmlAttributes(new { style = "width: 450px" })
                     @Html.ValidationMessageFor(x => x.NomeTACO)
                 </div>
             </div>

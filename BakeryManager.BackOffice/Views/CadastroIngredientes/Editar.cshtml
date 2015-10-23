@@ -1,4 +1,4 @@
-﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroIngredientesModel
+﻿@model BakeryManager.BackOffice.Models.Cadastros.IngredientesModel
 
 @{
     ViewBag.Title = "Editar Ingrediente";
@@ -62,28 +62,34 @@
 
     <script type="text/javascript">
 
+        var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
 
         $(function () {
 
+
             $("#btnSalvar").click(function () {
 
-                $.ajax({
+                evt.preventDefault();
+                if (validator.validate()) {
 
-                    url: '@Url.Action("Editar")',
-                    data: $("form#frmEditar").serialize(),
+                    $.ajax({
 
-                    method: "POST",
-                    dataType: "json",
-                    success: function (data) {
+                        url: '@Url.Action("Editar")',
+                        data: $("form#frmEditar").serialize(),
 
-                        AtualizaTabelaNutricional(data);
+                        method: "POST",
+                        dataType: "json",
+                        success: function (data) {
 
-                    }
+                            AtualizaTabelaNutricional(data);
+
+                        }
 
 
-                });
-
+                    });
+                }
             });
+
 
         });
     </script>
