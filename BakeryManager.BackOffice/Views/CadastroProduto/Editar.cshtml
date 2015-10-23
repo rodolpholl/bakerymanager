@@ -1,8 +1,9 @@
-﻿@model BakeryManager.BackOffice.Models.Cadastros.CadastroIngredientesModel
+﻿@model BakeryManager.BackOffice.Models.Cadastros.Produtos.ProdutoModel
 
 @{
-    ViewBag.Title = "Novo Ingrediente";
+    ViewBag.Title = "Editar Produto";
 }
+
 
 <div class="container-fluid">
 
@@ -16,7 +17,7 @@
                     <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-file"></i> Ingredientes
+                    <i class="fa fa-file"></i> Produto
                 </li>
                 <li class="active">
                     <i class="fa fa-file"></i> @ViewBag.Title
@@ -27,16 +28,9 @@
 
     <div class="row">
 
-        <ul class="nav nav-tabs" data-tabs="tabs">
-            <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais</a></li>
-            <li role="presentation"><a href="#tabelanutricional" data-toggle="tab">Tabela Nutricional</a></li>
-        </ul>
 
 
-
-        @Html.AntiForgeryToken()
-
-        @using (Html.BeginForm("Criar", "CadastroIngredientes", FormMethod.Post, new { id = "frmCriar", @class = "form-horizontal " }))
+        @using (Html.BeginForm("Editar", "CadastroInProduto", FormMethod.Post, new { id = "frmEditar", @class = "form-horizontal " }))
         {
             @Html.Partial("Form", Model)
         }
@@ -59,36 +53,40 @@
 </div>
 
 
-@section scripts {
+@section scripts{
 
-    <script type="text/javascript">
+<script type="text/javascript">
+    $(function () {
+        var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
 
 
-        $(function () {
+        $("#btnSalvar").click(function (evt) {
 
-            $("#btnSalvar").click(function () {
+            evt.preventDefault();
+
+            if (validator.validate()) {
 
                 $.ajax({
 
-                    url: '@Url.Action("Criar")',
-                    data: $("form#frmCriar").serialize(),
+                    url: '@Url.Action("Editar")',
+                    dataType: 'json',
+                    data: $("#frmEditar").serialize(),
                     method: "POST",
-                    dataType: "json",
                     success: function (data) {
-                        
-                        $("#IdIngrediente").val(data.IdIngrediente);
 
-                        AtualizaTabelaNutricional(data);
+                        alert(data.Mensagem, function () {
+                            if (data.URLDestino != undefined)
+                                window.location.href = data.URLDestino;
+                        }, data.TipoMensagem);
 
                     }
 
-
                 });
-
-            });
-
+            }
         });
-    </script>
 
+
+    });
+</script>
 
 }

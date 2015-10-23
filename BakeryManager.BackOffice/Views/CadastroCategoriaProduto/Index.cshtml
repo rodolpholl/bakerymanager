@@ -52,10 +52,10 @@
                 .Sortable()
                 .Selectable()
                 .Navigatable()
-                .Scrollable()
+                .Scrollable(scr => scr.Height("auto"))
                 .DataSource(ds => ds
                     .Ajax()
-                    .PageSize(30)
+                    .PageSize(20)
                     .ServerOperation(false)
                     .Batch(true)
                     .Events(events => events.Error("error_handler"))

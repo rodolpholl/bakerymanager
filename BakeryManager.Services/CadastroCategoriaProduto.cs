@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.Services
 {
-    public class CadastrarCategoriaProduto : BusinessProcessBase, IDisposable
+    public class CadastroCategoriaProduto : BusinessProcessBase, IDisposable
     {
         private CategoriaProdutoBM categoriaProdutoBm;
         private ProdutoBM produtoBm;
 
-        public CadastrarCategoriaProduto()
+        public CadastroCategoriaProduto()
         {
             categoriaProdutoBm = GetObject<CategoriaProdutoBM>();
             produtoBm = GetObject<ProdutoBM>();

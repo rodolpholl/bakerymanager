@@ -14,5 +14,19 @@ namespace BakeryManager.Repositories
         {
             return Query().Where(x => x.Categoria.IdCategoriaProduto == categoria.IdCategoriaProduto).ToList();
         }
+
+        public IList<Produto> GetProdutoByFiltro(int idCategoria, string textoPesquisa)
+        {
+            var query = Query();
+
+            if (!string.IsNullOrWhiteSpace(textoPesquisa))
+                Query().Where(x => x.GTIN.ToUpper().Contains(textoPesquisa.ToUpper()) ||
+                                           x.Nome.ToUpper().Contains(textoPesquisa.ToUpper()));
+
+            if (idCategoria > 0)
+                query = query.Where(x => x.Categoria.IdCategoriaProduto == idCategoria);
+
+            return query.ToList();
+        }
     }
 }

@@ -60,7 +60,7 @@
                 .Editable(editable => editable.Mode(GridEditMode.InCell).Window(w => w.Width(460)).DisplayDeleteConfirmation(false))
                 .Pageable()
                 .Sortable()
-                .Selectable()
+                .Scrollable(scr => scr.Height("auto"))
                 .Navigatable()
                 .Scrollable()
                 .DataSource(ds => ds

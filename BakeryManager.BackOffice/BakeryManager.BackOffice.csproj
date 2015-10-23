@@ -194,6 +194,7 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Scripts\crypto\enc-base64-min.js" />
     <Content Include="Scripts\crypto\sha512.js" />
+    <None Include="Properties\PublishProfiles\PublishLocal.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -227,7 +228,9 @@
     <Content Include="Scripts\plugins\morris\raphael.min.js" />
     <Content Include="Scripts\crypto\sha256.js" />
     <Content Include="Scripts\utils.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -313,6 +316,10 @@
     <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
     <Content Include="Views\ManterParametros\Index.cshtml" />
     <Content Include="Views\CadastroCategoriaProduto\Index.cshtml" />
+    <Content Include="Views\CadastroProduto\Index.cshtml" />
+    <Content Include="Views\CadastroProduto\Criar.cshtml" />
+    <Content Include="Views\CadastroProduto\Form.cshtml" />
+    <Content Include="Views\CadastroProduto\Editar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -322,7 +329,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\CadastroProduto\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

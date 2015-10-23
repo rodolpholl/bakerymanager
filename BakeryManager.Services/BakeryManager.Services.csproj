@@ -78,9 +78,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessProcessBase.cs" />
-    <Compile Include="CadastrarCategoriaProduto.cs" />
+    <Compile Include="CadastroCategoriaProduto.cs" />
     <Compile Include="CadastroCategoriaIngrediente.cs" />
     <Compile Include="CadastroIngredientes.cs" />
+    <Compile Include="CadastroProduto.cs" />
     <Compile Include="Seguranca\CadastroPerfil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\CadastroUsuario.cs" />

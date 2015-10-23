@@ -74,7 +74,7 @@
                 .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("Cadastro").Window(w => w.Title("Cadastro do Usuário").Name("editUsuario").Width(435)))
                 .Pageable()
                 .Sortable()
-                .Selectable()
+                .Scrollable(scr => scr.Height("auto"))
                 //.Events(e => e.DataBound("doDataBound"))
                 .Navigatable()
                 .Scrollable()

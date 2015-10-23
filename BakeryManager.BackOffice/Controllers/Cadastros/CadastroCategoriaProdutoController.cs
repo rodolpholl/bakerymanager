@@ -24,7 +24,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         [HttpPost]
         public JsonResult Read([DataSourceRequest] DataSourceRequest request)
         {
-            using (var cadCategoria = new CadastrarCategoriaProduto())
+            using (var cadCategoria = new CadastroCategoriaProduto())
             {
                 return Json(cadCategoria.GetCategoriaProdutoAll().Select(x => new CategoriaProdutoModel()
                 {
@@ -42,7 +42,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         public JsonResult Create([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<CategoriaProdutoModel> ListaCategoriaProdutoModel)
         {
 
-            using (var cadCategoria = new CadastrarCategoriaProduto())
+            using (var cadCategoria = new CadastroCategoriaProduto())
             {
                 
                 foreach (var CategoriaProdutoModel in ListaCategoriaProdutoModel)
@@ -72,7 +72,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         [HttpPost]
         public JsonResult Edit([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<CategoriaProdutoModel> ListaCategoriaProdutoModel)
         {
-            using (var cadCategoria = new CadastrarCategoriaProduto())
+            using (var cadCategoria = new CadastroCategoriaProduto())
             {
 
                 foreach (var CategoriaProdutoModel in ListaCategoriaProdutoModel)
@@ -98,7 +98,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         {
             try
             {
-                using (var cadCategoria = new CadastrarCategoriaProduto())
+                using (var cadCategoria = new CadastroCategoriaProduto())
                 {
 
                     var categoriaProduto = cadCategoria.GetCategoriaProdutoById(Id);

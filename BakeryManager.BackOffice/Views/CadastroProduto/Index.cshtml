@@ -1,0 +1,188 @@
+﻿@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+
+
+@{
+    ViewBag.Title = "Cadastro de Produtos";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li>
+                    <i class="fa fa-file"></i> Produtos
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-8" >
+            <form  role="form">
+                <label>Categoria</label>
+                <div class="form-group">
+                    
+                    @(Html.Kendo().DropDownList().Name("cbxCategoriaPesquisa").DataTextField("Nome").DataValueField("IdCategoriaProduto")
+                    .OptionLabel("Todos")
+                      .DataSource(ds =>
+                      {
+                          ds.Read("ListarCategorias", "CadastroProduto");
+                      }))
+                </div>
+
+                <label>Pesquisa</label>
+                <div class="form-group ">
+                    
+                    <div class="input-group ">
+                        @Html.TextBox("txtPesquisa", "", new { @class = "form-control", placeHolder = "Digite no mínimo 3 caracteres para efetuar a pesquisa." })
+                        <span class="input-group-btn"><button id="btnPesquisa" class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            @(
+           Html.Kendo().Grid<ProdutoModel>()
+           .Name("grid")
+           .Columns(column =>
+           {
+               column.Bound(c => c.Nome).Filterable(false);
+               column.Bound(c => c.Categoria).ClientTemplate("#=Categoria.Nome#").Filterable(false);
+               column.Bound(c => c.GTIN).Title("GTIN - Código de Barras").Filterable(false);
+               column.Bound(c => c.Ativo).Width(210).ClientTemplate("<a  class=\"k-button k-button-icontext k-grid-edit\" href=\"" + Url.Action("Editar") + "/#=IdProduto#\"><span  class=\"k-icon k-edit\"></span>Editar</a>" +
+                                                                              "#if (Ativo) {#" +
+                                                                              "<a href=\"javascript: void(0); \" onclick=\"Desativar(#=IdProduto#); \" class=\"btn btn-danger btn - sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
+                                                                              "#} else {#" +
+                                                                              "<a href=\"javascript: void(0); \" onclick=\"Reativar(#=IdProduto#); \" class=\"btn btn-primary btn - sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" +
+                                                                              "# }#")
+                                                    .Filterable(filterable => filterable.Messages(m => m.IsFalse("Inativos").IsTrue("Ativos")));
+           })
+           .ToolBar(t => t.Custom().Text("Novo Produto").Url(Url.Action("Criar")).HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-add" }))
+           .Pageable()
+           .Navigatable()
+           .Scrollable(scr => scr.Height("auto"))
+           .Filterable()
+
+           .DataSource(ds => ds
+                .Ajax()
+                .Batch(false)
+                .PageSize(20)
+                .ServerOperation(true)
+                .Model( model =>
+                {
+                    model.Id(i => i.IdProduto);
+                    model.Field(f => f.Nome);
+                    model.Field(f => f.Categoria);
+                    model.Field(f => f.GTIN);
+                    model.Field(f => f.Ativo).Editable(false);
+                })
+                .Read( read => read.Action("Read","CadastroProduto").Data("getDataPesquisa"))
+               )
+
+            )
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        
+
+        function getDataPesquisa() {
+            return {
+                IdCategoriaFiltro: $("#cbxCategoriaPesquisa").data("kendoDropDownList").value(),
+                TextoPesquisa: $("#txtPesquisa").val()
+            }
+        }
+
+        function Desativar(IdProduto) {
+            confirm("Deseja Ralmente Desativar este Produto?", function () {
+
+                $.ajax({
+
+                    url: '@Url.Action("Desativar")',
+                    data: { Id: IdProduto },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+
+            }, 2);
+        }
+
+
+        function Reativar(IdProduto) {
+            confirm("Deseja Ralmente Reativar este Produto?", function () {
+                $.ajax({
+
+                    url: '@Url.Action("Reativar")',
+                    data: { Id: IdProduto },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+            }, 2);
+        }
+
+        
+        
+
+        $(function () {
+
+            $("#btnPesquisa").click(function () {
+                $("#grid").data("kendoGrid").dataSource.read();
+            });
+
+            $("#cbxCategoriaPesquisa").change(function () {
+                $("#grid").data("kendoGrid").dataSource.read();
+            });
+
+            $("#txtPesquisa").keyup(function () {
+                if ($("#txtPesquisa").val().length >= 3 || $("#txtPesquisa").val().length == 0) {
+
+                    setTimeout(function () {
+
+                        $("#grid").data("kendoGrid").dataSource.read();
+
+                    }, 2000);
+
+                }
+            });
+
+
+        });
+
+    </script>
+
+ }
