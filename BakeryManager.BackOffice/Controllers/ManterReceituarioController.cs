@@ -12,6 +12,7 @@ using BakeryManager.BackOffice.Models.ManterReceita;
 
 namespace BakeryManager.BackOffice.Controllers
 {
+    [Authorize]
     public class ManterReceituarioController : Controller
     {
         // GET: ManterReceituario
@@ -109,6 +110,11 @@ namespace BakeryManager.BackOffice.Controllers
                                 EmUso = x.EmUso
                             }).AsEnumerable().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult Criar()
+        {
+            return View();
         }
     }
 }
