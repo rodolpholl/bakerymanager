@@ -10,8 +10,9 @@ namespace BakeryManager.BackOffice.Models.ManterReceita
     public class IngredienteFormulaModel
     {
         public  int IdIngredienteFormula { get; set; }
-        public  FormulaModel Formula { get; set; }
-        public  IngredientesModel Ingrediente { get; set; }
+        public  int IdFormula { get; set; }
+        public  int  IdIngrediente { get; set; }
+        public string Nome { get; set; }
         public  double Quantidade { get; set; }
         public  bool AGosto { get; set; }
     }

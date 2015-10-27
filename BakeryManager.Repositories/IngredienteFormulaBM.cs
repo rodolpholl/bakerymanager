@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.Repositories
 {
-    public class IngredienteFormulaBM: BusinessManagementBase<IngredienteFormula>
+    public class IngredienteFormulaBM : BusinessManagementBase<IngredienteFormula>
     {
+        public IList<IngredienteFormula> GetByFormula(Formula formula)
+        {
+            return Query().Where(x => x.Formula.IdFormula == formula.IdFormula).ToList();
+        }
     }
 }

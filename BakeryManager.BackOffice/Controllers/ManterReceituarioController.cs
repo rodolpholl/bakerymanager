@@ -9,6 +9,7 @@ using BakeryManager.Services;
 using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models.ManterReceita;
+using BakeryManager.BackOffice.Models.Cadastros;
 
 namespace BakeryManager.BackOffice.Controllers
 {
@@ -111,10 +112,42 @@ namespace BakeryManager.BackOffice.Controllers
                             }).AsEnumerable().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
+        
 
         public ActionResult Criar()
         {
             return View();
+        }
+
+        public JsonResult GetIngredietesDisponiveis([DataSourceRequest] DataSourceRequest request, int? IdFormula)
+        {
+            using (var manterReceituario = new ManterReceituario())
+            {
+                var result = manterReceituario.GetIngredietesDisponiveis(!IdFormula.HasValue ? 0 : IdFormula.Value).Select(x => new IngredienteFormulaModel()
+                {
+                    IdIngrediente = x.IdIngrediente,
+                    Nome = string.IsNullOrWhiteSpace(x.Nome) ? x.NomeTACO : x.Nome,
+                    Quantidade = 0
+                });
+                return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetIngredietesFormula([DataSourceRequest] DataSourceRequest request, int? IdFormula)
+        {
+            using (var manterReceituario = new ManterReceituario())
+            {
+                var result = manterReceituario.GetIngredientesFormula(!IdFormula.HasValue ? 0 : IdFormula.Value);
+                return Json(result
+                    .Select(x => new IngredienteFormulaModel()
+                        {
+                            IdIngrediente = x.Ingrediente.IdIngrediente,
+                            Nome = string.IsNullOrWhiteSpace(x.Ingrediente.Nome) ? x.Ingrediente.NomeTACO : x.Ingrediente.Nome,
+                            Quantidade = x.Quantidade
+                        
+                    }).AsEnumerable()
+                    .ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

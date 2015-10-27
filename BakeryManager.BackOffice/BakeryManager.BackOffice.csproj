@@ -143,6 +143,7 @@
     <Content Include="Content\Bootstrap\sprite_kpi.png" />
     <Content Include="Content\Bootstrap\sprite_kpi_2x.png" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\Imagens\grabbing.cur" />
     <Content Include="Content\Imagens\load.gif" />
     <Content Include="Content\kendo.bootstrap.min.css" />
     <Content Include="Content\kendo.bootstrap.mobile.min.css" />
@@ -326,6 +327,7 @@
     <Content Include="Views\ManterReceituario\Index.cshtml" />
     <Content Include="Views\ManterReceituario\Criar.cshtml" />
     <Content Include="Views\ManterReceituario\Form.cshtml" />
+    <Content Include="Views\ManterReceituario\Formula.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

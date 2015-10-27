@@ -40,5 +40,10 @@ namespace BakeryManager.Repositories
             return result;
 
         }
+
+        public IList<Ingrediente> GetIngredientesAtivos()
+        {
+            return Query().Where(x => x.Ativo).ToList();
+        }
     }
 }

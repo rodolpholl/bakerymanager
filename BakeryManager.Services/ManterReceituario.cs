@@ -77,6 +77,28 @@ namespace BakeryManager.Services
             return formulaBm.GetFormulasByProduto(produtoBm.GetByID(IdProduto));
         }
 
-        
+        public IList<IngredienteFormula> GetIngredientesFormula(int IdFormula)
+        {
+            if (IdFormula == 0)
+                return new List<IngredienteFormula>();
+            else
+                return formulaIngredienteBm.GetByFormula(formulaBm.GetByID(IdFormula));
+        }
+
+        public IList<Ingrediente> GetIngredietesDisponiveis(int idFormula)
+        {
+            if (idFormula == 0)
+                return ingredienteBm.GetIngredientesAtivos();
+
+            else {
+
+                var ListaIngredietesFormula = formulaIngredienteBm.GetByFormula(formulaBm.GetByID(idFormula)).Select(x => x.Ingrediente.IdIngrediente).ToList();
+                var retorno = (from i in ingredienteBm.GetIngredientesAtivos()
+                               where !ListaIngredietesFormula.Contains(i.IdIngrediente)
+                               select i).ToList();
+
+                return retorno;
+            }
+        }
     }
 }

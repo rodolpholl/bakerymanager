@@ -107,8 +107,8 @@
 
 
 
-        @Html.Kendo().Sortable().For("#listaSemExibicao").ConnectWith("#listaExibicao").PlaceholderHandler("placeholder").Cursor("cursor: grab, default")
-        @Html.Kendo().Sortable().For("#listaExibicao").ConnectWith("#listaSemExibicao").PlaceholderHandler("placeholder").Cursor("cursor: grab, default")
+        @Html.Kendo().Sortable().For("#listaSemExibicao").ConnectWith("#listaExibicao").PlaceholderHandler("placeholder").Cursor("url('" + Url.Content("~/content/Imagens/grabbing.cur") + "'), default")
+        @Html.Kendo().Sortable().For("#listaExibicao").ConnectWith("#listaSemExibicao").PlaceholderHandler("placeholder").Cursor("url('" + Url.Content("~/content/Imagens/grabbing.cur") + "'), default")
 
 
     </div>

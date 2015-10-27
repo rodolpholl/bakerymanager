@@ -1,0 +1,170 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.ManterReceita
+@using BakeryManager.BackOffice.Models.Cadastros
+<style>
+    .ingredientecontainer {
+        float: left;
+        margin-left: 10px;
+        min-width: 400px;
+        min-height: 510px;
+        width: 800px;
+    }
+
+    .divFormula {
+        border: 1px solid #CDCDCD;
+    }
+
+    .ingredientes {
+        margin: 10px;
+        padding: 10px;
+        float: left;
+        background-color: #222222;
+        color: #fff;
+    }
+
+    .tagitemcls {
+        width: 24px;
+        float: left;
+        margin-left: -18px;
+        margin-top: 10px;
+        padding-top: 6px;
+        padding-bottom: 8px;
+        padding-left: 2px;
+    }
+
+    .move {
+        cursor: move;
+    }
+</style>
+
+
+
+<div class="form-group divFormula" style="padding:30px;">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <h3>Ingredientes Disponíveis</h3><br />
+            @(Html.Kendo().ListView<IngredientesModel>()
+                .Name("ingredientesdisponiveis_listview")
+                .HtmlAttributes(new { @class = "ingredientecontainer" })
+                .DataSource(ds => ds
+                    .Read(r => r.Action("GetIngredietesDisponiveis", "ManterReceituario").Data("getInfFormula"))
+                    .Model(f => f.Id(x => x.IdIngrediente))
+                    )
+                .Selectable(sl => sl.Mode(ListViewSelectionMode.Multiple))
+                .ClientTemplateId("templateIngrediente")
+                .TagName("div")
+            )
+        </div>
+        <div class="col-md-2">
+            &nbsp;
+        </div>
+        <div class="col-md-6">
+
+            <h3>Ingredientes da Formula</h3><br />
+            @(Html.Kendo().ListView<IngredienteFormulaModel>()
+                .Name("ingredienteselecionado_listview")
+                .HtmlAttributes(new { @class = "ingredientecontainer" })
+                .DataSource(ds => ds
+                    .Read(r => r.Action("GetIngredietesFormula", "ManterReceituario").Data("getInfFormula"))
+                    .Model(f => {
+
+                        f.Id(x => x.IdIngrediente);
+                        f.Field(x => x.Quantidade).DefaultValue(0);
+                    })
+                 )
+                .Selectable(sl => sl.Mode(ListViewSelectionMode.Multiple))
+                .ClientTemplateId("templateIngredienteSelecionado")
+                .TagName("div"))
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<script id="templateIngrediente" type="text/kendo-tmpl">
+    <div class="ingredientes move k-block">  #:Nome# </div>
+</script>
+
+<script id="templateIngredienteSelecionado" type="text/kendo-tmpl">
+
+    <div class="input-group move col-md-4">
+
+        <span class="input-group-addon" id="basic-addon3">#:Nome# </span>
+        <input type="text" class="numericText" value="#:Quantidade#" id="qtd_#:IdIngrediente#" />
+        <span class="input-group-addon"><a href="javascripot:void(0);" onclick="removeItem(event,#:IdIngrediente#)">X</a></span>
+        
+    </div>
+
+    <script>
+            $(function(){
+                $('\\#qtd_#:IdIngrediente#').kendoNumericTextBox({
+                    decimals: 0,
+                    step: 1,
+                    min: 0
+                });
+            });
+    </script>
+   
+</script>
+
+<script type="text/javascript">
+    function getInfFormula() {
+        return {
+            IdFormula: $("#IdProduto").val()
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+
+        $("#ingredientesdisponiveis_listview").kendoDraggable({
+            filter: ".move",
+            hint: function (element) {
+                return element.clone();
+            }
+        });
+
+
+
+        $("#ingredienteselecionado_listview").kendoDropTarget({
+            dragenter: function (e) {
+                e.draggable.hint.css("opacity", 0.6);
+            },
+            dragleave: function (e) {
+                e.draggable.hint.css("opacity", 1);
+            },
+            drop: function (e) {
+
+                var dsSelecionado = $("#ingredienteselecionado_listview").data("kendoListView").dataSource;
+                var dsDisponivel = $("#ingredientesdisponiveis_listview").data("kendoListView").dataSource;
+                var item = dsDisponivel.getByUid(e.draggable.hint.data().uid);
+                dsSelecionado.add(item);
+                dsDisponivel.remove(item);
+            }
+
+        });
+
+
+    });
+
+    function removeItem(e, id) {
+        var dsSelecionado = $("#ingredienteselecionado_listview").data("kendoListView").dataSource;
+        var dsDisponivel = $("#ingredientesdisponiveis_listview").data("kendoListView").dataSource;
+        var item = dsSelecionado.get(id);
+        dsDisponivel.add(item);
+        dsSelecionado.remove(item);
+        $(e).parent().remove()
+    }
+
+</script>
