@@ -63,3 +63,30 @@ function numericValidation(e) {
         e.preventDefault();
     }
 }
+
+function FormatarQuantidade(valor) {
+
+    if (valor == 0)
+        return valor;
+
+    if (valor < 1000)
+        return valor.toString() + " g";
+
+    var val = (valor / 1000).toFixed(3);
+
+    var parts = val.toString().split(".");
+
+    valg = parseInt(parts[1]);
+    valkg = parseInt(parts[0]);
+
+    var result = valkg.toString() + " Kg";
+
+    if (valg > 0)
+        result += " e " + valg.toString() + " g";
+
+
+    return result;
+
+
+
+}

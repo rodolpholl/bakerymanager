@@ -26,7 +26,7 @@
                 @Html.LabelFor(x => x.Categoria, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10">
                     @(Html.Kendo().DropDownListFor(x => x.Categoria).DataTextField("Nome").DataValueField("IdCategoriaProduto")
-                    .OptionLabel("Todos").HtmlAttributes(new { style = "width: 450px" })
+                    .OptionLabel("Todos").HtmlAttributes(new { style = "min-width: 450px" })
                     .DataSource(ds =>
                     {
                         ds.Read(r => r.Action("ListarCategorias", "ManterReceituario"));
@@ -46,7 +46,7 @@
                                           .DataValueField("IdProduto")
                                           .OptionLabel("Todos")
                                           .Filter("contains")
-                                          .HtmlAttributes(new { style = "width: 450px" })
+                                          .HtmlAttributes(new { style = "min-width: 450px" })
                                           .MinLength(3)
                                           .DataSource(source =>
                                           {

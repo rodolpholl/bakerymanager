@@ -34,7 +34,7 @@
                 <div class="form-group">
 
                     @(Html.Kendo().DropDownList().Name("cbxCategoriaPesquisa").DataTextField("Nome").DataValueField("IdCategoriaProduto")
-                    .OptionLabel("Todos")
+                    .OptionLabel("Todos").HtmlAttributes(new { style = "min-width: 450px" })
                     .Events(e => e.Change("onFilterChange"))
                       .DataSource(ds =>
                       {
@@ -49,6 +49,7 @@
                                           .Name("cbxProdutoPesquisa")
                                           .DataTextField("Nome")
                                           .DataValueField("IdProduto")
+                                          .HtmlAttributes(new { style = "min-width: 450px" })
                                           .OptionLabel("Todos")
                                           .Filter("contains")
                                           .MinLength(3)

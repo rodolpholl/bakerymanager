@@ -28,8 +28,8 @@
                                           .DataTextField("Nome")
                                           .HtmlAttributes(new {style = "min-width: 450px"})
                                           .DataValueField("IdIngrediente")
-                                          .OptionLabel("Selecione...")
                                           .Filter("contains")
+                                          .OptionLabel("Selecione...")
                                           .MinLength(3)
                                           .DataSource(source =>
                                           {
@@ -58,7 +58,8 @@
                     .Columns(column =>
                     {
                         column.Bound(x => x.Nome);
-                        column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(100);
+                        column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(200)
+                        .ClientFooterTemplate("<div>Rendimento Total: #= formataQuantidade(sum) #</div>"); ;
                         column.Bound(x => x.IdIngrediente).Title("").Width(50).ClientTemplate("<a href=\"javascript: void(0);\" title=\"Excluir Ingrediente da Fórmula\" onclick=\"excluirItemFormula(#=IdIngrediente#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span></a>");
                     })
                     .Sortable()
@@ -76,6 +77,10 @@
                             model.Field(x => x.Nome).Editable(false);
                             model.Field(x => x.IdIngrediente).Editable(false);
                             model.Field(x => x.Quantidade);
+                        })
+                        .Events(e => e.Change("DataSouceFormulaChange"))
+                        .Aggregates(aggregate => {
+                            aggregate.Add(x => x.Quantidade).Sum();
                         })
                         .Read(read => read.Action("GetIngredietesFormula", "ManterReceituario").Data("getInfFormula"))
 
@@ -124,12 +129,23 @@
 
         }
 
+        function formataQuantidade(valor) {
+
+            @*Esta função encontra-se no Utils.js*@
+            return FormatarQuantidade(valor);
+        }
+
+        function DataSouceFormulaChange() {
+            $("#gridFormula").data("kendoGrid").refresh();
+        }
+
+
         function excluirItemFormula(idIngrediente) {
             confirm("Deseja Realmente Excluir Esse Item da Formula?", function () {
 
                 var data = $("#gridFormula").data("kendoGrid").dataSource;
                 data.remove(data.get(idIngrediente));
-                $("#cbxIngredientePesquisa").data("kendoDropDownList").dataSource.read();
+                $("#cbxIngredientePesquisa").data("kendoDropDownList").datadource.read();
 
 
             }, 2);
@@ -144,6 +160,9 @@
             });
 
             $("#btnAddIngrediente").click(function () {
+
+                if($("#cbxIngredientePesquisa").data("kendoDropDownList").value() == "")
+                    return;
 
                 var ds = $("#gridFormula").data("kendoGrid").dataSource;
 
