@@ -85,20 +85,40 @@ namespace BakeryManager.Services
                 return formulaIngredienteBm.GetByFormula(formulaBm.GetByID(IdFormula));
         }
 
-        public IList<Ingrediente> GetIngredietesDisponiveis(int idFormula)
+        public IList<Ingrediente> GetIngredietesDisponiveis(int idFormula, IList<int> IdSelecionado)
         {
-            if (idFormula == 0)
-                return ingredienteBm.GetIngredientesAtivos();
 
-            else {
+            var retorno = ingredienteBm.GetIngredientesAtivos();
 
-                var ListaIngredietesFormula = formulaIngredienteBm.GetByFormula(formulaBm.GetByID(idFormula)).Select(x => x.Ingrediente.IdIngrediente).ToList();
-                var retorno = (from i in ingredienteBm.GetIngredientesAtivos()
-                               where !ListaIngredietesFormula.Contains(i.IdIngrediente)
-                               select i).ToList();
-
+            if (IdSelecionado.Count > 0)
+                retorno = retorno.Where(x => !IdSelecionado.Contains(x.IdIngrediente)).ToList();
+            
                 return retorno;
-            }
+            
+        }
+
+        public IList<CategoriaIngrediente> GetCategoriaIngredientes()
+        {
+            List<int> categoriaIngredientesAtivos = ingredienteBm.GetIngredientesAtivos().Select(x => x.Categoria.IdCategoriaIngrediente).Distinct().ToList();
+
+            return categoriaIngredienteBm.GetAll().Where( x=> categoriaIngredientesAtivos.Contains(x.IdCategoriaIngrediente)).ToList();
+        }
+
+        public IList<Ingrediente> GetIngredietesDisponiveis(int IdCategoria, List<int> idSelecionados)
+        {
+
+            IList<Ingrediente> result;
+
+            if (IdCategoria == 0)
+                result = ingredienteBm.GetIngredientesAtivos();
+            else
+                result = ingredienteBm.GetByCategoria(categoriaIngredienteBm.GetByID(IdCategoria)).Where(x => x.Ativo).ToList();
+            
+            if (idSelecionados != null && idSelecionados.Count > 0)
+                result = result.Where(x => !idSelecionados.Contains(x.IdIngrediente)).ToList();
+
+            return result;
+
         }
     }
 }

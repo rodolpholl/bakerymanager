@@ -10,6 +10,7 @@ using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models.ManterReceita;
 using BakeryManager.BackOffice.Models.Cadastros;
+using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
 
 namespace BakeryManager.BackOffice.Controllers
 {
@@ -119,19 +120,7 @@ namespace BakeryManager.BackOffice.Controllers
             return View();
         }
 
-        public JsonResult GetIngredietesDisponiveis([DataSourceRequest] DataSourceRequest request, int? IdFormula)
-        {
-            using (var manterReceituario = new ManterReceituario())
-            {
-                var result = manterReceituario.GetIngredietesDisponiveis(!IdFormula.HasValue ? 0 : IdFormula.Value).Select(x => new IngredienteFormulaModel()
-                {
-                    IdIngrediente = x.IdIngrediente,
-                    Nome = string.IsNullOrWhiteSpace(x.Nome) ? x.NomeTACO : x.Nome,
-                    Quantidade = 0
-                });
-                return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-            }
-        }
+        
 
         public JsonResult GetIngredietesFormula([DataSourceRequest] DataSourceRequest request, int? IdFormula)
         {
@@ -149,5 +138,50 @@ namespace BakeryManager.BackOffice.Controllers
                     .ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult ListarCategoriasIngrediente()
+        {
+            using (var manterReceituario = new ManterReceituario())
+            {
+                var result = manterReceituario.GetCategoriaIngredientes();
+                return Json(result
+                    .Select(x => new CategoriaIngredienteModel()
+                    {
+                        IdCategoriaIngrediente = x.IdCategoriaIngrediente,
+                        Nome = x.Nome
+
+                    }).OrderBy(x => x.Nome).ToList(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult GetIngredietesDisponiveis(int? IdCategoria, int[] IngredientesJaSelecionados)
+        {
+            using (var manterReceituario = new ManterReceituario())
+            {
+
+                var idCat = IdCategoria.HasValue ? IdCategoria.Value : 0;
+
+
+                IList<int> IdSelecionados;
+
+                if (IngredientesJaSelecionados != null)
+                    IdSelecionados = IngredientesJaSelecionados.Select(x => x).ToList();
+                else
+                    IdSelecionados = new List<int>();
+
+                
+
+                var result = manterReceituario.GetIngredietesDisponiveis(idCat, IdSelecionados).Select(x => new IngredienteFormulaModel()
+                {
+                    IdIngrediente = x.IdIngrediente,
+                    Nome = string.IsNullOrWhiteSpace(x.Nome) ? x.NomeTACO : x.Nome,
+                    Quantidade = 0
+                }).AsEnumerable();
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
     }
 }

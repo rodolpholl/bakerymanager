@@ -45,5 +45,10 @@ namespace BakeryManager.Repositories
         {
             return Query().Where(x => x.Ativo).ToList();
         }
+
+        public IList<Ingrediente> GetByCategoria(CategoriaIngrediente categoriaIngrediente)
+        {
+            return Query().Where(x => x.Categoria.IdCategoriaIngrediente == categoriaIngrediente.IdCategoriaIngrediente).ToList();
+        }
     }
 }

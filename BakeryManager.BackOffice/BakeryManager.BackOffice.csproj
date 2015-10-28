@@ -328,6 +328,7 @@
     <Content Include="Views\ManterReceituario\Criar.cshtml" />
     <Content Include="Views\ManterReceituario\Form.cshtml" />
     <Content Include="Views\ManterReceituario\Formula.cshtml" />
+    <Content Include="Views\ManterReceituario\EditorTemplates\tmplQuantidade.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
