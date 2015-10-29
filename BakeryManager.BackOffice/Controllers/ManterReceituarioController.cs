@@ -11,6 +11,7 @@ using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models.ManterReceita;
 using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
+using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice.Controllers
 {
@@ -46,7 +47,6 @@ namespace BakeryManager.BackOffice.Controllers
                     {
                         Nome = x.Nome,
                         IdProduto = x.IdProduto
-                        
 
                     }).OrderBy(x => x.Nome).ToList(), JsonRequestBehavior.AllowGet);
             }
@@ -79,13 +79,13 @@ namespace BakeryManager.BackOffice.Controllers
                             })
                             .OrderBy(x => x.Categoria.Nome)
                             .OrderBy(x => x.Nome)
-                            .AsEnumerable().ToDataSourceResult(request),JsonRequestBehavior.AllowGet);
+                            .AsEnumerable().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
 
-        public JsonResult Read_Detail([DataSourceRequest] DataSourceRequest request,  int IdProduto)
+        public JsonResult Read_Detail([DataSourceRequest] DataSourceRequest request, int IdProduto)
         {
-          
+
             using (var manterReceituario = new ManterReceituario())
             {
 
@@ -113,14 +113,48 @@ namespace BakeryManager.BackOffice.Controllers
                             }).AsEnumerable().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
-        
+
 
         public ActionResult Criar()
         {
-            return View();
+            return View(new FormulaModel()
+            {
+                IdFormula = 0,
+                DataEmissao = DateTime.Now
+            });
         }
 
-        
+        public ActionResult Editar(int Id)
+        {
+            using (var manterReceituario = new ManterReceituario())
+            {
+                var formula = manterReceituario.GetFormulaById(Id);
+
+                return View(new FormulaModel()
+                {
+                    Categoria = new CategoriaProdutoModel()
+                    {
+                        IdCategoriaProduto = formula.Produto.Categoria.IdCategoriaProduto,
+                        Nome = formula.Produto.Categoria.Nome
+                    },
+                    Produto = new ProdutoModel()
+                    {
+                        Nome = formula.Produto.Nome,
+                        IdProduto = formula.Produto.IdProduto
+                    },
+                    IdFormula = formula.IdFormula,
+                    DataEmissao = formula.DataEmissao,
+                    DataFimValidade = formula.DataFimValidade,
+                    EmUso = formula.EmUso,
+                    Descricao = formula.Descricao,
+                    IdProduto = formula.Produto.IdProduto,
+                    DescricaoReceita = formula.DescricaoReceita,
+                    RendimentoPadrao = formula.RendimentoPadrao
+                });
+            }
+        }
+
+
 
         public JsonResult GetIngredietesFormula([DataSourceRequest] DataSourceRequest request, int? IdFormula)
         {
@@ -129,11 +163,11 @@ namespace BakeryManager.BackOffice.Controllers
                 var result = manterReceituario.GetIngredientesFormula(!IdFormula.HasValue ? 0 : IdFormula.Value);
                 return Json(result
                     .Select(x => new IngredienteFormulaModel()
-                        {
-                            IdIngrediente = x.Ingrediente.IdIngrediente,
-                            Nome = string.IsNullOrWhiteSpace(x.Ingrediente.Nome) ? x.Ingrediente.NomeTACO : x.Ingrediente.Nome,
-                            Quantidade = x.Quantidade
-                        
+                    {
+                        IdIngrediente = x.Ingrediente.IdIngrediente,
+                        Nome = string.IsNullOrWhiteSpace(x.Ingrediente.Nome) ? x.Ingrediente.NomeTACO : x.Ingrediente.Nome,
+                        Quantidade = x.Quantidade
+
                     }).AsEnumerable()
                     .ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
@@ -170,7 +204,7 @@ namespace BakeryManager.BackOffice.Controllers
                 else
                     IdSelecionados = new List<int>();
 
-                
+
 
                 var result = manterReceituario.GetIngredietesDisponiveis(idCat, IdSelecionados).Select(x => new IngredienteFormulaModel()
                 {
@@ -182,6 +216,152 @@ namespace BakeryManager.BackOffice.Controllers
             }
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult Criar(FormulaModel FormulaModel)
+        {
+            try
+            {
+                using (var manterReceituario = new ManterReceituario())
+                {
+                    var formula = new Formula()
+                    {
+                        DataEmissao = FormulaModel.DataEmissao,
+                        DataFimValidade = FormulaModel.DataFimValidade,
+                        Descricao = FormulaModel.Descricao,
+                        DescricaoReceita = FormulaModel.DescricaoReceita,
+                        EmUso = true,
+                        Produto = manterReceituario.getProdutoById(FormulaModel.IdProduto)
+                    };
+
+                    manterReceituario.InserirFormula(formula);
+
+
+                    return Json(
+                                       new
+                                       {
+                                           TipoMensagem = TipoMensagemRetorno.Ok,
+                                           Mensagem = "Formala inserida com sucesso!",
+                                           URLDestino = Url.Action("Criar"),
+                                           IdFormula = formula.IdFormula
+                                       }, "text/html", JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                                       new
+                                       {
+                                           TipoMensagem = TipoMensagemRetorno.Erro,
+                                           Mensagem = ex.Message
+                                       }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult Editar(FormulaModel FormulaModel)
+        {
+            try
+            {
+                using (var manterReceituario = new ManterReceituario())
+                {
+
+
+                    var formula = manterReceituario.GetFormulaById(FormulaModel.IdFormula);
+
+                    formula.DataEmissao = FormulaModel.DataEmissao;
+                    formula.DataFimValidade = FormulaModel.DataFimValidade;
+                    formula.Descricao = FormulaModel.Descricao;
+                    formula.DescricaoReceita = FormulaModel.DescricaoReceita;
+
+
+                    manterReceituario.AlterarFormula(formula);
+
+
+                    return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Ok,
+                                Mensagem = "Formala inserida com sucesso!",
+                                URLDestino = Url.Action("Index"),
+                                IdFormula = formula.IdFormula
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                    new
+                    {
+                        TipoMensagem = TipoMensagemRetorno.Erro,
+                        Mensagem = ex.Message
+                    }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult Desativar(int Id)
+        {
+            try
+            {
+                using (var manterReceituario = new ManterReceituario())
+                {
+                    var formula = manterReceituario.GetFormulaById(Id);
+                    manterReceituario.DesativarFormula(formula);
+
+
+                    return Json(
+                                       new
+                                       {
+                                           TipoMensagem = TipoMensagemRetorno.Ok,
+                                           Mensagem = "Produto Desativado com sucesso!"
+
+                                       }, "text/html", JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                          new
+                          {
+                              TipoMensagem = TipoMensagemRetorno.Erro,
+                              Mensagem = ex.Message
+
+                          }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult Reativar(int Id)
+        {
+            try
+            {
+                using (var manterReceituario = new ManterReceituario())
+                {
+                    var formula = manterReceituario.GetFormulaById(Id);
+                    manterReceituario.ReativarFormula(formula);
+
+
+                    return Json(
+                                       new
+                                       {
+                                           TipoMensagem = TipoMensagemRetorno.Ok,
+                                           Mensagem = "Produto Desativado com sucesso!"
+
+                                       }, "text/html", JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                          new
+                          {
+                              TipoMensagem = TipoMensagemRetorno.Erro,
+                              Mensagem = ex.Message
+
+                          }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

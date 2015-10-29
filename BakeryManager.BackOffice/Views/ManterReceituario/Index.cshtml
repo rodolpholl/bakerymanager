@@ -80,8 +80,7 @@
               {
                   column.Bound(c => c.Categoria.Nome).Sortable(true).Filterable(false).Title("Categoria");
                   column.Bound(c => c.Nome).Filterable(false).Title("Produto").Sortable(true);
-              }
-              )
+              })
               .ToolBar(t => t.Custom().Text("Inserir Nova Formula").Url(Url.Action("Criar")).HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-add" }))
               .Sortable()
               .Pageable()
@@ -115,10 +114,14 @@
         .Name("grid_#=IdProduto#")
         .Columns(column =>
         {
-
             column.Bound(c => c.Descricao);
             column.Bound(c => c.DataEmissao).Width(250).Format("{0:dd/MM/yyyy}");
-            column.Bound(c => c.EmUso).Width(180).ClientTemplate("\\#if (EmUso) {\\# Sim \\#} else {\\# Não \\#}\\#");
+            column.Bound(c => c.EmUso).Title("").Width(220).ClientTemplate("<a class=\"k-button k-button-icontext k-grid-edit\" href=\"" + Url.Action("Editar") + "/\\#=IdFormula\\#\"><span  class=\"k-icon k-edit\"></span>Editar</a>" +
+                                                                              "\\#if (EmUso) {\\#" +
+                                                                              "<a href=\"javascript: void(0); \" onclick=\"Desativar(\\#=IdFormula\\#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
+                                                                              "\\#} else {\\#" +
+                                                                              "<a href=\"javascript: void(0); \" onclick=\"Reativar(\\#=IdFormula\\#); \" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" +
+                                                                              "\\# }\\#");
 
         })
 
@@ -171,6 +174,46 @@
 
         function gridMasterDataBound() {
             this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+
+
+        function Desativar(IdProduto) {
+            confirm("Deseja Ralmente Desativar esta Receita?", function () {
+
+                $.ajax({
+
+                    url: '@Url.Action("Desativar")',
+                    data: { Id: IdProduto },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+
+            }, 2);
+        }
+
+
+        function Reativar(IdProduto) {
+            confirm("Deseja Ralmente Reativar este Receita?", function () {
+                $.ajax({
+
+                    url: '@Url.Action("Reativar")',
+                    data: { Id: IdProduto },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+            }, 2);
         }
 
     </script>

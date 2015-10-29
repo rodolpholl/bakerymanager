@@ -1,7 +1,7 @@
 ﻿@model BakeryManager.BackOffice.Models.ManterReceita.FormulaModel
 
 @{
-    ViewBag.Title = "Inserir Nova Fórmula";
+    ViewBag.Title = "Inserir Nova Refceita";
 }
 
 <div class="container-fluid">
@@ -47,3 +47,61 @@
 
 
 </div>
+
+
+@section scripts{
+
+
+    <script type="text/javascript">
+
+        var validator = $("#frmCriar").kendoValidator().data("kendoValidator");
+
+        $("#btnSalvar").click(function (evt) {
+
+            evt.preventDefault();
+            
+            if (validator.validate()) {
+
+
+                var formulaModel = {
+                    DataEmissao: $("#DataEmissao").val(),
+                    DataFimValidade: $("#DataFimValidade").val(),
+                    Descricao: $("#Descricao").val(),
+                    DescricaoReceita: $("#DescricaoReceita").data("kendoEditor").value(),
+                    IdProduto: $("#Produto").data("kendoDropDownList").value(),
+                    Categoria: {
+                        IdCategoria: $("#Categoria").val(),
+                        Nome: $("#Categoria").text()
+                    },
+                    Produto: {
+                        IdProduto: $("#Produto").data("kendoDropDownList").value(),
+                        Nome: $("#Produto").data("kendoDropDownList").text()
+                    }
+                }
+
+                $.ajax({
+
+                    url: '@Url.Action("Criar")',
+                    dataType: 'json',
+                    data: formulaModel,
+                    method: "POST",
+                    success: function (data) {
+
+                        alert(data.Mensagem, function () {
+                            if (data.URLDestino != undefined)
+                                window.location.href = data.URLDestino;
+                        }, data.TipoMensagem);
+
+                    }
+
+                });
+
+
+            }
+
+        });
+
+    </script>
+
+
+}

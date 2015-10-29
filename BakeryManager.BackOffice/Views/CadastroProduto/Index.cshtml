@@ -67,7 +67,7 @@
                column.Bound(c => c.Nome).Filterable(false);
                column.Bound(c => c.Categoria).ClientTemplate("#=Categoria.Nome#").Filterable(false);
                column.Bound(c => c.GTIN).Title("GTIN - Código de Barras").Filterable(false);
-               column.Bound(c => c.Ativo).Width(210).ClientTemplate("<a  class=\"k-button k-button-icontext k-grid-edit\" href=\"" + Url.Action("Editar") + "/#=IdProduto#\"><span  class=\"k-icon k-edit\"></span>Editar</a>" +
+               column.Bound(c => c.Ativo).Width(210).ClientTemplate("<a class=\"k-button k-button-icontext k-grid-edit\" href=\"" + Url.Action("Editar") + "/#=IdProduto#\"><span  class=\"k-icon k-edit\"></span>Editar</a>" +
                                                                               "#if (Ativo) {#" +
                                                                               "<a href=\"javascript: void(0); \" onclick=\"Desativar(#=IdProduto#); \" class=\"btn btn-danger btn - sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
                                                                               "#} else {#" +

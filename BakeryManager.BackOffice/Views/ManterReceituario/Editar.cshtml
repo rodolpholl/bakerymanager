@@ -1,0 +1,106 @@
+﻿@model BakeryManager.BackOffice.Models.ManterReceita.FormulaModel
+
+@{
+    ViewBag.Title = "Editar Receita";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Receitas</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+
+
+
+        @using (Html.BeginForm("Criar", "ManterReceituario", FormMethod.Post, new { id = "frmEditar", @class = "form-horizontal " }))
+        {
+            @Html.Partial("Form", Model)
+        }
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <hr />
+                <button class="btn btn-primary" type="button" id="btnSalvar">Salvar</button>
+                Ou
+                <button class="btn btn-default" onclick="window.history.back(-1);">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+        $(function () {
+
+            $("#Produto").data("kendoDropDownList").enable(false);
+            $("#Categoria").data("kendoDropDownList").enable(false);
+            var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
+
+            $("#btnSalvar").click(function (evt) {
+
+                evt.preventDefault();
+
+                if (validator.validate()) {
+
+
+                    var formulaModel = {
+                        IdFormula: $("#IdFormula").val(),
+                        DataEmissao: $("#DataEmissao").val(),
+                        DataFimValidade: $("#DataFimValidade").val(),
+                        DescricaoReceita: $("#DescricaoReceita").data("kendoEditor").value(),
+                        EmUso: $("#EmUso").is(":checked"),
+                        IdProduto: $("#Produto").data("kendoDropDownList").value(),
+                        
+                    }
+
+                    $.ajax({
+
+                        url: '@Url.Action("Editar")',
+                        dataType: 'json',
+                        data: formulaModel,
+                        method: "POST",
+                        success: function (data) {
+
+                            alert(data.Mensagem, function () {
+                                if (data.URLDestino != undefined)
+                                    window.location.href = data.URLDestino;
+                            }, data.TipoMensagem);
+
+                        }
+
+                    });
+
+
+                }
+
+            });
+        })
+    </script>
+
+}
+
+

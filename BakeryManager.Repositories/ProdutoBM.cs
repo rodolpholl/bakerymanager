@@ -28,5 +28,10 @@ namespace BakeryManager.Repositories
 
             return query.ToList();
         }
+
+        public IList<Produto> GetProdutosAtivos()
+        {
+            return Query().Where(x => x.Ativo).ToList();
+        }
     }
 }

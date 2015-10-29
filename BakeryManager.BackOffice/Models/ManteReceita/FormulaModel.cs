@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace BakeryManager.BackOffice.Models.ManterReceita
 {
@@ -13,23 +14,35 @@ namespace BakeryManager.BackOffice.Models.ManterReceita
         public  int IdFormula { get; set; }
 
         public CategoriaProdutoModel Categoria { get; set; }
+
+        public int IdProduto { get; set; }
+
         [Required(ErrorMessage = "Campo Obrigatório!")]
         public  ProdutoModel Produto { get; set; }
+
         [Required(ErrorMessage = "Campo Obrigatório!")]
         [Display(Name = "Data de Emissão")]
         public  DateTime DataEmissao { get; set; }
+
         [Display(Name ="Em Uso?")]
         public  bool EmUso { get; set; }
+
         [Required(ErrorMessage = "Campo Obrigatório!")]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
+
         [Display(Name = "Data Final de Validade")]
         public  DateTime? DataFimValidade { get; set; }
+
         [StringLength(4000)]
         [Display(Name = "Descrição da Receita")]
+        [DataType(DataType.Html)]
+        [AllowHtml]
         public  string DescricaoReceita { get; set; }
+
         [Required(ErrorMessage = "Campo Obrigatório!")]
         [Display(Name = "Rendimento Padrão")]
         public  double RendimentoPadrao { get; set; }
+
     }
 }

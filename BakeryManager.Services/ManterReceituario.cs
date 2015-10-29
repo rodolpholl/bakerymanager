@@ -32,7 +32,10 @@ namespace BakeryManager.Services
 
         public IList<Produto> ListarProduto(int idCategoria)
         {
-            return produtoBm.GetProdutoByCategoria(categoriaProdutoBm.GetByID(idCategoria));
+            if (idCategoria == 0)
+                return produtoBm.GetProdutosAtivos();
+            else
+                return produtoBm.GetProdutoByCategoria(categoriaProdutoBm.GetByID(idCategoria)).Where(x => x.Ativo).ToList();
         }
 
         public IList<CategoriaProduto> ListarCategorias()
@@ -85,15 +88,19 @@ namespace BakeryManager.Services
                 return formulaIngredienteBm.GetByFormula(formulaBm.GetByID(IdFormula));
         }
 
-        public IList<Ingrediente> GetIngredietesDisponiveis(int idFormula, IList<int> IdSelecionado)
+        public IList<Ingrediente> GetIngredietesDisponiveis(int IdCategoria, IList<int> IdSelecionado)
         {
 
-            var retorno = ingredienteBm.GetIngredientesAtivos();
+            var retorno = ingredienteBm.GetIngredientesAtivos().AsQueryable();
+
+            if (IdCategoria > 0)
+                retorno = retorno.Where(x => x.Categoria.IdCategoriaIngrediente == IdCategoria);
+
 
             if (IdSelecionado.Count > 0)
-                retorno = retorno.Where(x => !IdSelecionado.Contains(x.IdIngrediente)).ToList();
+                retorno = retorno.Where(x => !IdSelecionado.Contains(x.IdIngrediente));
             
-                return retorno;
+                return retorno.ToList();
             
         }
 
@@ -119,6 +126,38 @@ namespace BakeryManager.Services
 
             return result;
 
+        }
+
+        public Produto getProdutoById(int idProduto)
+        {
+            return produtoBm.GetByID(idProduto);
+        }
+
+        public void InserirFormula(Formula formula)
+        {
+            formulaBm.Insert(formula);
+        }
+
+        public Formula GetFormulaById(int id)
+        {
+            return formulaBm.GetByID(id);
+        }
+
+        public void AlterarFormula(Formula formula)
+        {
+            formulaBm.Update(formula);
+        }
+
+        public void DesativarFormula(Formula formula)
+        {
+            formula.EmUso = false;
+            formulaBm.Update(formula);
+        }
+
+        public void ReativarFormula(Formula formula)
+        {
+            formula.EmUso = true;
+            formulaBm.Update(formula);
         }
     }
 }

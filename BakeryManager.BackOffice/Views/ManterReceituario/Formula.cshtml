@@ -39,7 +39,7 @@
                                               })
                                                   .ServerFiltering(false);
                                           })
-                                          .AutoBind(false)
+                                    
 
                     )
 
@@ -114,12 +114,15 @@
             var idCat = $("#cbxCategoriaIngredientePesquisa").val();
 
             var IdSelect = [];
-            var data = $("#gridFormula").data("kendoGrid").dataSource.data();
 
-            for (var i = 0; i < data.length; i++) {
+            if ($("#gridFormula").data("kendoGrid") != undefined) {
+                var data = $("#gridFormula").data("kendoGrid").dataSource.data();
 
-                IdSelect.push(data[i].IdIngrediente);
+                for (var i = 0; i < data.length; i++) {
 
+                    IdSelect.push(data[i].IdIngrediente);
+
+                }
             }
 
             return {

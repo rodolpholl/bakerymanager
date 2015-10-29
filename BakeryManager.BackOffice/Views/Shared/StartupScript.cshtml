@@ -2,6 +2,9 @@
 <div id="loadScreen" style="text-align: center;"><img src="~/Content/imagens/load.gif" /></div>
 <script type="text/javascript">
 
+
+    kendo.culture("pt-BR");
+
     $(function () {
 
         $("#loadScreen").dialog({
@@ -27,6 +30,28 @@
                 }
             }
         });
+
+
+        $.validator.addMethod(
+            'date',
+            function (value, element, params) {
+                if (this.optional(element)) {
+                    return true;
+                };
+                var result = false;
+                try {
+                    var date = kendo.parseDate(value, "dd/MM/yyyy");
+                    result = true;
+                    if (!date) {
+                        result = false;
+                    }
+                } catch (err) {
+                    result = false;
+                }
+                return result;
+            },
+            ''
+        );
 
     });
 
