@@ -71,6 +71,7 @@
                         IdFormula: $("#IdFormula").val(),
                         DataEmissao: $("#DataEmissao").val(),
                         DataFimValidade: $("#DataFimValidade").val(),
+                        Descricao: $("#Descricao").val(),
                         DescricaoReceita: $("#DescricaoReceita").data("kendoEditor").value(),
                         EmUso: $("#EmUso").is(":checked"),
                         IdProduto: $("#Produto").data("kendoDropDownList").value(),
@@ -85,10 +86,16 @@
                         method: "POST",
                         success: function (data) {
 
-                            alert(data.Mensagem, function () {
-                                if (data.URLDestino != undefined)
-                                    window.location.href = data.URLDestino;
-                            }, data.TipoMensagem);
+
+                            if (data.TipoMensagem == 0)
+                                alert(data.Mensagem, function () {
+                                    if (data.URLDestino != undefined)
+                                        window.location.href = data.URLDestino;
+                                }, data.TipoMensagem);
+                            else
+
+                                AtualizaFormula(data.IdFormula,true);
+
 
                         }
 

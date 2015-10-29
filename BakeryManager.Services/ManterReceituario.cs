@@ -88,7 +88,7 @@ namespace BakeryManager.Services
                 return formulaIngredienteBm.GetByFormula(formulaBm.GetByID(IdFormula));
         }
 
-        public IList<Ingrediente> GetIngredietesDisponiveis(int IdCategoria, IList<int> IdSelecionado)
+        public IList<Ingrediente> GetIngredietesDisponiveis(int IdCategoria, int IdFormula, IList<int> IdSelecionado)
         {
 
             var retorno = ingredienteBm.GetIngredientesAtivos().AsQueryable();
@@ -96,6 +96,12 @@ namespace BakeryManager.Services
             if (IdCategoria > 0)
                 retorno = retorno.Where(x => x.Categoria.IdCategoriaIngrediente == IdCategoria);
 
+            if (IdFormula >0)
+            {
+                List<int> idIngredienteFormula = formulaIngredienteBm.GetByFormula(formulaBm.GetByID(IdFormula)).Select(x => x.Ingrediente.IdIngrediente).ToList();
+                retorno = retorno.Where(x => !idIngredienteFormula.Contains(x.IdIngrediente));
+            }
+                
 
             if (IdSelecionado.Count > 0)
                 retorno = retorno.Where(x => !IdSelecionado.Contains(x.IdIngrediente));
@@ -143,6 +149,11 @@ namespace BakeryManager.Services
             return formulaBm.GetByID(id);
         }
 
+        public Ingrediente GetIngredienteById(int idIngrediente)
+        {
+            return ingredienteBm.GetByID(idIngrediente);
+        }
+
         public void AlterarFormula(Formula formula)
         {
             formulaBm.Update(formula);
@@ -159,5 +170,37 @@ namespace BakeryManager.Services
             formula.EmUso = true;
             formulaBm.Update(formula);
         }
+
+        public void AtualizarFormula(Formula formula, List<IngredienteFormula> listaIngredientes)
+        {
+            var listaAtualIngredietes = formulaIngredienteBm.GetByFormula(formula);
+
+            foreach(var item in listaAtualIngredietes)
+                formulaIngredienteBm.Delete(item);
+
+            foreach (var itemNovo in listaIngredientes)
+            {
+
+                var FormulaIngrediente = new IngredienteFormula()
+                {
+                    AGosto = itemNovo.AGosto,
+                    Formula = formula,
+                    Ingrediente = itemNovo.Ingrediente,
+                    Quantidade = itemNovo.Quantidade
+                };
+
+                formulaIngredienteBm.Insert(FormulaIngrediente);
+
+                formula.RendimentoPadrao = listaAtualIngredietes.Sum(x => x.Quantidade);
+                formulaBm.Update(formula);
+
+
+
+            }
+            
+            
+        }
+
+        
     }
 }

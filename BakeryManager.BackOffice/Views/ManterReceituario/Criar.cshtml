@@ -69,10 +69,6 @@
                     Descricao: $("#Descricao").val(),
                     DescricaoReceita: $("#DescricaoReceita").data("kendoEditor").value(),
                     IdProduto: $("#Produto").data("kendoDropDownList").value(),
-                    Categoria: {
-                        IdCategoria: $("#Categoria").val(),
-                        Nome: $("#Categoria").text()
-                    },
                     Produto: {
                         IdProduto: $("#Produto").data("kendoDropDownList").value(),
                         Nome: $("#Produto").data("kendoDropDownList").text()
@@ -87,10 +83,13 @@
                     method: "POST",
                     success: function (data) {
 
-                        alert(data.Mensagem, function () {
-                            if (data.URLDestino != undefined)
-                                window.location.href = data.URLDestino;
-                        }, data.TipoMensagem);
+                        if (data.TipoMensagem == 0)
+                            alert(data.Mensagem, function () {
+                                if (data.URLDestino != undefined)
+                                    window.location.href = data.URLDestino;
+                            }, data.TipoMensagem);
+                        else
+                            AtualizaFormula(data.IdFormula, false);
 
                     }
 

@@ -189,12 +189,14 @@ namespace BakeryManager.BackOffice.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult GetIngredietesDisponiveis(int? IdCategoria, int[] IngredientesJaSelecionados)
+        public JsonResult GetIngredietesDisponiveis(int? IdCategoria, int? IdFormula, int[] IngredientesJaSelecionados)
         {
             using (var manterReceituario = new ManterReceituario())
             {
 
                 var idCat = IdCategoria.HasValue ? IdCategoria.Value : 0;
+
+                var idFormula = IdFormula.HasValue ? IdFormula.Value : 0;
 
 
                 IList<int> IdSelecionados;
@@ -206,7 +208,7 @@ namespace BakeryManager.BackOffice.Controllers
 
 
 
-                var result = manterReceituario.GetIngredietesDisponiveis(idCat, IdSelecionados).Select(x => new IngredienteFormulaModel()
+                var result = manterReceituario.GetIngredietesDisponiveis(idCat, idFormula, IdSelecionados).Select(x => new IngredienteFormulaModel()
                 {
                     IdIngrediente = x.IdIngrediente,
                     Nome = string.IsNullOrWhiteSpace(x.Nome) ? x.NomeTACO : x.Nome,
@@ -240,7 +242,7 @@ namespace BakeryManager.BackOffice.Controllers
                                        new
                                        {
                                            TipoMensagem = TipoMensagemRetorno.Ok,
-                                           Mensagem = "Formala inserida com sucesso!",
+                                           Mensagem = "Receita inserida com sucesso!",
                                            URLDestino = Url.Action("Criar"),
                                            IdFormula = formula.IdFormula
                                        }, "text/html", JsonRequestBehavior.AllowGet);
@@ -282,7 +284,7 @@ namespace BakeryManager.BackOffice.Controllers
                             new
                             {
                                 TipoMensagem = TipoMensagemRetorno.Ok,
-                                Mensagem = "Formala inserida com sucesso!",
+                                Mensagem = "Receita inserida com sucesso!",
                                 URLDestino = Url.Action("Index"),
                                 IdFormula = formula.IdFormula
                             }, "text/html", JsonRequestBehavior.AllowGet);
@@ -313,8 +315,7 @@ namespace BakeryManager.BackOffice.Controllers
                                        new
                                        {
                                            TipoMensagem = TipoMensagemRetorno.Ok,
-                                           Mensagem = "Produto Desativado com sucesso!"
-
+                                           
                                        }, "text/html", JsonRequestBehavior.AllowGet);
                 }
 
@@ -345,7 +346,6 @@ namespace BakeryManager.BackOffice.Controllers
                                        new
                                        {
                                            TipoMensagem = TipoMensagemRetorno.Ok,
-                                           Mensagem = "Produto Desativado com sucesso!"
 
                                        }, "text/html", JsonRequestBehavior.AllowGet);
                 }
@@ -362,6 +362,49 @@ namespace BakeryManager.BackOffice.Controllers
                           }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult AtualizarFormula(int IdFormula, IngredienteFormulaModel[] Ingredientes, bool Edicao)
+        {
+            try
+            {
+                using (var manterReceituario = new ManterReceituario())
+                {
+                    var formula = manterReceituario.GetFormulaById(IdFormula);
+                    manterReceituario.AtualizarFormula(formula, Ingredientes.Select(x => new IngredienteFormula()
+                    {
+                        Formula = formula,
+                        Ingrediente = manterReceituario.GetIngredienteById(x.IdIngrediente),
+                        Quantidade = x.Quantidade,
+                        AGosto = x.Quantidade == 0
+                    }).ToList());
+
+
+                    return Json(
+                                new
+                                {
+                                    TipoMensagem = TipoMensagemRetorno.Ok,
+                                    Mensagem = Edicao ? "Receita alterada com sucesso!" : "Receita Incluída com sucesso!",
+                                    URLDestino = Edicao ? Url.Action("Index") : Url.Action("Criar")
+
+                                }, "text/html", JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                          new
+                          {
+                              TipoMensagem = TipoMensagemRetorno.Erro,
+                              Mensagem = ex.Message
+
+                          }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
 
     }
 }

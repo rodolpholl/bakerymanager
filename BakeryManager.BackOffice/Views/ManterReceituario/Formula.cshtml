@@ -59,7 +59,7 @@
                     {
                         column.Bound(x => x.Nome);
                         column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(200)
-                        .ClientFooterTemplate("<div>Rendimento Total: #= formataQuantidade(sum) #</div>"); ;
+                        .ClientFooterTemplate("<div>Rendimento Total: #= formataQuantidade(sum) #</div>");
                         column.Bound(x => x.IdIngrediente).Title("").Width(50).ClientTemplate("<a href=\"javascript: void(0);\" title=\"Excluir Ingrediente da Fórmula\" onclick=\"excluirItemFormula(#=IdIngrediente#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span></a>");
                     })
                     .Sortable()
@@ -105,7 +105,7 @@
     <script type="text/javascript">
         function getInfFormula() {
             return {
-                IdFormula: $("#IdProduto").val()
+                IdFormula: $("#IdFormula").val()
             }
         }
 
@@ -127,6 +127,7 @@
 
             return {
                 IdCategoria: idCat,
+                IdFormula: $("#IdFormula").val(),
                 IngredientesJaSelecionados: IdSelect
             }
 
@@ -152,6 +153,49 @@
 
 
             }, 2);
+        }
+
+        function AtualizaFormula(IdFormula,edicao) {
+
+
+
+            var data = $("#gridFormula").data("kendoGrid").dataSource.view();
+
+            var arIngredietes = [];
+
+            for (var i = 0; i < data.length; i++) {
+
+
+                arIngredietes.push({
+                    Quantidade: data[i].Quantidade,
+                    IdIngrediente: data[i].IdIngrediente,
+                    AGosto: data[i].AGosto
+                });
+            }
+
+            $.ajax({
+
+                url: '@Url.Action("AtualizarFormula")',
+                dataType: 'json',
+                method: 'POST',
+                data: { IdFormula: IdFormula, Ingredientes: arIngredietes, Edicao: edicao },
+                success: function(data){
+
+                    alert(data.Mensagem, function () {
+                        if (data.URLDestino != undefined)
+                            window.location.href = data.URLDestino;
+                    }, data.TipoMensagem);
+
+                }
+
+            });
+
+
+
+
+
+
+            
         }
 
         $(function () {
