@@ -198,21 +198,20 @@ namespace BakeryManager.Services
                 var FormulaIngrediente = new IngredienteFormula()
                 {
                     AGosto = itemNovo.AGosto,
-                    Formula = formula,
-                    Ingrediente = itemNovo.Ingrediente,
+                    Formula = formulaBm.GetByID(formula.IdFormula),
+                    Ingrediente = ingredienteBm.GetByID(itemNovo.Ingrediente.IdIngrediente),
                     Quantidade = itemNovo.Quantidade
                 };
-
-             
-
+                
                 formulaIngredienteBm.Insert(FormulaIngrediente);
-
-                formula.RendimentoPadrao = listaAtualIngredietes.Sum(x => x.Quantidade);
-                formulaBm.Update(formula);
+                
                 
             }
 
-            AtualizarTabelaNutricionalFormula(formula);
+            formula.RendimentoPadrao = listaIngredientes.Sum(x => x.Quantidade);
+            formulaBm.Update(formula);
+
+            AtualizarTabelaNutricionalFormula(formulaBm.GetByID(formula.IdFormula));
 
 
         }

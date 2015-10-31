@@ -36,12 +36,27 @@ namespace BakeryManager.Services
 
         public IList<CategoriaProduto> GetListaCategoria()
         {
-            return categoriaProdutoBm.GetAll();
+
+
+            var listaCategoria = (from c in categoriaProdutoBm.GetAll()
+                                  join p in produtoBm.GetAll() on c.IdCategoriaProduto equals p.Categoria.IdCategoriaProduto
+                                  join f in formulaBm.GetAll() on p.IdProduto equals f.Produto.IdProduto
+                                  where f.EmUso && p.Ativo
+                                  select c).Distinct().ToList();
+
+
+            return listaCategoria;
         }
 
         public IList<Produto> GetListaProdutoByCategiria(int idCategoria)
         {
-            return produtoBm.GetProdutoByCategoria(categoriaProdutoBm.GetByID(idCategoria)).Where(x => x.Ativo).ToList();
+
+            var listaProduto = (from p in produtoBm.GetProdutoByCategoria(categoriaProdutoBm.GetByID(idCategoria))
+                                  join f in formulaBm.GetAll() on p.IdProduto equals f.Produto.IdProduto
+                                 where p.Ativo && f.EmUso
+                                  select p).Distinct().ToList();
+
+            return listaProduto;
         }
 
         public IList<Formula> GetListaFormulaByCategiria(int idProduto)
