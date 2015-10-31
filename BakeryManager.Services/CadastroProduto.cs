@@ -17,6 +17,7 @@ namespace BakeryManager.Services
         private FormulaBM formulaBm;
         private IngredienteFormulaBM ingredienteFormulaBm;
         private ParametroTabelaNutricionalBM parametroTabelaNutricionalBm;
+        private FormulaTabelaNutricionalBM formulaTabelaNutricionalBm;
 
         public CadastroProduto()
         {
@@ -25,6 +26,7 @@ namespace BakeryManager.Services
             formulaBm = GetObject<FormulaBM>();
             ingredienteFormulaBm = GetObject<IngredienteFormulaBM>();
             parametroTabelaNutricionalBm = GetObject<ParametroTabelaNutricionalBM>();
+            formulaTabelaNutricionalBm = GetObject<FormulaTabelaNutricionalBM>();
         }
 
         public void Dispose()
@@ -34,6 +36,7 @@ namespace BakeryManager.Services
             formulaBm.Dispose();
             ingredienteFormulaBm.Dispose();
             parametroTabelaNutricionalBm.Dispose();
+            formulaTabelaNutricionalBm.Dispose();
         }
 
         public IList<CategoriaProduto> GetListaCategoria()
@@ -98,9 +101,9 @@ namespace BakeryManager.Services
             return formulaBm.GetByID(idFormula);
         }
 
-        public IList<TabelaNutricional> GetInformacoesNutricionaisExibicao()
+        public IList<FormulaTabelaNutricional> GetInformacoesNutricionaisByFormula(int IdFormula)
         {
-            return parametroTabelaNutricionalBm.GetAll().Select(x => x.Compoonente).ToList();
+            return formulaTabelaNutricionalBm.GetByFormula(formulaBm.GetByID(IdFormula));
         }
     }
 }

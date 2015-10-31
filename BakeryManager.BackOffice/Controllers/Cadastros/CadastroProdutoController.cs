@@ -259,16 +259,26 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        public JsonResult GetTabelaNutricional(int IdFormula)
+        public JsonResult GetTabelaNutricional([DataSourceRequest] DataSourceRequest request, int? IdFormula)
         {
+
+            if (!IdFormula.HasValue)
+                return Json((new List<IngredienteTabelaNutricionalProduto>()).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
             using (var cadProduto = new CadastroProduto())
             {
-                var formula = cadProduto.GetFormulaById(IdFormula);
-                var ListaIngredientes = cadProduto.getIngredientesFormula(formula);
-                var ListaInformacoesExibicao = cadProduto.GetInformacoesNutricionaisExibicao();
+                
+                var ListaTabelaNutrcional = cadProduto.GetInformacoesNutricionaisByFormula(IdFormula.Value).Select(x => new IngredienteTabelaNutricionalProduto()
+                {
+                    IdIngredienteTabelaNutricional = x.IdFormulaTabelaNutricional,
+                    Ingrediente = x.Componente.Nome,
+                    PercValorDiario = x.PercentualDiario,
+                    Valor = x.Valor,
+                    UnidadeMedida = x.Componente.UnidadeMedida
+                }).ToList();
                 
 
-                return Json(new object(), JsonRequestBehavior.AllowGet);
+                return Json(ListaTabelaNutrcional.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
     }

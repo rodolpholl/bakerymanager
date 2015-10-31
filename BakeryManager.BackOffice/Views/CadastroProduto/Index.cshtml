@@ -189,6 +189,11 @@
         }
 
       
+        function SelecaoFormulaTabelaNutricional(){
+
+            $("#GridTabelaNutricional").data("kendoGrid").dataSource.read();
+
+        }
         
         
 
@@ -214,11 +219,7 @@
                 }
             });
 
-            $("#cbxFormulaPesquisa").change(function () {
-
-                $("#GridTabelaNutricional").data("kendoGrid").dataSource.read();
-
-            });
+            
 
 
         });
