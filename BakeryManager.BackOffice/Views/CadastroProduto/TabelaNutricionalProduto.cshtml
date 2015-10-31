@@ -1,0 +1,69 @@
+﻿@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+@model ProdutoModel
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Tabela Nutricional de <strong>@Model.Nome</strong></h4>
+        </div>
+        <div class="modal-body">
+            <form role="form">
+
+                @Html.HiddenFor(x => x.IdProduto)
+
+                <div class="form-group">
+
+                    <label class="control-label col-sm-2">
+                        Formula
+                    </label>
+                    <div class="col-sm-10">
+                        @(Html.Kendo().DropDownList().Name("cbxFormulaPesquisa").OptionLabel("Selecione...").DataValueField("IdFormula").DataTextField("Descricao")
+                            .DataSource(ds =>  ds.Read(read => read.Action("GetListaFormulaProduto","CadastroProduto").Data("GetIdProdutoFormula")))
+                        )
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label col-sm-2">
+                        Tabela Nutricional
+                    </label>
+                    <div class="col-sm-10" id="divTabela">
+                        @(
+                           Html.Kendo().Grid<IngredienteTabelaNutricionalProduto>()
+                           .Name("GridTabelaNutricional")
+                           .Columns(column => {
+                               column.Bound(x => x.Ingrediente);
+                               column.Bound(x => x.Valor).Width(120).ClientTemplate("#=Valor# #=UnidadeMedida#");
+                               column.Bound(x => x.PercValorDiario).Width(120).ClientTemplate("#if (PercValorDiario > 0) {##=PercValorDiario# %#}#");
+                           })
+                           .Scrollable(src => src.Height(300))
+                           .DataSource(ds => ds
+
+                              .Ajax()
+                              .Model(model =>
+                              {
+                                  model.Id(x => x.IdIngredienteTabelaNutricional);
+                                  model.Field(f => f.UnidadeMedida);
+                                  model.Field(f => f.Ingrediente);
+                                  model.Field(f => f.UnidadeMedida);
+                                  model.Field(f => f.Valor);
+                                  model.Field(f => f.PercValorDiario);
+                              })
+                             .Read(read => read.Action("GetTabelaNutricional","CadastroProduto").Data("GetDadosGrid"))
+                           )
+                        )
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+
+

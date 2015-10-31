@@ -172,11 +172,22 @@ namespace BakeryManager.Services
         {
             foreach(var comp in listaIngredienteTabela)
             {
+                comp.PercValorDiario = CalculaPercentualDiario(comp);
+
                 if (comp.IdIngredienteTabelaNutricional != 0)
                     ingredienteTabelaNutricionalBm.Update(comp);
                 else
                     ingredienteTabelaNutricionalBm.Insert(comp);
             }
         }
+
+        private double? CalculaPercentualDiario(IngredienteTabelaNutricional pIngrediente)
+        {
+            if (!pIngrediente.Componente.ValorDiario.HasValue)
+                return null;
+            else
+                return Math.Round((pIngrediente.Valor / pIngrediente.Componente.ValorDiario.Value) * 100,2);
+        }
+        
     }
 }

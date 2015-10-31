@@ -399,6 +399,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Componente = cadIngrediente.GetTabelaNutricionalById(x.ComponenteNutricional.IdTabelaNutricionalModel),
                     Ingrediente = cadIngrediente.GetIngredienteById(IdIngrediente),
                     Valor = x.Valor
+                    
                 }).ToList();
 
 

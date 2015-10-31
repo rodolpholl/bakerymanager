@@ -27,5 +27,10 @@ namespace BakeryManager.Repositories
         {
             return Query().Where(x => x.Produto.IdProduto == produto.IdProduto).ToList();
         }
+
+        public bool VerificaFormulaAssociadaAoProduto(Produto prod)
+        {
+            return Query().Any(x => x.Produto.IdProduto == prod.IdProduto);
+        }
     }
 }

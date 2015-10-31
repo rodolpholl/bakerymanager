@@ -9,6 +9,7 @@ using BakeryManager.Services;
 using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models;
+using BakeryManager.Infraestrutura.Helpers;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -43,7 +44,19 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             {
                 var retorno = cadProduto.GetProdutoByFiltro(int.Parse(string.IsNullOrWhiteSpace(IdCategoriaFiltro) ? "0" : IdCategoriaFiltro), TextoPesquisa);
 
-                return Json(retorno.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                return Json(retorno.Select(x => new ProdutoModel()
+                {
+                    Ativo = x.Ativo,
+                    GTIN = x.GTIN,
+                    IdProduto = x.IdProduto,
+                    Categoria = new CategoriaProdutoModel()
+                    {
+                        IdCategoriaProduto = x.Categoria.IdCategoriaProduto,
+                        Nome = x.Categoria.Nome
+                    },
+                    Nome = x.Nome,
+                    PossuiTabelaNutricional = cadProduto.VerificaExistenciaFormulaAssociada(x)
+                }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -108,6 +121,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         IdCategoriaProduto = prod.Categoria.IdCategoriaProduto,
                         Nome = prod.Categoria.Nome
                     }
+                    
                 });
             }
         }
@@ -115,7 +129,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         [HttpPost]
         public JsonResult Editar(ProdutoModel pProdutoModel)
         {
-            try {
+            try
+            {
                 using (var cadProduto = new CadastroProduto())
                 {
                     var prod = cadProduto.GetProdutoById(pProdutoModel.IdProduto);
@@ -157,7 +172,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 {
                     var prod = cadProduto.GetProdutoById(Id);
                     cadProduto.DesativarProduto(prod);
-                    
+
 
                     return Json(
                                        new
@@ -210,6 +225,50 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                               Mensagem = ex.Message
 
                           }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult ExibirTabelaNutricional(int IdProduto)
+        {
+            using (var cadProduto = new CadastroProduto())
+            {
+                var prod = cadProduto.GetProdutoById(IdProduto);
+
+
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroProduto/TabelaNutricionalProduto.cshtml"), new ProdutoModel()
+                {
+                    Nome = prod.Nome,
+                    IdProduto = prod.IdProduto
+                }), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetListaFormulaProduto(int IdProduto)
+        {
+            using (var cadProduto = new CadastroProduto())
+            {
+
+                return Json(cadProduto.GetFormulaByProduto(IdProduto).Select(x => new
+                {
+
+                    IdFormula = x.IdFormula,
+                    Descricao = x.Descricao
+
+                }).ToList(), JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        public JsonResult GetTabelaNutricional(int IdFormula)
+        {
+            using (var cadProduto = new CadastroProduto())
+            {
+                var formula = cadProduto.GetFormulaById(IdFormula);
+                var ListaIngredientes = cadProduto.getIngredientesFormula(formula);
+                var ListaInformacoesExibicao = cadProduto.GetInformacoesNutricionaisExibicao();
+                
+
+                return Json(new object(), JsonRequestBehavior.AllowGet);
             }
         }
     }

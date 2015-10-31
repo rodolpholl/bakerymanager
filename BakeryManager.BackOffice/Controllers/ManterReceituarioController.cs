@@ -376,7 +376,7 @@ namespace BakeryManager.BackOffice.Controllers
                         Formula = formula,
                         Ingrediente = manterReceituario.GetIngredienteById(x.IdIngrediente),
                         Quantidade = x.Quantidade,
-                        AGosto = x.Quantidade == 0
+                        AGosto = x.Quantidade == 0,
                     }).ToList());
 
 

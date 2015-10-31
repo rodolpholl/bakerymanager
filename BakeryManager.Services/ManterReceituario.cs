@@ -1,5 +1,6 @@
 ﻿using BakeryManager.Entities;
 using BakeryManager.Repositories;
+using BakeryManager.Repositories.Seguranca;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,10 @@ namespace BakeryManager.Services
         private IngredienteBM ingredienteBm;
         private FormulaBM formulaBm;
         private IngredienteFormulaBM formulaIngredienteBm;
+        private IngredienteTabelaNutricionalBM ingredienteTabelaNutricionalBm;
+        private FormulaTabelaNutricionalBM formulaTabelaNutricionalBm;
+        private ParametroTabelaNutricionalBM parametroTabelaNutricionalBm;
+        private TabelaNutricionalBM tabelaNutricionalBm;
 
 
         public ManterReceituario()
@@ -27,6 +32,11 @@ namespace BakeryManager.Services
              ingredienteBm = GetObject<IngredienteBM>();
              formulaBm = GetObject<FormulaBM>();
              formulaIngredienteBm = GetObject<IngredienteFormulaBM>();
+             ingredienteTabelaNutricionalBm = GetObject<IngredienteTabelaNutricionalBM>();
+             formulaTabelaNutricionalBm = GetObject<FormulaTabelaNutricionalBM>();
+            parametroTabelaNutricionalBm = GetObject<ParametroTabelaNutricionalBM>();
+            tabelaNutricionalBm = GetObject<TabelaNutricionalBM>();
+
 
         }
 
@@ -51,6 +61,10 @@ namespace BakeryManager.Services
             ingredienteBm.Dispose();
             formulaBm.Dispose();
             formulaIngredienteBm.Dispose();
+            ingredienteTabelaNutricionalBm.Dispose();
+            formulaTabelaNutricionalBm.Dispose();
+            parametroTabelaNutricionalBm.Dispose();
+            tabelaNutricionalBm.Dispose();
         }
 
         public IList<Formula> GetFormulasByProdutoAndCategoria(int idCateg, int idProd)
@@ -189,18 +203,74 @@ namespace BakeryManager.Services
                     Quantidade = itemNovo.Quantidade
                 };
 
+             
+
                 formulaIngredienteBm.Insert(FormulaIngrediente);
 
                 formula.RendimentoPadrao = listaAtualIngredietes.Sum(x => x.Quantidade);
                 formulaBm.Update(formula);
-
-
-
+                
             }
-            
-            
+
+            AtualizarTabelaNutricionalFormula(formula);
+
+
         }
 
-        
+        private void AtualizarTabelaNutricionalFormula(Formula formula)
+        {
+
+
+            foreach (var valatual in formulaTabelaNutricionalBm.GetByFormula(formula))
+                formulaTabelaNutricionalBm.Delete(valatual);
+
+            //Carregando a lista de Ingredientes da Fórmula.
+            var listaIngredienteFormula = formulaIngredienteBm.GetByFormula(formula);
+
+            //Carregando a Lista de Componentes que devem ser exibidos.
+            var listaComponentesExibicao = parametroTabelaNutricionalBm.GetAll();
+
+            IList<FormulaTabelaNutricional> listaFormulaTabelaNutricional = new List<FormulaTabelaNutricional>();
+
+            //Para cada componente a ser exibido, é preciso pegar o se valor total e seu percentual diário
+            foreach(var compExibicao in listaComponentesExibicao)
+            {
+                double valorNutricional = 0;
+
+                //Percorrer todos os ingredientes da fóruma para buscar seu valor e adicional ao valor nutricional
+                foreach (var ingredienteFormula in listaIngredienteFormula)
+                {
+                    var valorIngrediente = ingredienteTabelaNutricionalBm.GetInformacoesNutricionaisByIngrediente(ingredienteFormula.Ingrediente)
+                        .FirstOrDefault(x => x.Componente.IdTabelaNutricional == compExibicao.Compoonente.IdTabelaNutricional).Valor;
+                    valorIngrediente = valorIngrediente * ingredienteFormula.Quantidade;
+                    //O valor Total precisa ser dividido pelo rendimento total, pra que se consiga apurar a quantidade por porção.
+                    valorNutricional += Math.Round(valorIngrediente / formula.RendimentoPadrao,2);
+                    
+                }
+
+                //Gerando o valor do percentual diário;
+                //Formula: ValorTota componente dividido pela seu valor nutricional diário vezes 100 => VN / VD * 100
+
+                double? PercDiario = null;
+                if (compExibicao.Compoonente.ValorDiario != null)
+                    PercDiario = Math.Round(valorNutricional / compExibicao.Compoonente.ValorDiario.Value * 100, 2);
+                
+
+                listaFormulaTabelaNutricional.Add(new FormulaTabelaNutricional()
+                {
+                    Componente = tabelaNutricionalBm.GetByID(compExibicao.Compoonente.IdTabelaNutricional),
+                    Formula = formulaBm.GetByID(formula.IdFormula),
+                    PercentualDiario = PercDiario,
+                    Valor = valorNutricional
+                });
+
+            }
+
+
+            foreach (var item in listaFormulaTabelaNutricional)
+                formulaTabelaNutricionalBm.Insert(item);
+
+
+        }
     }
 }

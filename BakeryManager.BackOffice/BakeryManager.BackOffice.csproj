@@ -258,6 +258,7 @@
     <Compile Include="Models\Cadastros\Ingredientes\IngredienteTabelaNutricionalModel.cs" />
     <Compile Include="Models\Cadastros\ParametrosModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\CategoriaProdutoModel.cs" />
+    <Compile Include="Models\Cadastros\Produtos\IngredienteTabelaNutricionalProduto.cs" />
     <Compile Include="Models\ManteReceita\FormulaModel.cs" />
     <Compile Include="Models\ManteReceita\IngredienteFormulaModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\ProdutoModel.cs" />
@@ -330,6 +331,7 @@
     <Content Include="Views\ManterReceituario\Formula.cshtml" />
     <Content Include="Views\ManterReceituario\EditorTemplates\tmplQuantidade.cshtml" />
     <Content Include="Views\ManterReceituario\Editar.cshtml" />
+    <Content Include="Views\CadastroProduto\TabelaNutricionalProduto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

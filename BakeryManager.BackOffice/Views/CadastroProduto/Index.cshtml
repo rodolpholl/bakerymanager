@@ -67,6 +67,9 @@
                column.Bound(c => c.Nome).Filterable(false);
                column.Bound(c => c.Categoria).ClientTemplate("#=Categoria.Nome#").Filterable(false);
                column.Bound(c => c.GTIN).Title("GTIN - Código de Barras").Filterable(false);
+               column.Bound(c => c.PossuiTabelaNutricional).Title("").Filterable(false).Width(80).ClientTemplate("#if (PossuiTabelaNutricional) {#" +
+                                                                                                                 "<a  href=\"javascript:void(0);\" onclick=\"ExibirTabelaNutricional(#=IdProduto#)\" title=\"Exibir Tabela Nutricional\" ><span class=\"glyphicon glyphicon-align-justify\" >&nbsp;</span></a> #}#");
+
                column.Bound(c => c.Ativo).Width(210).ClientTemplate("<a class=\"k-button k-button-icontext k-grid-edit\" href=\"" + Url.Action("Editar") + "/#=IdProduto#\"><span  class=\"k-icon k-edit\"></span>Editar</a>" +
                                                                               "#if (Ativo) {#" +
                                                                               "<a href=\"javascript: void(0); \" onclick=\"Desativar(#=IdProduto#); \" class=\"btn btn-danger btn - sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
@@ -101,6 +104,9 @@
         </div>
     </div>
 
+</div>
+
+<div id="modalTabelaNutricional" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 </div>
 
 @section scripts{
@@ -155,6 +161,34 @@
             }, 2);
         }
 
+        function ExibirTabelaNutricional(IdProduto) {
+            $.ajax({
+                url: '@Url.Action("ExibirTabelaNutricional")',
+                data: { IdProduto },
+                dataType: "json",
+                method: "POST",
+                success: function (data) {
+                    $("#modalTabelaNutricional").html(data);
+                    $("#modalTabelaNutricional").modal();
+                }
+
+            });
+        }
+
+         function GetIdProdutoFormula() {
+            return {
+                IdProduto: $("#IdProduto").val()
+            }
+        }
+
+        function GetDadosGrid() {
+            return {
+                IdProduto: $("#IdProduto").val(),
+                IdFormula: $("#cbxFormulaPesquisa").data("kendoDropDownList").value()
+            }
+        }
+
+      
         
         
 
@@ -178,6 +212,12 @@
                     }, 2000);
 
                 }
+            });
+
+            $("#cbxFormulaPesquisa").change(function () {
+
+                $("#GridTabelaNutricional").data("kendoGrid").dataSource.read();
+
             });
 
 
