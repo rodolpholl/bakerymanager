@@ -88,6 +88,7 @@
     <Compile Include="Seguranca\CadastroUsuario.cs" />
     <Compile Include="Seguranca\ControleAcesso.cs" />
     <Compile Include="Seguranca\ManterParametros.cs" />
+    <Compile Include="Simulador.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

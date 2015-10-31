@@ -245,6 +245,7 @@
     <Compile Include="Controllers\ManterParametrosController.cs" />
     <Compile Include="Controllers\ManterReceituarioController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="Controllers\SimuladorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -332,6 +333,7 @@
     <Content Include="Views\ManterReceituario\EditorTemplates\tmplQuantidade.cshtml" />
     <Content Include="Views\ManterReceituario\Editar.cshtml" />
     <Content Include="Views\CadastroProduto\TabelaNutricionalProduto.cshtml" />
+    <Content Include="Views\Simulador\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
