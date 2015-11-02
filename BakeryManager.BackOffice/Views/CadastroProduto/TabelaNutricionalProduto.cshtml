@@ -14,17 +14,20 @@
 
             <div class="row">
 
-                <div class="col-sm-2">
-                    <label class="control-label col-sm-2">
-                        Fórmula
-                    </label>
-                    <div class="col-sm-10">
-                        @(Html.Kendo().DropDownList().Name("cbxFormulaPesquisa").OptionLabel("Selecione...").DataValueField("IdFormula").DataTextField("Descricao")
+                <div class="col-md-12">
+                    <form role="form" class="form-horizontal">
+                        <label class="control-label col-md-2">
+                            Fórmula
+                        </label>
+                        <div class="col-md-10">
+                            @(Html.Kendo().DropDownList().Name("cbxFormulaPesquisa").OptionLabel("Selecione...").DataValueField("IdFormula").DataTextField("Descricao")
                             .DataSource(ds => ds.Read(read => read.Action("GetListaFormulaProduto", "CadastroProduto").Data("GetIdProdutoFormula")))
-                            .Events(evt => evt.Change("SelecaoFormulaTabelaNutricional"))
-                        )
-                    </div>
+                            .Events(evt => evt.Change("SelecaoFormulaTabelaNutricional")).HtmlAttributes(new { @class = "form-control", style = "min-width: 650px;" })
+                            )
+                        </div>
+                    </form>
                 </div>
+
 
             </div>
             <div class="row">
@@ -41,8 +44,8 @@
                            .Columns(column =>
                            {
                                column.Bound(x => x.Ingrediente);
-                               column.Bound(x => x.Valor).Width(120).ClientTemplate("#=Valor# #=UnidadeMedida#");
-                               column.Bound(x => x.PercValorDiario).Width(120).ClientTemplate("#if (PercValorDiario > 0) {##=PercValorDiario# %#}#");
+                               column.Bound(x => x.Valor).Width(120).ClientTemplate("#=kendo.toString(Valor,\"n2\")# #=UnidadeMedida#").Format("{0:c}");
+                               column.Bound(x => x.PercValorDiario).Width(120).ClientTemplate("#if (PercValorDiario > 0) {##=kendo.toString(PercValorDiario,\"n2\")# %#}#");
                            })
                            .Scrollable(src => src.Height(300))
                            .DataSource(ds => ds
@@ -71,6 +74,3 @@
         </div>
     </div>
 </div>
-
-
-

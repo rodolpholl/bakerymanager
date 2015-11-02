@@ -241,6 +241,10 @@ namespace BakeryManager.Services
                 {
                     var valorIngrediente = ingredienteTabelaNutricionalBm.GetInformacoesNutricionaisByIngrediente(ingredienteFormula.Ingrediente)
                         .FirstOrDefault(x => x.Componente.IdTabelaNutricional == compExibicao.Compoonente.IdTabelaNutricional).Valor;
+
+                    //A Tabela TACO é calculada por porções de 100 gramas. Portanto, é preciso dividir por 100 o valor para sabermos o correspondente a 1 grama.
+                    valorIngrediente = valorIngrediente / 100;
+
                     valorIngrediente = valorIngrediente * ingredienteFormula.Quantidade;
                     //O valor Total precisa ser dividido pelo rendimento total, pra que se consiga apurar a quantidade por porção.
                     valorNutricional += Math.Round(valorIngrediente / formula.RendimentoPadrao,2);
