@@ -247,7 +247,11 @@ namespace BakeryManager.Services
 
                     valorIngrediente = valorIngrediente * ingredienteFormula.Quantidade;
                     //O valor Total precisa ser dividido pelo rendimento total, pra que se consiga apurar a quantidade por porção.
-                    valorNutricional += Math.Round(valorIngrediente / formula.RendimentoPadrao,2);
+                    //CAso o produto não possua uma porção definida, aferir o valor total do rendidmento. Senão, usar a proporção indicada.
+                    if (formula.Produto.ProporcaoTabelaNutricional > 0)
+                        valorNutricional += Math.Round(valorIngrediente / formula.Produto.ProporcaoTabelaNutricional, 2);
+                    else
+                        valorNutricional += Math.Round(valorIngrediente / formula.RendimentoPadrao,2);
                     
                 }
 

@@ -23,5 +23,28 @@ namespace BakeryManager.Infraestrutura.Helpers
             return Process.GetProcesses().FirstOrDefault(x => x.Id.Equals(id));
 
         }
+
+        public static string GetRandomUID()
+        {
+            var guid = Guid.NewGuid().ToString().Replace("[", "").Replace("]", "").Replace("-", "").Substring(0,10);
+            var randonFormater = new Random().Next(1,4);
+            
+
+
+            switch (randonFormater)
+            {
+                case 1:
+                    return string.Concat(DateTime.Now.Ticks.ToString(), guid);
+                case 2:
+                    return string.Concat(guid, DateTime.Now.Ticks.ToString());
+                case 3:
+                    return string.Concat(DateTime.Now.ToString("yyyyMMddhhmmss"),guid);
+                default:
+                    return string.Concat(guid, DateTime.Now.ToString("yyyyMMddhhmmss"));
+
+            }
+
+            
+        }
     }
 }

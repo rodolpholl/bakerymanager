@@ -64,8 +64,8 @@
            .Name("grid")
            .Columns(column =>
            {
-               column.Bound(c => c.Nome).Filterable(false);
                column.Bound(c => c.Categoria).ClientTemplate("#=Categoria.Nome#").Filterable(false);
+               column.Bound(c => c.Nome).Filterable(false);
                column.Bound(c => c.GTIN).Title("GTIN - Código de Barras").Filterable(false);
                column.Bound(c => c.PossuiTabelaNutricional).Title("").Filterable(false).Width(80).ClientTemplate("#if (PossuiTabelaNutricional) {#" +
                                                                                                                  "<a  href=\"javascript:void(0);\" onclick=\"ExibirTabelaNutricional(#=IdProduto#)\" title=\"Exibir Tabela Nutricional\" ><span class=\"glyphicon glyphicon-align-justify\" >&nbsp;</span></a> #}#");
@@ -81,7 +81,7 @@
            .ToolBar(t => t.Custom().Text("Novo Produto").Url(Url.Action("Criar")).HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-add" }))
            .Pageable()
            .Navigatable()
-           .Scrollable(scr => scr.Height("auto"))
+           .Scrollable(scr => scr.Height(450))
            .Filterable()
 
            .DataSource(ds => ds

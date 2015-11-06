@@ -55,38 +55,48 @@
 
 @section scripts{
 
-<script type="text/javascript">
-    $(function () {
-        var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
+    <script type="text/javascript">
+        $(function () {
+            var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
 
 
-        $("#btnSalvar").click(function (evt) {
+            $("#btnSalvar").click(function (evt) {
 
-            evt.preventDefault();
+                evt.preventDefault();
 
-            if (validator.validate()) {
+                if (validator.validate()) {
 
-                $.ajax({
+                    $.ajax({
 
-                    url: '@Url.Action("Editar")',
-                    dataType: 'json',
-                    data: $("#frmEditar").serialize(),
-                    method: "POST",
-                    success: function (data) {
+                        url: '@Url.Action("Editar")',
+                        dataType: 'json',
+                        data: $("#frmEditar").serialize(),
+                        method: "POST",
+                        success: function (data) {
 
-                        alert(data.Mensagem, function () {
-                            if (data.URLDestino != undefined)
-                                window.location.href = data.URLDestino;
-                        }, data.TipoMensagem);
 
-                    }
+                            //$("#frmUpload").submit(function (e) {
 
-                });
-            }
+                            //    alert(data.Mensagem, function () {
+                            //        if (data.URLDestino != undefined)
+                            //            window.location.href = data.URLDestino;
+                            //    }, data.TipoMensagem);
+
+                            //});
+
+                            $("#frmUpload").submit();
+
+
+
+
+                        }
+
+                    });
+                }
+            });
+
+
         });
-
-
-    });
-</script>
+    </script>
 
 }

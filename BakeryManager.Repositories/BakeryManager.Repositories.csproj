@@ -61,11 +61,13 @@
     <Compile Include="CategoriaProdutoBM.cs" />
     <Compile Include="FormulaBM.cs" />
     <Compile Include="FormulaTabelaNutricionalBM.cs" />
+    <Compile Include="FornecedorBM.cs" />
     <Compile Include="IngredienteBM.cs" />
     <Compile Include="IngredienteFormulaBM.cs" />
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />
     <Compile Include="IngredienteTabelaNutricionalBM.cs" />
     <Compile Include="ProdutoBM.cs" />
+    <Compile Include="ProdutoFotoBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\ParametrosGeraisBM.cs" />
     <Compile Include="Seguranca\ParametroTabelaNutricionalBM.cs" />

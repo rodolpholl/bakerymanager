@@ -13,6 +13,8 @@ namespace BakeryManager.Entities
         public virtual bool Ativo { get; set; }
         public virtual string GTIN { get; set; } //Código de Barras
         public virtual CategoriaProduto Categoria { get; set; }
+        public virtual int DiasPrazoValidade { get; set; }
+        public virtual int ProporcaoTabelaNutricional { get; set; }
         
     }
 }

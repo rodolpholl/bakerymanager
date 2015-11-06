@@ -66,7 +66,7 @@ namespace BakeryManager.BackOffice.Controllers
                 var listaProduto = simulador.GetIngredientesByFormula(IdFormula).Select(x => new IngredienteFormulaModel()
                 {
                     AGosto = x.AGosto,
-                    Nome = x.Ingrediente.Nome,
+                    Nome = string.IsNullOrWhiteSpace(x.Ingrediente.Nome) ? x.Ingrediente.NomeTACO : x.Ingrediente.Nome,
                     Quantidade = x.Quantidade
                 }).ToList();
 
@@ -81,7 +81,7 @@ namespace BakeryManager.BackOffice.Controllers
                 var listaSimulada = simulador.SimularReceita(IdFormula, QtdSimulacao).Select(x => new IngredienteFormulaModel()
                 {
                     AGosto = x.AGosto,
-                    Nome = x.Ingrediente.Nome,
+                    Nome = x.Ingrediente.Nome ,
                     Quantidade = x.Quantidade
                 }).ToList();
 

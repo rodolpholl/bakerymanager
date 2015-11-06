@@ -185,6 +185,11 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\UploadfyContent\jquery.uploadify.js" />
+    <Content Include="Content\UploadfyContent\jquery.uploadify.min.js" />
+    <Content Include="Content\UploadfyContent\uploadify-cancel.png" />
+    <Content Include="Content\UploadfyContent\uploadify.css" />
+    <Content Include="Content\UploadfyContent\uploadify.swf" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -264,6 +269,7 @@
     <Compile Include="Models\Cadastros\ParametrosModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\CategoriaProdutoModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\IngredienteTabelaNutricionalProduto.cs" />
+    <Compile Include="Models\Cadastros\Produtos\ProdutoGaleriaFotoModel.cs" />
     <Compile Include="Models\ManteReceita\FormulaModel.cs" />
     <Compile Include="Models\ManteReceita\IngredienteFormulaModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\ProdutoModel.cs" />
@@ -338,6 +344,7 @@
     <Content Include="Views\ManterReceituario\Editar.cshtml" />
     <Content Include="Views\CadastroProduto\TabelaNutricionalProduto.cshtml" />
     <Content Include="Views\Simulador\Index.cshtml" />
+    <Content Include="Views\CadastroProduto\GaleriaFotos.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -347,6 +354,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Imagens\Produto\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

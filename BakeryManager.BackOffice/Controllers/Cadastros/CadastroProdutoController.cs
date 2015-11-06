@@ -10,6 +10,7 @@ using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models;
 using BakeryManager.Infraestrutura.Helpers;
+using BakeryManager.BackOffice.Helpers;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -49,6 +50,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Ativo = x.Ativo,
                     GTIN = x.GTIN,
                     IdProduto = x.IdProduto,
+                    DiasPrazoValidade = x.DiasPrazoValidade,
+                    ProporcaoTabelaNutricional = x.ProporcaoTabelaNutricional,
                     Categoria = new CategoriaProdutoModel()
                     {
                         IdCategoriaProduto = x.Categoria.IdCategoriaProduto,
@@ -62,6 +65,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         public ActionResult Criar()
         {
+            ViewData["GaleriaFoto"] = new List<ProdutoGaleriaFotoModel>();
+            ViewData["galeriaFotoUID"] = WebHelpers.ObterNovoUID();
             return View(new ProdutoModel());
         }
 
@@ -77,6 +82,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Ativo = true,
                         GTIN = pProdutoModel.GTIN,
                         Nome = pProdutoModel.Nome,
+                        DiasPrazoValidade = pProdutoModel.DiasPrazoValidade,
+                        ProporcaoTabelaNutricional = pProdutoModel.ProporcaoTabelaNutricional,
                         Categoria = cadProduto.GetCategoriaById(pProdutoModel.Categoria.IdCategoriaProduto)
                     };
 
@@ -107,6 +114,10 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         public ActionResult Editar(int Id)
         {
+            //provisório para testes
+            ViewData["GaleriaFoto"] = new List<ProdutoGaleriaFotoModel>();
+            ViewData["galeriaFotoUID"] = WebHelpers.ObterNovoUID();
+
             using (var cadProduto = new CadastroProduto())
             {
                 var prod = cadProduto.GetProdutoById(Id);
@@ -116,6 +127,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     IdProduto = prod.IdProduto,
                     Nome = prod.Nome,
                     GTIN = prod.GTIN,
+                    ProporcaoTabelaNutricional = prod.ProporcaoTabelaNutricional,
+                    DiasPrazoValidade = prod.DiasPrazoValidade,
                     Categoria = new CategoriaProdutoModel()
                     {
                         IdCategoriaProduto = prod.Categoria.IdCategoriaProduto,
@@ -136,6 +149,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     var prod = cadProduto.GetProdutoById(pProdutoModel.IdProduto);
                     prod.Nome = pProdutoModel.Nome;
                     prod.GTIN = pProdutoModel.GTIN;
+                    prod.ProporcaoTabelaNutricional = pProdutoModel.ProporcaoTabelaNutricional;
+                    prod.DiasPrazoValidade = pProdutoModel.DiasPrazoValidade;
                     prod.Categoria = cadProduto.GetCategoriaById(pProdutoModel.Categoria.IdCategoriaProduto);
 
 
@@ -280,6 +295,32 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                 return Json(ListaTabelaNutrcional.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+        public JsonResult GetListaArquivoProduto(int pIdProduto)
+        {
+            
+            using (var cadProduto = new CadastroProduto())
+            {
+                var ListaArquivo = cadProduto.GetGaleriaFoto(pIdProduto);
+                return Json(ListaArquivo.Select(x => new ProdutoGaleriaFotoModel()
+                {
+                    IdProdutoFoto = x.IdProdutoFoto,
+                    NomeArquivo = x.NomeArquivo,
+                    NomeFisico = x.NomeFisico,
+                    Extensao = x.Extensao,
+                    Tamanho = x.Tamanho
+                }).ToList(), JsonRequestBehavior.AllowGet);
+            }
+
+            
+       }
+
+        [HttpPost]
+        public ActionResult AtualizarGaleiraFotos(FormCollection formItens)
+        {
+            return View();
         }
     }
 }

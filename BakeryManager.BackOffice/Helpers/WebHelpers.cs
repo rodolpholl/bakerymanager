@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Security;
 using BakeryManager.BackOffice.Models;
 using BakeryManager.Entities;
+using BakeryManager.Infraestrutura.Helpers;
 
 namespace BakeryManager.BackOffice.Helpers
 {
@@ -73,6 +74,11 @@ namespace BakeryManager.BackOffice.Helpers
             {
                 return controleAcesso.ValidaPendenciaPassword(Login);
             }
+        }
+
+        internal static string ObterNovoUID()
+        {
+            return ProcessHelper.GetRandomUID();
         }
     }
 }

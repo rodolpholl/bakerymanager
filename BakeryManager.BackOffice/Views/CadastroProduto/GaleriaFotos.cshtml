@@ -1,0 +1,37 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@model IList<ProdutoGaleriaFotoModel>
+
+
+<div class="col-lg-8">
+    <form method="post" id="frmUpload" action="@Url.Action("AtualizarGaleiraFotos")" role="form" class="form-horizontal">
+
+        @Html.Hidden("hdlGaleriaFotoUID", ViewData["galeriaFotoUID"])
+
+        <div class="col-md-8">
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+
+                    @(Html.Kendo().Upload()
+                      .Name("galeriaFotos")
+                      .Multiple(true)
+                      .Files(files =>
+                       {
+                           foreach (var f in (IList<ProdutoGaleriaFotoModel>)Model)
+                           {
+                               files.Add().Name(f.NomeArquivo).Extension(f.Extensao).Size(f.Tamanho);
+                           }
+                       })
+                    )
+                </div>
+
+            </div>
+
+        </div>
+        
+    </form>
+
+</div>

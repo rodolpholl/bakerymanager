@@ -59,7 +59,7 @@
                     {
                         column.Bound(x => x.Nome);
                         column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(200)
-                        .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
+                        .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>").Title("Quantidade (Em gramas)");
                         column.Bound(x => x.IdIngrediente).Title("").Width(50).ClientTemplate("<a href=\"javascript: void(0);\" title=\"Excluir Ingrediente da Fórmula\" onclick=\"excluirItemFormula(#=IdIngrediente#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span></a>");
                     })
                     .Sortable()

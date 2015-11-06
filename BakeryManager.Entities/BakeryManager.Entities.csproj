@@ -45,10 +45,12 @@
     <Compile Include="CategoriaProduto.cs" />
     <Compile Include="Formula.cs" />
     <Compile Include="FormulaTabelaNutricional.cs" />
+    <Compile Include="Fornecedor.cs" />
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteFormula.cs" />
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="IngredienteTabelaNutricional.cs" />
+    <Compile Include="ProdutoFoto.cs" />
     <Compile Include="Seguranca\ParametrosGerais.cs" />
     <Compile Include="Pedido.cs" />
     <Compile Include="Produto.cs" />

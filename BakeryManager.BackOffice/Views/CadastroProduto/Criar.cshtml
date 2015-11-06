@@ -79,10 +79,24 @@
                     method: "POST",
                     success: function (data) {
 
-                        alert(data.Mensagem, function () {
-                            if (data.URLDestino != undefined)
-                                window.location.href = data.URLDestino;
-                        }, data.TipoMensagem);
+                        $.ajax({
+                            url: "@Url.Action("AtualizarGaleiraFotos")",
+                            dataType: "json",
+                            data: {
+                                Arquivos: $("#frmUpload").serialize(),
+                                IdProduto: data.IdProduto
+                            },
+                            success: function (data) {
+
+                                alert(data.Mensagem, function () {
+                                    if (data.URLDestino != undefined)
+                                        window.location.href = data.URLDestino;
+                                }, data.TipoMensagem);
+
+                            }
+
+                        })
+
 
                     }
 
