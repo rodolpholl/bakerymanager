@@ -116,6 +116,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                             };
 
                             cadastroPerfil.InserirPerfil(perfil);
+                            p.IdPerfil = perfil.IdPerfil;
 
                         }
 

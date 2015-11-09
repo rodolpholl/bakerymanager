@@ -1,0 +1,184 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros
+@{
+    ViewBag.Title = "Cadastro de Ingredientes";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li>
+                    <i class="fa fa-file"></i> Ingredientes
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <form role="form">
+               
+                <label>Pesquisa</label>
+                <div class="form-group ">
+
+                    <div class="input-group ">
+                        @Html.TextBox("txtPesquisa", "", new { @class = "form-control", placeHolder = "Digite no mínimo 3 caracteres para efetuar a pesquisa." })
+                        <span class="input-group-btn"><button id="btnPesquisa" class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            @(
+           Html.Kendo().Grid<IngredientesModel>()
+           .Name("grid")
+           .Columns(column =>
+           {
+               column.Bound(c => c.Categoria).ClientTemplate("#=Categoria.Nome#");
+               column.Bound(c => c.Nome);
+               column.Bound(c => c.CodigoTACO).Title("Código TACO").Width(100);
+               column.Bound(c => c.NomeTACO).Title("Nome TACO");
+               column.Bound(c => c.IdIngrediente).Title("").Filterable(false).Width(80).ClientTemplate("<a  href=\"javascript:void(0);\" onclick=\"ExibirHistoricoOperacao(#=IdIngrediente#)\" title=\"Exibir Historico Desativacao\" ><span class=\"glyphicon glyphicon-dashboard\" >&nbsp;</span></a> " +
+                                                                                                       "<a  href=\"javascript:void(0);\" onclick=\"GetTabelaNutricional(#=IdIngrediente#)\" title=\"Tabela Nutricional do Ingrediente\" ><span class=\"glyphicon glyphicon-align-justify\" >&nbsp;</span></a>");
+
+               column.Bound(c => c.Ativo).Width(210).ClientTemplate("<a class=\"k-button k-button-icontext k-grid-edit\" href=\"" + Url.Action("Editar") + "/#=IdIngrediente#\"><span  class=\"k-icon k-edit\"></span>Editar</a>" +
+                                                                                 "#if (Ativo) {#" +
+                                                                                 "<a href=\"javascript: void(0); \" onclick=\"Desativar(#=IdIngrediente#); \" class=\"btn btn-danger btn - sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
+                                                                                 "#} else {#" +
+                                                                                 "<a href=\"javascript: void(0); \" onclick=\"Reativar(#=IdIngrediente#); \" class=\"btn btn-primary btn - sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" +
+                                                                                 "# }#")
+                                                       .Filterable(filterable => filterable.Messages(m => m.IsFalse("Inativos").IsTrue("Ativos")));
+           })
+           .ToolBar(t => t.Custom().Text("Novo Ingrediente").Url(Url.Action("Criar")).HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-add" }))
+           .Pageable()
+           .Navigatable()
+           .Scrollable(scr => scr.Height(450))
+           .Filterable()
+
+           .DataSource(ds => ds
+                .Ajax()
+                .Batch(false)
+                .PageSize(20)
+                .ServerOperation(true)
+                .Model(model =>
+                {
+                    model.Id(i => i.IdIngrediente);
+                    model.Field(f => f.Nome);
+                    model.Field(f => f.Categoria);
+                    model.Field(f => f.CodigoTACO);
+                    model.Field(f => f.NomeTACO);
+                    model.Field(f => f.Ativo).Editable(false);
+                })
+                .Read(read => read.Action("Read", "CadastroIngredientes").Data("GetDadosPesquisa"))
+               )
+
+            )
+        </div>
+    </div>
+
+</div>
+
+<div id="modalTabelaNutricional" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+        function GetDadosPesquisa() {
+            return {
+                textoPesquisa: $("#txtPesquisa").val()
+            }
+        }
+        
+
+        function Desativar(IdIngrediente) {
+            confirm("Deseja Ralmente Desativar este Produto?", function () {
+
+                $.ajax({
+
+                    url: '@Url.Action("Desativar")',
+                    data: { Id: IdIngrediente },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+
+            }, 2);
+        }
+
+
+        function Reativar(IdIngrediente) {
+            confirm("Deseja Ralmente Reativar este Produto?", function () {
+                $.ajax({
+
+                    url: '@Url.Action("Reativar")',
+                    data: { Id: IdIngrediente },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+            }, 2);
+        }
+
+        function ExibirHistoricoOperacao(IdIngrediente) {
+            $.ajax({
+                url: '@Url.Action("GetHistoricoDesativacaoReativacao")',
+                data: { IdIngrediente },
+                dataType: "json",
+                method: "POST",
+                success: function (data) {
+                    $("#modalTabelaNutricional").html(data);
+                    $("#modalTabelaNutricional").modal();
+                }
+
+            });
+        }
+
+        function GetTabelaNutricional(IdIngrediente) {
+            $.ajax({
+                url: '@Url.Action("GetTabelaNutricional")',
+                data: { IdIngrediente },
+                dataType: "json",
+                method: "POST",
+                success: function (data) {
+                    $("#modalTabelaNutricional").html(data);
+                    $("#modalTabelaNutricional").modal();
+                }
+
+            });
+        }
+
+        
+
+    </script>
+
+}
+
