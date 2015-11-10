@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using BakeryManager.Infraestrutura.Repository.NHibernate.Conventions;
+using BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions;
 using FluentNHibernate.Automapping;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config
 {
     public class ConfigurationAutoMapperInformedID : ConfigurationNHibernate
     {

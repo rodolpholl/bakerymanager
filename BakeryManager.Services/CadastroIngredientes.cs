@@ -83,8 +83,74 @@ namespace BakeryManager.Services
         public void CarregarTabelaNutricional(string FileName)
         {
             
-            throw new NotImplementedException();
-            
+            var xlsFile = new ExcelQueryFactory(FileName);
+            var listaTabelaNutricional = tabelaNutricionalBm.GetAll().Select(x => x.NomePlanilhaCarga).ToList();
+
+            var listaDados = from f in xlsFile.Worksheet("Plan1") select f;
+
+            foreach (var ing in listaDados)
+            {
+                //Carregando a Categoria
+                CategoriaIngrediente categoria = categoriaIngredienteBm.GetByNome(ing["Categoria"].Value.ToString());
+                if (categoria == null)
+                {
+                    categoria = new CategoriaIngrediente()
+                    {
+                        Nome = ing["Categoria"].Value.ToString()
+                    };
+                    categoriaIngredienteBm.Insert(categoria);
+                }
+
+
+                //Carregando o Cliente
+                Ingrediente ingrediente = ingredienteBm.GetByCodigoTACO(int.Parse(ing["CodigoTACO"].Value.ToString()));
+
+                if (ingrediente == null)
+                {
+                    ingrediente = new Ingrediente()
+                    {
+                        Ativo = true,
+                        Categoria = categoriaIngredienteBm.GetByID(categoria.IdCategoriaIngrediente),
+                        CodigoTACO = int.Parse(ing["CodigoTACO"].Value.ToString()),
+                        NomeTACO = ing["NomeTACO"].ToString()
+                    };
+
+                    ingredienteBm.Insert(ingrediente);
+                }
+
+                //Percorrendo a lista de atributos da tabela nutricional para inclusão
+                foreach(var nomeComp in listaTabelaNutricional)
+                {
+                    double valor = 0;
+                    double.TryParse(ing[nomeComp.Trim()].Value.ToString(), out valor);
+
+                    TabelaNutricional componente = tabelaNutricionalBm.GetByNomePlanilha(nomeComp.Trim());
+
+                    var ingredienteTabelaNutricional = ingredienteTabelaNutricionalBm.GetByIngredienteAndTabelaNutricional(ingredienteBm.GetByID(ingrediente.IdIngrediente), componente);
+
+                    if (ingredienteTabelaNutricional == null)
+                    {
+                        ingredienteTabelaNutricional = new IngredienteTabelaNutricional()
+                        {
+                            Componente = tabelaNutricionalBm.GetByID(componente.IdTabelaNutricional),
+                            Ingrediente = ingredienteBm.GetByID(ingrediente.IdIngrediente),
+
+                        };
+
+                        ingredienteTabelaNutricionalBm.Insert(ingredienteTabelaNutricional);
+
+                    }
+                    
+                    ingredienteTabelaNutricional.Valor = valor;
+                    ingredienteTabelaNutricional.PercValorDiario = CalculaPercentualDiario(ingredienteTabelaNutricional);
+                    ingredienteTabelaNutricionalBm.Update(ingredienteTabelaNutricional);
+                    
+                }
+
+
+            }
+
+
         }
 
         public CategoriaIngrediente GetCategoriaById(int idCategoriaIngrediente)
@@ -183,7 +249,7 @@ namespace BakeryManager.Services
 
         private double? CalculaPercentualDiario(IngredienteTabelaNutricional pIngrediente)
         {
-            if (!pIngrediente.Componente.ValorDiario.HasValue)
+            if (!pIngrediente.Componente.ValorDiario.HasValue || pIngrediente.Componente.ValorDiario.Value == 0)
                 return null;
             else
                 return Math.Round((pIngrediente.Valor / pIngrediente.Componente.ValorDiario.Value) * 100,2);

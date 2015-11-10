@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reflection;
-using BakeryManager.Infraestrutura.Repository.NHibernate.Conventions;
+using BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.Instances;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config
 {
     
 

@@ -9,7 +9,7 @@ using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.Services;
 using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
 using BakeryManager.Entities;
-using BakeryManager.Infraestrutura.Base.BusinessProcess;
+using BakeryManager.InfraEstrutura.Base.BusinessProcess;
 using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros

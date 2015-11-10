@@ -9,7 +9,7 @@ using BakeryManager.Services;
 using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models;
-using BakeryManager.Infraestrutura.Helpers;
+using BakeryManager.InfraEstrutura.Helpers;
 using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -423,6 +423,26 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             {
                 var retorno = cadIngrediente.GetInformacaoNutricional(IdIngrediente).Select(x => ParseIngredienteTabelaNutricionalModel(x)).AsEnumerable();
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroIngredientes/TabelaNutricional.cshtml"), retorno), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public ActionResult CarregarArquivo()
+        {
+            try {
+                using (var cadIngrediente = new CadastroIngredientes())
+                {
+                    var file = Request.Files["Filedata"];
+                    var path = Server.MapPath(string.Concat("~\\Content\\uploads\\", file.FileName));
+                    file.SaveAs(path);
+                    cadIngrediente.CarregarTabelaNutricional(path);
+                    return Content("Arquivo Salvo com Sucesso!");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
             }
 
         }

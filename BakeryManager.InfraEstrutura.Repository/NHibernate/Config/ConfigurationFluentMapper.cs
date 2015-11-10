@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using FluentNHibernate.Cfg;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config
 {
 
     /// <summary>

@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using NHibernate;
 
-namespace BakeryManager.Infraestrutura.Repository.Contract
+namespace BakeryManager.InfraEstrutura.Repository.Contract
 {
     internal interface ISessionFactoryNHibernate
     {

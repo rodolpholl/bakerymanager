@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 
 
-namespace BakeryManager.Infraestrutura.Helpers
+namespace BakeryManager.InfraEstrutura.Helpers
 {
     public static class EmailHelper
     {

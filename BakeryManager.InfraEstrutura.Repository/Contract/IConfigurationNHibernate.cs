@@ -7,7 +7,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using BakeryManager.InfraEstrutura.Repository;
 
-namespace BakeryManager.Infraestrutura.Repository.Contract
+namespace BakeryManager.InfraEstrutura.Repository.Contract
 {
     /// <summary>
     /// Interface padrão para todos os arquivos de configuration, que poderão ser utilizados pelo NHibernate

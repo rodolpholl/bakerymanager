@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FluentNHibernate;
 using FluentNHibernate.Conventions;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Conventions
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
 {
     public class DefaultForeignKeyConvention : ForeignKeyConvention
     {

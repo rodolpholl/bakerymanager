@@ -1,5 +1,5 @@
 ﻿using BakeryManager.Entities;
-using BakeryManager.Infraestrutura.Base.BusinessManagement;
+using BakeryManager.InfraEstrutura.Base.BusinessManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,11 @@ namespace BakeryManager.Repositories
         public IList<TabelaNutricional> GetComponentesForaDaLista(IList<int> listaExibicao)
         {
             return  Query().Where(x => !listaExibicao.Contains(x.IdTabelaNutricional)).ToList();
+        }
+
+        public TabelaNutricional GetByNomePlanilha(string NomePlanilhaCarga)
+        {
+            return Query().FirstOrDefault(x => x.NomePlanilhaCarga == NomePlanilhaCarga);
         }
     }
 }

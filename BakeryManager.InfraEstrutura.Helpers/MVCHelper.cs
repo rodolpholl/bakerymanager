@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace BakeryManager.Infraestrutura.Helpers
+namespace BakeryManager.InfraEstrutura.Helpers
 {
     public static class MVCHelper
     {

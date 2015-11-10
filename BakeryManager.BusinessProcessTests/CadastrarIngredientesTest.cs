@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BakeryManager.Infraestrutura.Base.Teste;
+using BakeryManager.InfraEstrutura.Base.Teste;
 using BakeryManager.Services;
 using BakeryManager.Entities;
 

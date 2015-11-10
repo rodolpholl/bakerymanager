@@ -1,5 +1,6 @@
 ﻿@using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Cadastros
+@using BakeryManager.BackOffice.Helpers
 @{
     ViewBag.Title = "Cadastro de Ingredientes";
 }
@@ -29,7 +30,37 @@
     <div class="row">
         <div class="col-lg-8">
             <form role="form">
-               
+                <label>Carregar Arquivos. Selecione uma Planilha para carregar</label>
+                <div class="form-group ">
+
+                    @*<input type="file" name="fileLoad" id="fileLoad" class="form-control"  />
+
+                    <script type="text/javascript">
+                            $(function () {
+                                $('#fileLoad').uploadify({
+                                    'swf': "@Url.Content("~/Content/UploadfyContent/uploadify.swf")",
+                                    'cancelImg': "@Url.Content("~/Content/UploadfyContent/uploadify-cancel.png")",
+                                    'fileTypeExts' : "*.xlsx",
+                                    'uploader': "@Url.Action("CarregarArquivo")",
+                                    'onDialogClose': UploadDialogClose,
+                                    'onUploadSuccess': UploadSuccess,
+                                    'onUploadError': UploadError
+                                });
+                                
+                            });
+
+                    </script>*@
+
+                    @(Html.UploadControl("fileLoad",new string[]
+                                       {
+                                          "@.xlsx"
+                                       },
+                                       Url.Action("CarregarArquivo"),
+                                       "UploadSuccess")
+
+                    )
+
+                </div>
                 <label>Pesquisa</label>
                 <div class="form-group ">
 
@@ -164,7 +195,7 @@
 
         function GetTabelaNutricional(IdIngrediente) {
             $.ajax({
-                url: '@Url.Action("GetTabelaNutricional")',
+                url: '@Url.Action("GetPainelTabelaNutricional")',
                 data: { IdIngrediente },
                 dataType: "json",
                 method: "POST",
@@ -174,6 +205,13 @@
                 }
 
             });
+        }
+
+        function UploadSuccess(file, data, response) {
+            $("#loadScreen").dialog("close");
+            alert("Arquivo <strong>"+file.name+"</strong> carregado com sucesso!", function () {
+                $("#grid").data("kendoGrid").dataSource.read();
+            }, 3);
         }
 
         

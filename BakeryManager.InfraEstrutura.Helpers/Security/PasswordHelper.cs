@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
-namespace BakeryManager.Infraestrutura.Helpers.Security
+namespace BakeryManager.InfraEstrutura.Helpers.Security
 {
     public static class PasswordHelper
     {

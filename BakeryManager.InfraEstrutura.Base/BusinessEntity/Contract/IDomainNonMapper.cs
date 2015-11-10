@@ -1,4 +1,4 @@
-﻿namespace BakeryManager.Infraestrutura.Base.BusinessEntity.Contract
+﻿namespace BakeryManager.InfraEstrutura.Base.BusinessEntity.Contract
 {
     public interface IDomainNonMapper
     {

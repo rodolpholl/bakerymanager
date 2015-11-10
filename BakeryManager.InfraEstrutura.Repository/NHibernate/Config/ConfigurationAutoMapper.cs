@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using BakeryManager.Infraestrutura.Repository.NHibernate.Conventions;
+using BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Conventions.Helpers;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config
 {
     /// <summary>
     /// Configuração NHibernate para Automapeamento. Configuração padrão da Infra-estrutura BakeryManager.

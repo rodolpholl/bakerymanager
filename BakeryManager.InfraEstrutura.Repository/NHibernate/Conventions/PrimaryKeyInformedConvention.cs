@@ -7,7 +7,7 @@ using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using NHibernate.Id;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Conventions
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
 {
     public class PrimaryKeyInformedConvention : IIdConvention
     {

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BakeryManager.Infraestrutura.Repository.Contract;
+using BakeryManager.InfraEstrutura.Repository.Contract;
 using NHibernate;
 using NHibernate.Context;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.MultiSession
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.MultiSession
 {
     public class MultiSessionFactoryBase : ISessionFactoryNHibernate
     {

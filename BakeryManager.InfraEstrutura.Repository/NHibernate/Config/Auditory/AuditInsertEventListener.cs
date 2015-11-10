@@ -4,11 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using BakeryManager.Infraestrutura.Helpers;
-using BakeryManager.Infraestrutura.Helpers.Security;
+using BakeryManager.InfraEstrutura.Helpers;
+using BakeryManager.InfraEstrutura.Helpers.Security;
 using NHibernate.Event;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config.Auditory
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config.Auditory
 {
     internal class AuditInsertEventListener : AuditEventListenerBase, IPostInsertEventListener
     {

@@ -4,11 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using BakeryManager.Infraestrutura.Repository.Contract;
+using BakeryManager.InfraEstrutura.Repository.Contract;
 
 
 
-namespace BakeryManager.Infraestrutura.Base.BusinessManagement
+namespace BakeryManager.InfraEstrutura.Base.BusinessManagement
 {
     public class BusinessManagementBase<T> : IBusinessManagementBase<T>, IDisposable where T : class
     {

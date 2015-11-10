@@ -1,16 +1,16 @@
 ﻿using System.Reflection;
 using System.Web;
-using BakeryManager.Infraestrutura.Helpers.Security;
-using BakeryManager.Infraestrutura.Repository.NHibernate.Config.Auditory;
+using BakeryManager.InfraEstrutura.Helpers.Security;
+using BakeryManager.InfraEstrutura.Repository.NHibernate.Config.Auditory;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using BakeryManager.Infraestrutura.Repository.Contract;
+using BakeryManager.InfraEstrutura.Repository.Contract;
 using NHibernate.Cfg;
 using NHibernate.Event;
 using BakeryManager.InfraEstrutura.Repository;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config
 {
     /// <summary>
     /// Classe que compõe os parâmetros de configuração para inicialização de uma Seção.

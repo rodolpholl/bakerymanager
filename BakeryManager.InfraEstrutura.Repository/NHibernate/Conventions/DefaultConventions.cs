@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Conventions
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
 {
     internal static class DefaultConventions
     {

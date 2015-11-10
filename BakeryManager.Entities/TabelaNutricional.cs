@@ -45,6 +45,7 @@ namespace BakeryManager.Entities
         public virtual string Nome { get; set; }
         public virtual string UnidadeMedida { get; set; }
         public virtual double? ValorDiario { get; set; }
+        public virtual string NomePlanilhaCarga { get; set; }
         
     }
 }

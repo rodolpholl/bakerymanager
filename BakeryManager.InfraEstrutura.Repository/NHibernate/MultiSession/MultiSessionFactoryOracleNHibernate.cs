@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BakeryManager.Infraestrutura.Repository.NHibernate.DBFactoryBuilder;
+using BakeryManager.InfraEstrutura.Repository.NHibernate.DBFactoryBuilder;
 using FluentNHibernate.Cfg;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.MultiSession
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.MultiSession
 {
     public class MultiSessionFactoryOracleNHibernate: MultiSessionFactoryBase
     {

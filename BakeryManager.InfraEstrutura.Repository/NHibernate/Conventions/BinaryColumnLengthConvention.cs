@@ -9,7 +9,7 @@ using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
 
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Conventions
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
 {
     public class BinaryColumnLengthConvention : IPropertyConvention, IPropertyConventionAcceptance
     {

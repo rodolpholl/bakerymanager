@@ -1,5 +1,5 @@
 ﻿using BakeryManager.Entities;
-using BakeryManager.Infraestrutura.Base.BusinessManagement;
+using BakeryManager.InfraEstrutura.Base.BusinessManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace BakeryManager.Repositories
 {
     public class IngredienteBM : BusinessManagementBase<Ingrediente>
     {
-        public Ingrediente GetByCodigoTACO(string Codigo)
+        public Ingrediente GetByCodigoTACO(int Codigo)
         {
-            return this.Query().FirstOrDefault(x => x.CodigoTACO.Equals(int.Parse(Codigo)));
+            return this.Query().FirstOrDefault(x => x.CodigoTACO == Codigo);
         }
 
         public IList<Ingrediente> GetListaIngredientesByFiltro(string textoPesquisa)

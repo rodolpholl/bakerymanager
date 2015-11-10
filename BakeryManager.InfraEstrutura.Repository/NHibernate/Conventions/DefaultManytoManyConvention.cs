@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BakeryManager.Infraestrutura.Helpers;
+using BakeryManager.InfraEstrutura.Helpers;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Conventions
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
 {
     public class DefaultManytoManyConvention : ManyToManyTableNameConvention
     {

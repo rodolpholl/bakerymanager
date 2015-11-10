@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BakeryManager.Infraestrutura.Repository.Contract;
+using BakeryManager.InfraEstrutura.Repository.Contract;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.DBFactoryBuilder
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.DBFactoryBuilder
 {
     internal static class DBFactoryOracle
     {

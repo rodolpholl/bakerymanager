@@ -147,6 +147,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\Imagens\grabbing.cur" />
     <Content Include="Content\Imagens\load.gif" />
+    <Content Include="Content\img\uploadify-cancel.png" />
     <Content Include="Content\kendo.bootstrap.min.css" />
     <Content Include="Content\kendo.bootstrap.mobile.min.css" />
     <Content Include="Content\kendo.common.min.css" />
@@ -190,6 +191,7 @@
     <Content Include="Content\UploadfyContent\uploadify-cancel.png" />
     <Content Include="Content\UploadfyContent\uploadify.css" />
     <Content Include="Content\UploadfyContent\uploadify.swf" />
+    <Content Include="Content\uploads\uploadFolder.txt" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -258,6 +260,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BMWebHelper.cs" />
     <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Controllers\Cadastros\CadastroIngredientesController.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />

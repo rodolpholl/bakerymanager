@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Conventions
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
 {
     public static class AssignedPrimakeyConventions
     {

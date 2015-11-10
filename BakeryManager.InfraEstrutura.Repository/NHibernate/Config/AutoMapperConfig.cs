@@ -7,7 +7,7 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Steps;
 using FluentNHibernate.Conventions;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config
 {
     /// <summary>(type.BaseType == null 
     /// Classe de Configuração do AutoMapeamento.

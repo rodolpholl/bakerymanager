@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
-using BakeryManager.Infraestrutura.Repository.Contract;
+using BakeryManager.InfraEstrutura.Repository.Contract;
 using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Context;
 using NHibernate.Tool.hbm2ddl;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate
 {
     /// <summary>
     /// Classe construtora de uma Seção do NHibernate

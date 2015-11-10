@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 
-namespace BakeryManager.Infraestrutura.Repository.Contract
+namespace BakeryManager.InfraEstrutura.Repository.Contract
 {
     public interface IRepositoryBase<T> : IDisposable
     {

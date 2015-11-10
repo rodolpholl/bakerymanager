@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config.Auditory
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config.Auditory
 {
     public class AuditRegister
     {

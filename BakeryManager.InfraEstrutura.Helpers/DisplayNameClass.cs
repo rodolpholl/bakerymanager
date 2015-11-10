@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BakeryManager.Infraestrutura.Helpers
+namespace BakeryManager.InfraEstrutura.Helpers
 {
     [System.AttributeUsage(System.AttributeTargets.Class)]
     public class DisplayNameClass : System.Attribute

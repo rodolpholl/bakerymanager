@@ -11,7 +11,7 @@ using System.Web;
 using System.Web.Security;
 using BakeryManager.BackOffice.Models;
 using BakeryManager.Entities;
-using BakeryManager.Infraestrutura.Helpers;
+using BakeryManager.InfraEstrutura.Helpers;
 
 namespace BakeryManager.BackOffice.Helpers
 {

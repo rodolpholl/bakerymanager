@@ -1,5 +1,5 @@
 ﻿using BakeryManager.Entities;
-using BakeryManager.Infraestrutura.Base.BusinessManagement;
+using BakeryManager.InfraEstrutura.Base.BusinessManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +24,12 @@ namespace BakeryManager.Repositories
         {
             var result =  Query().Where(x => listIdIngrediente.Contains(x.Ingrediente.IdIngrediente)).Distinct().ToList();
             return result;
+        }
+
+        public IngredienteTabelaNutricional GetByIngredienteAndTabelaNutricional(Ingrediente ingrediente, TabelaNutricional componente)
+        {
+            return Query().FirstOrDefault(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional && 
+                                               x.Ingrediente.IdIngrediente == ingrediente.IdIngrediente);
         }
     }
 }

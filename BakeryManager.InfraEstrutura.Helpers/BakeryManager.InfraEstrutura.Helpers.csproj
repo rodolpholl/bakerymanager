@@ -71,6 +71,7 @@
     <Compile Include="DisplayNameClass.cs" />
     <Compile Include="EmailHelper.cs" />
     <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Mvc\UploadControlExtention.cs" />
     <Compile Include="Inflector.cs" />
     <Compile Include="MVCHelper.cs" />
     <Compile Include="ProcessHelper.cs" />

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BakeryManager.Infraestrutura.Repository.NHibernate;
-using BakeryManager.Infraestrutura.Repository.NHibernate.Config;
+using BakeryManager.InfraEstrutura.Repository.NHibernate;
+using BakeryManager.InfraEstrutura.Repository.NHibernate.Config;
 
 using Spring.Context;
 using Spring.FluentContext;

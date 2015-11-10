@@ -1,4 +1,4 @@
-﻿namespace BakeryManager.Infraestrutura.Base.Teste.Contracts
+﻿namespace BakeryManager.InfraEstrutura.Base.Teste.Contracts
 {
     public interface ITestBase
     {

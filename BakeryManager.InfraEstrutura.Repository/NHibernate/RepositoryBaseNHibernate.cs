@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
-using BakeryManager.Infraestrutura.Repository.Contract;
+using BakeryManager.InfraEstrutura.Repository.Contract;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Criterion;
@@ -14,7 +14,7 @@ using NHibernate.Transform;
 using NHibernate.Util;
 
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate
 {
     /// <summary>
     /// Classe repositório genérico para NHibernate

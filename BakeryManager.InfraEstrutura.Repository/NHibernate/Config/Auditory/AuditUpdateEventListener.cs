@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BakeryManager.Infraestrutura.Helpers;
-using BakeryManager.Infraestrutura.Helpers.Security;
+using BakeryManager.InfraEstrutura.Helpers;
+using BakeryManager.InfraEstrutura.Helpers.Security;
 using NHibernate;
 using NHibernate.Event;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config.Auditory
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config.Auditory
 {
     internal class AuditUpdateEventListener : AuditEventListenerBase, IPostUpdateEventListener
     {

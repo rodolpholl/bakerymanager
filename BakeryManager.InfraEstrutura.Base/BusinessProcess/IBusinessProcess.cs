@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BakeryManager.Infraestrutura.Base.BusinessProcess
+namespace BakeryManager.InfraEstrutura.Base.BusinessProcess
 {
     public interface IBusinessProcessBase : IDisposable
     {

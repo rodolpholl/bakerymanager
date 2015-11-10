@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using BakeryManager.Infraestrutura.Helpers;
-using BakeryManager.Infraestrutura.Helpers.Security;
+using BakeryManager.InfraEstrutura.Helpers;
+using BakeryManager.InfraEstrutura.Helpers.Security;
 using NHibernate.Param;
 using BakeryManager.InfraEstrutura.Repository;
 
-namespace BakeryManager.Infraestrutura.Repository.NHibernate.Config.Auditory
+namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Config.Auditory
 {
     internal class AuditEventListenerBase
     {

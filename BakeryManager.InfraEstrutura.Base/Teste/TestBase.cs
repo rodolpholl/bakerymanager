@@ -1,6 +1,6 @@
-﻿using BakeryManager.Infraestrutura.Base.Teste.Contracts;
+﻿using BakeryManager.InfraEstrutura.Base.Teste.Contracts;
 
-namespace BakeryManager.Infraestrutura.Base.Teste
+namespace BakeryManager.InfraEstrutura.Base.Teste
 {
     public abstract class TestBase : ITestBase
     {

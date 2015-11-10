@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BakeryManager.Infraestrutura.Helpers
+namespace BakeryManager.InfraEstrutura.Helpers
 {
     public static class ProcessHelper
     {

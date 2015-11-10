@@ -1,6 +1,6 @@
 ﻿using BakeryManager.Entities;
-using BakeryManager.Infraestrutura.Base.BusinessProcess;
-using BakeryManager.Infraestrutura.Helpers.Security;
+using BakeryManager.InfraEstrutura.Base.BusinessProcess;
+using BakeryManager.InfraEstrutura.Helpers.Security;
 using BakeryManager.Repositories.Seguranca;
 using System;
 using System.Linq;
