@@ -1,31 +1,44 @@
 ﻿@using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Cadastros.Produtos
-@model IList<ProdutoGaleriaFotoModel>
+@using BakeryManager.BackOffice.Helpers
+
 
 
 <div class="col-lg-8">
-    <form method="post" id="frmUpload" action="@Url.Action("AtualizarGaleiraFotos")" role="form" class="form-horizontal">
+    <form method="post" id="frmUpload"  role="form" class="form-horizontal">
 
         @Html.Hidden("hdlGaleriaFotoUID", ViewData["galeriaFotoUID"])
-
+        
         <div class="col-md-8">
             <div class="form-group">
 
             </div>
             <div class="form-group">
                 <div class="col-md-10">
+                    @(Html.UploadControl("uploadImage",
+                                        new string[] {
+                                            "*.jpg",
+                                            "*.png",
+                                            "*.gif",
+                                            "*.bmp",
+                                            "*.tif"
+                                        },
+                                        Url.Action("CarregarImagem")+"?galeriaFotoUID="+ViewData["galeriaFotoUID"],
+                                        "UpdateComplete")
 
-                    @(Html.Kendo().Upload()
-                      .Name("galeriaFotos")
-                      .Multiple(true)
-                      .Files(files =>
-                       {
-                           foreach (var f in (IList<ProdutoGaleriaFotoModel>)Model)
-                           {
-                               files.Add().Name(f.NomeArquivo).Extension(f.Extensao).Size(f.Tamanho);
-                           }
-                       })
-                    )
+                     )
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <div class="col-md-10" id="divGaleria">
+
+                    @if (ViewData["GaleriaFoto"] != null)
+                    {
+                        @Html.Partial("Carousel", (IList<ProdutoGaleriaFotoModel>)ViewData["GaleriaFoto"])
+                    }
                 </div>
 
             </div>
@@ -35,3 +48,38 @@
     </form>
 
 </div>
+
+<script>
+
+    function UpdateComplete(file, data, response) {
+        $("#loadScreen").dialog("close");
+        $("#divGaleria").html(data);
+    }
+
+    function ExclirFotoGaleria(caminhoArquivo) {
+
+        confirm("Deseja Realmente Excluir esta foto?", function () {
+            $.ajax({
+
+                url: '@Url.Action("ExcluirArquivoGaleria")',
+                method: "POST",
+                data: {
+                    galeriaFotoUID: $("#hdlGaleriaFotoUID").val(),
+                    arquivo: caminhoArquivo
+                },
+                success: function (data) {
+
+                    $("#loadScreen").dialog("close");
+                    $("#divGaleria").html(data);
+
+                }
+
+
+            });
+        },2);
+
+
+        
+    }
+
+</script>

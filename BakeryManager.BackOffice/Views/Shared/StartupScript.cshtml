@@ -97,8 +97,9 @@
         }
     }
 
-    function UploadDialogClose(file) {
-        $("#loadScreen").dialog("open");
+    function UploadDialogClose(queueData) {
+        if (queueData.queueLength > 0)
+            $("#loadScreen").dialog("open");
     }
 
     

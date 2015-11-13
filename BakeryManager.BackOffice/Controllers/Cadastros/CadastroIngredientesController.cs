@@ -13,6 +13,7 @@ using BakeryManager.InfraEstrutura.Helpers;
 using BakeryManager.BackOffice.Models.Cadastros.Ingredientes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -427,7 +428,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         }
 
-        public ActionResult CarregarArquivo()
+        [HttpPost]
+        public string CarregarArquivo()
         {
             try {
                 using (var cadIngrediente = new CadastroIngredientes())
@@ -436,13 +438,15 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     var path = Server.MapPath(string.Concat("~\\Content\\uploads\\", file.FileName));
                     file.SaveAs(path);
                     cadIngrediente.CarregarTabelaNutricional(path);
-                    return Content("Arquivo Salvo com Sucesso!");
+                    var fl = new FileInfo(path);
+                    fl.Delete();
+                    return "Arquivo Salvo com Sucesso!";
                 }
             }
 
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                return ex.Message;
             }
 
         }

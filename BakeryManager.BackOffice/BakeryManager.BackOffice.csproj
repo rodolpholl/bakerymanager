@@ -348,6 +348,7 @@
     <Content Include="Views\Simulador\Index.cshtml" />
     <Content Include="Views\CadastroProduto\GaleriaFotos.cshtml" />
     <Content Include="Views\CadastroIngredientes\Index.cshtml" />
+    <Content Include="Views\CadastroProduto\Carousel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -357,7 +358,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Imagens\Produto\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

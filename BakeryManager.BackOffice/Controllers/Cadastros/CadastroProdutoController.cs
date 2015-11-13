@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.IO;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
 using BakeryManager.Services;
@@ -66,9 +67,11 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         public ActionResult Criar()
         {
             ViewData["GaleriaFoto"] = new List<ProdutoGaleriaFotoModel>();
-            ViewData["galeriaFotoUID"] = WebHelpers.ObterNovoUID();
+            StartupGaleriaFotos(0);
             return View(new ProdutoModel());
         }
+
+        
 
         [HttpPost]
         public JsonResult Criar(ProdutoModel pProdutoModel)
@@ -116,7 +119,21 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         {
             //provisório para testes
             ViewData["GaleriaFoto"] = new List<ProdutoGaleriaFotoModel>();
-            ViewData["galeriaFotoUID"] = WebHelpers.ObterNovoUID();
+            StartupGaleriaFotos(Id);
+
+
+            //Carregando as fotos do produto no diretório temporário
+            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", ViewData["galeriaFotoUID"].ToString())));
+            var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/", Id.ToString())));
+
+
+            foreach (var f in directoryProd.GetFiles())
+                f.CopyTo(string.Concat(direcotryTemp,"//",f.Name), true);
+
+            
+
+            ViewData["GaleriaFoto"] = CarregaGaleriaFoto(ViewData["galeriaFotoUID"].ToString());
+
 
             using (var cadProduto = new CadastroProduto())
             {
@@ -178,6 +195,22 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                           }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        private void StartupGaleriaFotos(int IdProduto)
+        {
+
+            var UID = WebHelpers.ObterNovoUID();
+            var path = Server.MapPath("~/Content/uploads/Produto/temp/");
+            path += UID;
+            Directory.CreateDirectory(path);
+
+            ViewData["galeriaFotoUID"] = UID;
+
+        }
+
+        
+
 
         public JsonResult Desativar(int Id)
         {
@@ -318,8 +351,76 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
        }
 
         [HttpPost]
-        public ActionResult AtualizarGaleiraFotos(FormCollection formItens)
+        public ActionResult CarregarImagem(string galeriaFotoUID)
         {
+            
+            var file = Request.Files["Filedata"];
+            var path = Server.MapPath(string.Concat("~\\Content\\uploads\\Produto\\temp\\",galeriaFotoUID,"\\", file.FileName));
+            file.SaveAs(path);
+            var modelGaleria = CarregaGaleriaFoto(galeriaFotoUID);
+            return Content(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroProduto/Carousel.cshtml"),modelGaleria));
+            
+        }
+
+        private IList<ProdutoGaleriaFotoModel> CarregaGaleriaFoto(string galeriaFotoUID)
+        {
+            
+            var direcotry = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID)));
+
+            var retorno = direcotry.GetFiles().OrderByDescending(f => f.LastAccessTime).Select(f => new ProdutoGaleriaFotoModel
+            {
+                CaminhoArquivo = Url.Content(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID,"/", f.Name)),
+                NomeFisico = f.Name,
+                Tamanho = f.Length
+            }).ToList();
+
+            return retorno;
+        }
+
+     
+        public JsonResult AtualizarGaleiraFotos(string galeriaFotosUID,int IdProduto)
+        {
+            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotosUID)));
+            var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/", IdProduto.ToString())));
+
+            if (!directoryProd.Exists)
+                directoryProd.Create();
+            else
+            {
+                directoryProd.Delete(true);
+                directoryProd.Create();
+            }
+
+            foreach(var ft in direcotryTemp.GetFiles())
+            {
+                var newFile = string.Concat(directoryProd.FullName,"\\",ft.Name);
+                ft.MoveTo(newFile);
+            }
+
+            direcotryTemp.Delete(true);
+
+            return Json(new
+            {
+                TipoMensagem = TipoMensagemRetorno.Ok,
+                Mensagem = "Operação Realizada com sucesso!",
+            }, "text/html", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ExcluirArquivoGaleria(string galeriaFotoUID, string arquivo)
+        {
+            var file = new FileInfo(Server.MapPath(arquivo));
+            file.Delete();
+
+            var modelGaleria = CarregaGaleriaFoto(galeriaFotoUID);
+            return Content(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroProduto/Carousel.cshtml"), modelGaleria));
+            
+        }
+
+        public ActionResult ExcluirGaleriaTemporaria(string galeriaFotoUID)
+        {
+            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID)));
+            direcotryTemp.Delete(true);
+
             return View();
         }
     }

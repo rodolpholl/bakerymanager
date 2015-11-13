@@ -87,8 +87,10 @@ namespace BakeryManager.InfraEstrutura.Helpers.Mvc
                 sb.Append(string.Format("'fileTypeExts' : \"{0}\",", fileExt));
             }
 
+            sb.Append("'successTimeout' : 3600,");
+            sb.Append("'method' : 'post',");
             sb.Append(string.Format("'uploader': \"{0}\",",UploadActionUrl));
-            sb.Append(string.Format("'onUploadSuccess': {0}",UploadSuccessFunction));
+            sb.Append(string.Format("'onUploadSuccess': {0}", UploadSuccessFunction));
 
             if(!string.IsNullOrWhiteSpace(UploadDialogCloseFunction))
                 sb.Append(string.Format(",'onDialogClose': {0}", UploadDialogCloseFunction));

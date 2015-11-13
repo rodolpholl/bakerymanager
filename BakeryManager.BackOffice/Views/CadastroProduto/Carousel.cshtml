@@ -1,0 +1,41 @@
+﻿@model IList<BakeryManager.BackOffice.Models.Cadastros.Produtos.ProdutoGaleriaFotoModel>
+
+<div id="crImagens" class="carousel slide" data-ride="carousel">
+
+    <ol class="carousel-indicators">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            if (i == Model.Count - 1)
+            {
+                <li data-target="#crImagens" data-slide-to="@i.ToString()"class="active"></li>
+            }
+            else
+            {
+                <li data-target="#crImagens" data-slide-to="@i.ToString()"></li>
+            }
+        }
+    </ol>
+    <div class="carousel-inner" role="listbox">
+
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <div class="item @(i == 0 ? "active" : "")">
+                <img src="@Model[i].CaminhoArquivo" />
+                <div class="container">
+                    <div class="carousel-caption">
+                        <p><a class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="ExclirFotoGaleria('@Model[i].CaminhoArquivo')" role="button">Excluir</a></p>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <a class="left carousel-control" href="#crImagens" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#crImagens" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Próximo</span>
+    </a>
+</div>

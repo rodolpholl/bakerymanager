@@ -5,9 +5,6 @@
 }
 
 
-@{
-    ViewBag.Title = "Novo Ingrediente";
-}
 
 <div class="container-fluid">
 
@@ -83,25 +80,39 @@
                             url: "@Url.Action("AtualizarGaleiraFotos")",
                             dataType: "json",
                             data: {
-                                Arquivos: $("#frmUpload").serialize(),
+                                galeriaFotosUID: $("#hdlGaleriaFotoUID").val(),
                                 IdProduto: data.IdProduto
                             },
                             success: function (data) {
 
                                 alert(data.Mensagem, function () {
-                                    if (data.URLDestino != undefined)
-                                        window.location.href = data.URLDestino;
+                                    window.location.href = '@Url.Action("Criar")';
                                 }, data.TipoMensagem);
 
                             }
 
-                        })
+                        });
 
 
                     }
 
                 });
             }
+        });
+
+        $(window).unload(function () {
+            $.ajax({
+
+                url: '@Url.Action("ExcluirGaleriaTemporaria")',
+                data: {
+                    galeriaFotoUID: $("#hdlGaleriaFotoUID").val()
+                },
+
+                success: function () {
+                    return;
+                }
+
+            });
         });
 
 

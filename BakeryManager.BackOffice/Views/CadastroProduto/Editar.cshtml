@@ -60,6 +60,8 @@
             var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
 
 
+
+
             $("#btnSalvar").click(function (evt) {
 
                 evt.preventDefault();
@@ -75,17 +77,22 @@
                         success: function (data) {
 
 
-                            //$("#frmUpload").submit(function (e) {
+                            $.ajax({
+                                url: "@Url.Action("AtualizarGaleiraFotos")",
+                                dataType: "json",
+                                data: {
+                                    galeriaFotosUID: $("#hdlGaleriaFotoUID").val(),
+                                    IdProduto: data.IdProduto
+                                },
+                                success: function (data) {
 
-                            //    alert(data.Mensagem, function () {
-                            //        if (data.URLDestino != undefined)
-                            //            window.location.href = data.URLDestino;
-                            //    }, data.TipoMensagem);
+                                    alert(data.Mensagem, function () {
+                                        window.location.href = '@Url.Action("Index")';
+                                    }, data.TipoMensagem);
 
-                            //});
+                                }
 
-                            $("#frmUpload").submit();
-
+                            });
 
 
 
@@ -96,7 +103,24 @@
             });
 
 
+            $(window).unload(function () {
+                $.ajax({
+
+                    url: '@Url.Action("ExcluirGaleriaTemporaria")',
+                    data: {
+                        galeriaFotoUID: $("#hdlGaleriaFotoUID").val()
+                    },
+
+                    success: function () {
+                        return;
+                    }
+
+                });
+            });
+
         });
+
+      
     </script>
 
 }
