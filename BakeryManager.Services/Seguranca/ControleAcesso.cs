@@ -50,7 +50,8 @@ namespace BakeryManager.Services.Seguranca
 
         public bool ValidaPendenciaPassword(string Login)
         {
-            return string.IsNullOrWhiteSpace(usuarioBm.GetByLogin(Login).Password);
+            var user = usuarioBm.GetByLogin(Login);
+            return (!user.AutenticaSenhaDia && string.IsNullOrWhiteSpace(user.Password));
         }
 
         public RegistroAcesso RegistrarLogin(string Login, string Senha, string Ip)
@@ -181,7 +182,7 @@ namespace BakeryManager.Services.Seguranca
         {
             try
             {
-                //ValidarPassowordInformado(user, TipoValidacaoPassword.NovoAcesso, newPassword, confirmNewPassword);
+                ValidarPassowordInformado(user, TipoValidacaoPassword.NovoAcesso, newPassword, confirmNewPassword);
                 RegistarAcessoUsuario(user, newPassword);
             }
             catch (Exception ex)

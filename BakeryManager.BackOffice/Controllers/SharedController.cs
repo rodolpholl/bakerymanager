@@ -1,4 +1,5 @@
-﻿using BakeryManager.BackOffice.Models.Login;
+﻿using BakeryManager.BackOffice.Helpers;
+using BakeryManager.BackOffice.Models.Login;
 using BakeryManager.Entities;
 using BakeryManager.Entities.Seguranca.Enums;
 using BakeryManager.InfraEstrutura.Helpers;
@@ -19,7 +20,19 @@ namespace BakeryManager.BackOffice.Controllers
             using (var controleAcesso = new ControleAcesso())
             {
                 var user = controleAcesso.GetUsuarioByLogin(User.Identity.Name);
+                
+                if (controleAcesso.ValidaPendenciaPassword(user.Login))
+                {
+                    WebHelpers.LogOut();
+                    Json(new LoginModel()
+                    {
+                        Login = "Error"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
 
+                }
                 return Json(new LoginModel()
                 {
                     Login = user.Login,

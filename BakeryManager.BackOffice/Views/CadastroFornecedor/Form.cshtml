@@ -1,0 +1,61 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
+@model FornecedorModel
+
+@Html.ValidationSummary(true)
+
+@Html.HiddenFor(x => x.IdFornecedor)
+
+
+<div class="tab-content" style="padding-top: 40px">
+
+    <div class="tab-pane active" id="dadosgerais">
+
+        <div class="col-lg-8">
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new { @class="form-control" })
+                    @Html.ValidationMessageFor(x => x.Nome)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.RazaoSocial, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @Html.Kendo().TextBoxFor(x => x.RazaoSocial).HtmlAttributes(new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.RazaoSocial)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.CNPJ, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00.000.000/0000.00").HtmlAttributes(new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.CNPJ)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
+
+                <div class="col-sm-10">
+                    @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.CEP)
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="tab-pane" id="contatos">
+
+    </div>
+
+</div>
+

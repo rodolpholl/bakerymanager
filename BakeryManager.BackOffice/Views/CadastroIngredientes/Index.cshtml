@@ -33,24 +33,7 @@
                 <label>Carregar Arquivos. Selecione uma Planilha para carregar</label>
                 <div class="form-group ">
 
-                    @*<input type="file" name="fileLoad" id="fileLoad" class="form-control"  />
-
-                    <script type="text/javascript">
-                            $(function () {
-                                $('#fileLoad').uploadify({
-                                    'swf': "@Url.Content("~/Content/UploadfyContent/uploadify.swf")",
-                                    'cancelImg': "@Url.Content("~/Content/UploadfyContent/uploadify-cancel.png")",
-                                    'fileTypeExts' : "*.xlsx",
-                                    'uploader': "@Url.Action("CarregarArquivo")",
-                                    'onDialogClose': UploadDialogClose,
-                                    'onUploadSuccess': UploadSuccess,
-                                    'onUploadError': UploadError
-                                });
-                                
-                            });
-
-                    </script>*@
-
+             
                     @(Html.UploadControl("fileLoad",new string[]
                                        {
                                           "@.xlsx"
@@ -141,7 +124,7 @@
         
 
         function Desativar(IdIngrediente) {
-            confirm("Deseja Ralmente Desativar este Produto?", function () {
+            confirm("Deseja Ralmente Desativar este Ingrediente?", function () {
 
                 $.ajax({
 
@@ -162,7 +145,7 @@
 
 
         function Reativar(IdIngrediente) {
-            confirm("Deseja Ralmente Reativar este Produto?", function () {
+            confirm("Deseja Ralmente Reativar este Ingrediente?", function () {
                 $.ajax({
 
                     url: '@Url.Action("Reativar")',

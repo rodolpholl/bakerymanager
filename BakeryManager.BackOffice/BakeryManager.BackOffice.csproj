@@ -248,6 +248,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaProdutoController.cs" />
+    <Compile Include="Controllers\Cadastros\CadastroFornecedorController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroPerfilController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroProdutoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroUsuariosController.cs" />
@@ -263,6 +264,8 @@
     <Compile Include="Helpers\BMWebHelper.cs" />
     <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Controllers\Cadastros\CadastroIngredientesController.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorContatoModel.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
@@ -349,6 +352,11 @@
     <Content Include="Views\CadastroProduto\GaleriaFotos.cshtml" />
     <Content Include="Views\CadastroIngredientes\Index.cshtml" />
     <Content Include="Views\CadastroProduto\Carousel.cshtml" />
+    <Content Include="Views\CadastroFornecedor\Index.cshtml" />
+    <Content Include="Views\CadastroFornecedor\Criar.cshtml" />
+    <Content Include="Views\CadastroFornecedor\Form.cshtml" />
+    <Content Include="Views\CadastroFornecedor\Editar.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

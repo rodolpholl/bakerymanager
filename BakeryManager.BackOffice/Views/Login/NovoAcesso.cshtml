@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Registrar Nova Senha";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
 
@@ -23,11 +24,10 @@
 
     <div class="row">
         <div class="col-lg-6">
-            @using (Html.BeginForm("NovoAcesso", "Login", FormMethod.Post, new { id = "frmNovoAcesso", data_messageType = "modal", @class = "form-horizontal", rule = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
 
+            <form class="form-horizontal" id="frmNovoAcesso" rule="form">
              
                 <div class="form-group">
                     @Html.LabelFor(x => x.NewPassword, new { @class = "col-sm-2 control-label" })
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-            }
+            </form>
         </div>
     </div>
 
@@ -81,16 +81,18 @@
 
 
                 var novaSenhaCriptoHash = CryptoJS.SHA256($("#NewPassword").val());
-                var novaSenhaCripto = novaSenhaCriptoHash.toString(CryptoJS.enc.Base64);
+                var novaSenhaCripto = novaSenhaCriptoHash.toString(CryptoJS.enc.Base64).toString();
                 var confirmaSenhaCriptHash = CryptoJS.SHA256($("#ConfirmNewPassword").val());
-                var confirmaSenhaCript = confirmaSenhaCriptHash.toString(CryptoJS.enc.Base64);
+                var confirmaSenhaCripto = confirmaSenhaCriptHash.toString(CryptoJS.enc.Base64).toString();
+
+                $("#NewPassword").val(novaSenhaCripto);
+                $("#ConfirmNewPassword").val(confirmaSenhaCripto);
 
 
                 $.ajax({
-                    url: '@Url.Action("RegistrarNovoAcesso","Login")',
-                    method: "POST",
-                    dataType: "json",
-                    data: { NewPassword: novaSenhaCripto, ConfirmNewPassword: confirmaSenhaCript },
+                    url: '@Url.Action("RegistrarNovoAcesso")',
+                    method: 'POST',
+                    data: $("#frmNovoAcesso").serialize(),
                     success: function (data) {
 
                         if (data.TipoMensagem == 1)
@@ -99,11 +101,11 @@
                             alert("Alteração Realizada com sucesso!",  function () {
                                 window.location.href = '@Url.Action("Index","Home")';
                             },3);
-                            
+
                         }
                     },
-                    error: function (data) {
-                        alert(data.Mensagem, "", data.TipoMensagem);
+                    error: function (data,er) {
+                        alert(er, "", data.TipoMensagem);
                     }
                 });
             }
@@ -133,7 +135,7 @@
                 async: true,
                 success: function () {
 
-                    window.location.href = '@Url.Action("Index")';
+                   return;
 
                 }
 

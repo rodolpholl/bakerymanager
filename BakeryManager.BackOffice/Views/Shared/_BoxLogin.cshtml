@@ -31,8 +31,13 @@
 
                 $.getJSON('@Url.Action("GetLoginInformation", "Shared")',
                           function (data) {
-                              setUserLogedData(data.Nome, data.Login, data.Atribuicao);
-                              $("#lblNome").text(window.localStorage.nomeUsuarioLogado);
+                              if (data.Login == "Error") {
+                                  window.location.href = '@Url.Action("Index","Login")';
+                              }
+                              else {
+                                  setUserLogedData(data.Nome, data.Login, data.Atribuicao);
+                                  $("#lblNome").text(window.localStorage.nomeUsuarioLogado);
+                              }
                           });
             }
             

@@ -46,6 +46,7 @@
     <Compile Include="Formula.cs" />
     <Compile Include="FormulaTabelaNutricional.cs" />
     <Compile Include="Fornecedor.cs" />
+    <Compile Include="FornecedorContato.cs" />
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteFormula.cs" />
     <Compile Include="IngredienteHistoricoDesativacao.cs" />

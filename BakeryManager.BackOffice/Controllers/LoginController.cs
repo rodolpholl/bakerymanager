@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using BakeryManager.BackOffice.Models.Login;
 using BakeryManager.BackOffice.Models;
 
 namespace BakeryManager.BackOffice.Controllers
@@ -39,24 +38,20 @@ namespace BakeryManager.BackOffice.Controllers
                     {
                         var ra = controleAcesso.RegistrarLogin(Login.Login, Login.Senha, Request.ServerVariables["REMOTE_ADDR"]);
 
-
                         FormsAuthentication.SetAuthCookie(Login.Login, false);
-
-
-                        //if (ra.NovoAcesso)
-                        //    return RedirectToAction("NovoAcesso");
-                        //else
-
-                        //    return RedirectToAction("Index", "Home");
+                        
 
                         return Json(
-                               new
-                               {
-                                   TipoMensagem = TipoMensagemRetorno.Ok,
-                                   Mensagem = ra.NovoAcesso ? "NovoAcesso" : string.Empty,
-                                   URLDestino = Url.Action("Index", "Home")
+                              new
+                              {
+                                  TipoMensagem = TipoMensagemRetorno.Ok,
+                                  URLDestino = ra.NovoAcesso ? Url.Action("NovoAcesso") : Url.Action("Index", "Home")
 
-                               }, "text/html", JsonRequestBehavior.AllowGet);
+                              }, "text/html", JsonRequestBehavior.AllowGet);
+
+                       
+
+                        
                     }
                     catch (BusinessProcessException ex)
                     {
@@ -94,16 +89,20 @@ namespace BakeryManager.BackOffice.Controllers
 
         [Authorize]
         [HttpPost]
-        public JsonResult RegistrarNovoAcesso(NovoAcessoModel NovoAcesso)
+        public JsonResult RegistrarNovoAcesso(NovoAcessoModel model)
         {
             try
             {
+
+                
                 using (var controleAcesso = new ControleAcesso())
                 {
 
                     var user = controleAcesso.GetUsuarioByLogin(User.Identity.Name);
 
-                    controleAcesso.NovoAcesso(user, NovoAcesso.NewPassword, NovoAcesso.ConfirmNewPassword);
+                    controleAcesso.NovoAcesso(user, model.NewPassword, model.ConfirmNewPassword);
+
+                    FormsAuthentication.SetAuthCookie(user.Login, false);
 
                     return Json(
                               new
@@ -193,6 +192,7 @@ namespace BakeryManager.BackOffice.Controllers
             
             return View();
         }
+
 
     }
 }
