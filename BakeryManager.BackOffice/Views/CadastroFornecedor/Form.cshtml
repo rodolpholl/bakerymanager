@@ -4,58 +4,174 @@
 
 @Html.ValidationSummary(true)
 
-@Html.HiddenFor(x => x.IdFornecedor)
-
 
 <div class="tab-content" style="padding-top: 40px">
 
     <div class="tab-pane active" id="dadosgerais">
+        <form id="frmFornecedor" rule="form" class="form-horizontal">
+            
+            @Html.HiddenFor(x => x.IdFornecedor)
 
-        <div class="col-lg-8">
+            <div class="col-lg-8">
 
-            <div class="form-group">
-                @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
 
-                <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new { @class="form-control" })
-                    @Html.ValidationMessageFor(x => x.Nome)
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.RazaoSocial, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.RazaoSocial).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CNPJ, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00,000,000/0000-00").HtmlAttributes(new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Logradouro, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.Logradouro).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Numero, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.Numero).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Complemento, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.Complemento).HtmlAttributes(new { @class = "form-control", style = "width: 100px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Bairro, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.Bairro).HtmlAttributes(new { @class = "form-control", style = "width: 150px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Cidade, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.Cidade).HtmlAttributes(new { @class = "form-control", style = "width: 150px; text-transform: uppercase;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.UF, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
+                    </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(x => x.RazaoSocial, new { @class = "col-sm-2 control-label" })
-
-                <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.RazaoSocial).HtmlAttributes(new { @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.RazaoSocial)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(x => x.CNPJ, new { @class = "col-sm-2 control-label" })
-
-                <div class="col-sm-10">
-                    @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00.000.000/0000.00").HtmlAttributes(new { @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.CNPJ)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
-
-                <div class="col-sm-10">
-                    @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new { @class = "form-control" })
-                    @Html.ValidationMessageFor(x => x.CEP)
-                </div>
-            </div>
-
-        </div>
-
+        </form>
     </div>
 
     <div class="tab-pane" id="contatos">
+
+        @(Html.Kendo().Grid<FornecedorContatoModel>()
+            .Name("gridContatos")
+            .Columns(column =>
+            {
+                column.Bound(c => c.Nome).Title("Contato");
+                column.Bound(c => c.Telefone);
+                column.Bound(c => c.Email).Title("E-mail");
+                column.Bound(c => c.Site);
+                column.Command(cmd => cmd.Destroy().Text("Excluir")).Width(100);
+            })
+            .ToolBar(tb => tb.Create().Text("Adicionar"))
+            .Editable(edt => edt.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(false))
+            .Sortable()
+            .Filterable()
+            .Selectable()
+            .Scrollable(scr => scr.Height(200))
+            .DataSource(ds => ds
+                .Ajax()
+                .Batch(true)
+                .ServerOperation(false)
+                .Model(model => {
+                    model.Id(x => x.IdFornecedorContato);
+                    model.Field(x => x.Nome);
+                    model.Field(x => x.Telefone);
+                    model.Field(x => x.Email);
+                    model.Field(x => x.Site);
+                })
+                .Read(read => read.Action("GetContatos", "CadastroFornecedor").Data("getParametroContato"))
+            )
+        )
 
     </div>
 
 </div>
 
+
+<script type="text/javascript">
+
+    function getParametroContato() {
+        return {
+            IdFornecedor: $("#IdFornecedor").val()
+        }
+    }
+
+    $(function() {
+
+        $("#CEP").focusout(function(evt){
+
+            var cep = $("#CEP").val().replace("_", "").replace("-", "");
+
+            if (cep.length == 8) {
+
+                $.ajax({
+                    url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                    data: 'json',
+                    success: function (data) {
+
+                        $("#Logradouro").val(data.logradouro);
+                        $("#Complemento").val(data.complemento);
+                        $("#Bairro").val(data.bairro);
+                        $("#Cidade").val(data.localidade);
+                        $("#UF").val(data.uf);
+
+                        document.getElementById("Numero").focus();
+
+                    }
+                  
+                });
+
+            }
+
+       });
+
+    });
+
+</script>

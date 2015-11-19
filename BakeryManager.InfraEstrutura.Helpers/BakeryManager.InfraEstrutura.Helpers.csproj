@@ -58,6 +58,7 @@
     <Reference Include="System.Web.Mvc">
       <HintPath>..\packages\System.Web.Mvc.DLL</HintPath>
     </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnnotationsAttributes.cs" />
+    <Compile Include="Validators\AttributesHelpers.cs" />
     <Compile Include="Data\DataHelper.cs" />
     <Compile Include="DisplayNameClass.cs" />
     <Compile Include="EmailHelper.cs" />
@@ -81,10 +83,12 @@
   <ItemGroup>
     <Folder Include="Criptography\" />
     <Folder Include="Export\" />
-    <Folder Include="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

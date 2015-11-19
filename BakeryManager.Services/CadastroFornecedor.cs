@@ -56,5 +56,29 @@ namespace BakeryManager.Services
             Fornecedor.Ativo = true;
             AlterarFornecedor(Fornecedor);
         }
+
+        public IList<FornecedorContato> GetContatosFornecedor(int idFornecedor)
+        {
+            var retorno = fornecedorContatoBm.GetByFornecedor(fornecedorBm.GetByID(idFornecedor));
+            return retorno ?? new List<FornecedorContato>();
+
+        }
+
+        public void AtualizarContato(IList<FornecedorContato> ListaContato, int idFornecedor)
+        {
+
+
+            var listaAtual = fornecedorContatoBm.GetByFornecedor(fornecedorBm.GetByID(idFornecedor));
+
+            foreach (var contatoAtual in listaAtual)
+                fornecedorContatoBm.Delete(contatoAtual);
+
+
+            foreach(var contato in ListaContato)
+            {
+                contato.Fornecedor = fornecedorBm.GetByID(idFornecedor);
+                fornecedorContatoBm.Insert(contato);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BakeryManager.BackOffice.Models;
+using BakeryManager.BackOffice.Helpers;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -34,6 +35,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Cidade = x.Cidade,
                         CEP = x.CEP,
                         Nome = x.Nome,
+                        UF = x.UF,
                         IdFornecedor = x.IdFornecedor
                     }).AsEnumerable();
 
@@ -54,48 +56,66 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Criar( FornecedorModel fornecedorModel)
         {
-            try {
-                using (var cadForn = new CadastroFornecedor())
+            if (ModelState.IsValid)
+            {
+                try
                 {
-
-                    var forn = new Fornecedor()
+                    using (var cadForn = new CadastroFornecedor())
                     {
-                        Ativo = fornecedorModel.Ativo,
-                        Bairro = fornecedorModel.Bairro,
-                        CEP = fornecedorModel.CEP,
-                        Cidade = fornecedorModel.Cidade,
-                        CNPJ = fornecedorModel.CNPJ,
-                        Complemento = fornecedorModel.Complemento,
-                        Logradouro = fornecedorModel.Logradouro,
-                        Nome = fornecedorModel.Nome,
-                        Numero = fornecedorModel.Numero,
-                        RazaoSocial = fornecedorModel.RazaoSocial,
-                        UF = fornecedorModel.UF
-                    };
 
-                    cadForn.InserirFornecedor(forn);
+                        var forn = new Fornecedor()
+                        {
+                            Ativo = fornecedorModel.Ativo,
+                            Bairro = fornecedorModel.Bairro.ToUpper(),
+                            CEP = fornecedorModel.CEP.ToUpper(),
+                            Cidade = fornecedorModel.Cidade.ToUpper(),
+                            CNPJ = fornecedorModel.CNPJ.ToUpper(),
+                            Complemento = fornecedorModel.Complemento.ToUpper(),
+                            Logradouro = fornecedorModel.Logradouro.ToUpper(),
+                            Nome = fornecedorModel.Nome.ToUpper(),
+                            Numero = fornecedorModel.Numero.ToUpper(),
+                            RazaoSocial = fornecedorModel.RazaoSocial.ToUpper(),
+                            UF = fornecedorModel.UF.ToUpper()
+                        };
+
+                        cadForn.InserirFornecedor(forn);
 
 
+                        return Json(new
+                        {
+                            TipoMensagem = TipoMensagemRetorno.Ok,
+                            Mensagem = "Fornecedor Inserido com sucesso!",
+                            IdFornecedor = forn.IdFornecedor
+                        }, "text/html", JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                catch (Exception ex)
+                {
                     return Json(new
                     {
-                        TipoMensagem = TipoMensagemRetorno.Ok,
-                        Mensagem = "Fornecedor Inserido com sucesso!",
-                        URLDestino = Url.Action("Criar"),
-                        IdProduto = forn.IdFornecedor
+                        TipoMensagem = TipoMensagemRetorno.Erro,
+                        Mensagem = ex.Message,
                     }, "text/html", JsonRequestBehavior.AllowGet);
                 }
 
             }
-            catch(Exception ex)
+            else
             {
+                
                 return Json(new
                 {
                     TipoMensagem = TipoMensagemRetorno.Erro,
-                    Mensagem = ex.Message,
+                    Mensagem = WebHelpers.GetErrorsAsString(ModelState),
                 }, "text/html", JsonRequestBehavior.AllowGet);
+
             }
+                
+
 
         }
+
+        
 
         public ActionResult Editar(int Id)
         {
@@ -106,7 +126,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                 return View(new FornecedorModel()
                 {
-                    Ativo = forn.Ativo,
+                    IdFornecedor = forn.IdFornecedor,
                     Bairro = forn.Bairro,
                     CEP = forn.CEP,
                     Cidade = forn.Cidade,
@@ -116,7 +136,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Nome = forn.Nome,
                     Numero = forn.Numero,
                     RazaoSocial = forn.RazaoSocial,
-                    UF = forn.UF
+                    UF = forn.UF,
+                    Ativo = true
                 });
 
 
@@ -126,44 +147,58 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult Editar(FornecedorModel fornecedorModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                using (var cadForn = new CadastroFornecedor())
+                try
                 {
-                    
-                    var forn = cadForn.GetFornecedorById(fornecedorModel.IdFornecedor);
-                    
-                    forn.Ativo = fornecedorModel.Ativo;
-                    forn.Bairro = fornecedorModel.Bairro;
-                    forn.CEP = fornecedorModel.CEP;
-                    forn.Cidade = fornecedorModel.Cidade;
-                    forn.CNPJ = fornecedorModel.CNPJ;
-                    forn.Complemento = fornecedorModel.Complemento;
-                    forn.Logradouro = fornecedorModel.Logradouro;
-                    forn.Nome = fornecedorModel.Nome;
-                    forn.Numero = fornecedorModel.Numero;
-                    forn.RazaoSocial = fornecedorModel.RazaoSocial;
-                    forn.UF = fornecedorModel.UF;
-                    
-                    cadForn.AlterarFornecedor(forn);
-                    
+                    using (var cadForn = new CadastroFornecedor())
+                    {
+
+                        var forn = cadForn.GetFornecedorById(fornecedorModel.IdFornecedor);
+
+              
+                        forn.Bairro = fornecedorModel.Bairro.ToUpper();
+                        forn.CEP = fornecedorModel.CEP.ToUpper();
+                        forn.Cidade = fornecedorModel.Cidade.ToUpper();
+                        forn.CNPJ = fornecedorModel.CNPJ.ToUpper();
+                        forn.Complemento = fornecedorModel.Complemento.ToUpper();
+                        forn.Logradouro = fornecedorModel.Logradouro.ToUpper();
+                        forn.Nome = fornecedorModel.Nome.ToUpper();
+                        forn.Numero = fornecedorModel.Numero.ToUpper();
+                        forn.RazaoSocial = fornecedorModel.RazaoSocial.ToUpper();
+                        forn.UF = fornecedorModel.UF.ToUpper();
+
+                        cadForn.AlterarFornecedor(forn);
+
+                        return Json(new
+                        {
+                            TipoMensagem = TipoMensagemRetorno.Ok,
+                            Mensagem = "Fornecedor Alterado com sucesso!",
+                            IdFornecedor = forn.IdFornecedor
+                        }, "text/html", JsonRequestBehavior.AllowGet);
+                    }
+
+                }
+                catch (Exception ex)
+                {
                     return Json(new
                     {
-                        TipoMensagem = TipoMensagemRetorno.Ok,
-                        Mensagem = "Fornecedor Alterado com sucesso!",
-                        URLDestino = Url.Action("Index"),
-                        IdProduto = forn.IdFornecedor
+                        TipoMensagem = TipoMensagemRetorno.Erro,
+                        Mensagem = ex.Message,
                     }, "text/html", JsonRequestBehavior.AllowGet);
                 }
 
             }
-            catch (Exception ex)
+
+            else
             {
+
                 return Json(new
                 {
                     TipoMensagem = TipoMensagemRetorno.Erro,
-                    Mensagem = ex.Message,
+                    Mensagem = WebHelpers.GetErrorsAsString(ModelState),
                 }, "text/html", JsonRequestBehavior.AllowGet);
+
             }
 
         }
@@ -224,6 +259,63 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult GetContatos([DataSourceRequest] DataSourceRequest request, int IdFornecedor)
+        {
+            if (IdFornecedor == 0)
+                return Json(new List<FornecedorContatoModel>().ToDataSourceResult(request) , JsonRequestBehavior.AllowGet);
+            else
+            {
+                using (var cadForn = new CadastroFornecedor())
+                {
+                    var contatos = cadForn.GetContatosFornecedor(IdFornecedor);
+                    return Json(contatos.Select(x => new FornecedorContatoModel()
+                    {
+                        Email = x.Email,
+                        Nome = x.Nome,
+                        Site = x.Site,
+                        Telefone = x.Telefone
+                    }).ToDataSourceResult(request) , JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult AtualizarContatos(IList<FornecedorContatoModel> contatos, int IdFornecedor)
+        {
+            try
+            {
+
+
+                using (var cadForn = new CadastroFornecedor())
+                {
+
+                    cadForn.AtualizarContato(contatos.Select(x => new FornecedorContato()
+                    {
+                        Email = x.Email,
+                        Nome = x.Nome,
+                        Site = x.Site,
+                        Telefone = x.Telefone
+                    }).ToList(), IdFornecedor);
+
+                    return Json(new
+                    {
+                        TipoMensagem = TipoMensagemRetorno.Ok,
+                        Mensagem = "Operação realizada com sucesso.",
+                    }, "text/html", JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(new
+                {
+                    TipoMensagem = TipoMensagemRetorno.Erro,
+                    Mensagem = ex.Message,
+                }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BakeryManager.InfraEstrutura.Helpers.Validators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Fornecedores
         public string Nome { get; set; }
         [Display(Name = "Razão Social")]
         public string RazaoSocial { get; set; }
+        [ValidadorCNPJ(ErrorMessage = "CNPJ Inválido! Verifique o valor informado e tente novamente")]
         public string CNPJ { get; set; }
         [Display(Name = "Logradouro")]
         public string Logradouro { get; set; }

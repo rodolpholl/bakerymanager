@@ -12,6 +12,7 @@ using System.Web.Security;
 using BakeryManager.BackOffice.Models;
 using BakeryManager.Entities;
 using BakeryManager.InfraEstrutura.Helpers;
+using System.Web.Mvc;
 
 namespace BakeryManager.BackOffice.Helpers
 {
@@ -79,6 +80,20 @@ namespace BakeryManager.BackOffice.Helpers
         internal static string ObterNovoUID()
         {
             return ProcessHelper.GetRandomUID();
+        }
+
+        internal static string GetErrorsAsString(ModelStateDictionary modelState)
+        {
+            var erros = modelState.Values.Where(x => x.Errors.Count() > 0).Select(x => x.Errors.Select(y => y.ErrorMessage).Distinct().ToList()).ToList();
+            
+            var strErro = "<p>Erro na Atualização:</p><p>";
+
+            foreach (var erro in erros.SelectMany(x => x).ToList())
+                strErro += string.Concat(erro, "<br/>");
+
+            strErro += "</p>";
+
+            return strErro;
         }
     }
 }
