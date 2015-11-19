@@ -37,6 +37,20 @@
                         @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00,000,000/0000-00").HtmlAttributes(new { @class = "form-control" })
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.QuantidadeEntregaSemana, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().NumericTextBoxFor(x => x.QuantidadeEntregaSemana).HtmlAttributes(new { style = "width: 70px;" }).Min(0).Step(1).Decimals(0)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.PrazoEntregaPrevisto, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @Html.Kendo().NumericTextBoxFor(x => x.PrazoEntregaPrevisto).HtmlAttributes(new { style = "width: 70px;" }).Min(0).Step(1).Decimals(0)
+                    </div>
+                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
@@ -93,6 +107,7 @@
                         @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
                     </div>
                 </div>
+                
             </div>
         </form>
     </div>

@@ -27,6 +27,10 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Fornecedores
         public string Cidade { get; set; }
         public string UF { get; set; }
         public string CEP { get; set; }
-        public virtual bool Ativo { get; set; }
+        public bool Ativo { get; set; }
+        [Display(Name ="Prazo de entrega acordado (dias)")]
+        public int PrazoEntregaPrevisto { get; set; }
+        [Display(Name = "Número de entregas por semana")]
+        public int QuantidadeEntregaSemana { get; set; }
     }
 }

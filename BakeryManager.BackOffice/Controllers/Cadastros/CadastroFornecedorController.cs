@@ -36,7 +36,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         CEP = x.CEP,
                         Nome = x.Nome,
                         UF = x.UF,
-                        IdFornecedor = x.IdFornecedor
+                        IdFornecedor = x.IdFornecedor,
+                        PrazoEntregaPrevisto = x.PrazoEntregaPrevisto,
+                        QuantidadeEntregaSemana = x.QuantidadeEntregaSemana
                     }).AsEnumerable();
 
                 return Json(Result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
@@ -75,7 +77,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                             Nome = fornecedorModel.Nome.ToUpper(),
                             Numero = fornecedorModel.Numero.ToUpper(),
                             RazaoSocial = fornecedorModel.RazaoSocial.ToUpper(),
-                            UF = fornecedorModel.UF.ToUpper()
+                            UF = fornecedorModel.UF.ToUpper(),
+                            PrazoEntregaPrevisto = fornecedorModel.PrazoEntregaPrevisto,
+                            QuantidadeEntregaSemana = fornecedorModel.QuantidadeEntregaSemana                            
                         };
 
                         cadForn.InserirFornecedor(forn);
@@ -137,6 +141,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Numero = forn.Numero,
                     RazaoSocial = forn.RazaoSocial,
                     UF = forn.UF,
+                    PrazoEntregaPrevisto = forn.PrazoEntregaPrevisto,
+                    QuantidadeEntregaSemana = forn.QuantidadeEntregaSemana,
                     Ativo = true
                 });
 
@@ -167,6 +173,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         forn.Numero = fornecedorModel.Numero.ToUpper();
                         forn.RazaoSocial = fornecedorModel.RazaoSocial.ToUpper();
                         forn.UF = fornecedorModel.UF.ToUpper();
+                        forn.PrazoEntregaPrevisto = fornecedorModel.PrazoEntregaPrevisto;
+                        forn.QuantidadeEntregaSemana = fornecedorModel.QuantidadeEntregaSemana;
 
                         cadForn.AlterarFornecedor(forn);
 
