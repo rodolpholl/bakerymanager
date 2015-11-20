@@ -2,6 +2,8 @@
 using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.Entities;
 using BakeryManager.Services.Seguranca;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,5 +92,68 @@ namespace BakeryManager.BackOffice.Controllers
                             }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult ReadCondicaoPagamento([DataSourceRequest] DataSourceRequest request)
+        {
+            try
+            {
+                using (var parametros = new ManterParametros())
+                {
+                    
+                    return Json(parametros.GetListaCondicaoPagamento().Select(x => new CondicaoPagamentoModel()
+                    {
+                        Descricao = x.Descricao,
+                        IdCondicaoPagamento = x.IdCondicaoPagamento
+                    }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Erro,
+                                Mensagem = ex.Message
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult SalvarCondicaoPagamento(IList<CondicaoPagamentoModel> ListaCondicao)
+        {
+            try
+            {
+                using (var parametros = new ManterParametros())
+                {
+
+                    parametros.SalvarCondicaoPagamento(ListaCondicao.Select(x => new CondicaoPagamento()
+                    {
+                        Descricao = x.Descricao,
+                        IdCondicaoPagamento = x.IdCondicaoPagamento
+                    }).ToList());
+
+                    return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Ok,
+                                Mensagem = "Operação Realizada Com sucesso!"
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Erro,
+                                Mensagem = ex.Message
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

@@ -14,17 +14,20 @@ namespace BakeryManager.Services.Seguranca
         private ParametrosGeraisBM parametrosGeraisBm;
         private ParametroTabelaNutricionalBM parametroTabelaNutricionalBm;
         private TabelaNutricionalBM tabelaNutricionalBm;
+        private CondicaoPagamentoBM condicaoPagamentoBm;
         public ManterParametros()
         {
             parametrosGeraisBm = GetObject<ParametrosGeraisBM>();
             parametroTabelaNutricionalBm = GetObject<ParametroTabelaNutricionalBM>();
             tabelaNutricionalBm = GetObject<TabelaNutricionalBM>();
+            condicaoPagamentoBm = GetObject<CondicaoPagamentoBM>();
         }
         public void Dispose()
         {
             parametrosGeraisBm.Dispose();
             parametroTabelaNutricionalBm.Dispose();
             tabelaNutricionalBm.Dispose();
+            condicaoPagamentoBm.Dispose();
 
         }
 
@@ -50,9 +53,53 @@ namespace BakeryManager.Services.Seguranca
                 parametroTabelaNutricionalBm.Delete(old);
 
             foreach(var novo in list)
-                parametroTabelaNutricionalBm.Insert(novo);
+            {
+                var parametroTabelaNutricional = new ParametroTabelaNutricional()
+                {
+                    Compoonente = tabelaNutricionalBm.GetByID(novo.Compoonente.IdTabelaNutricional),
+                    Parametros = parametrosGeraisBm.GetByID(1)
+                };
+
+                parametroTabelaNutricionalBm.Insert(parametroTabelaNutricional);
+            }
+                
             
             
+        }
+
+        public IList<CondicaoPagamento> GetListaCondicaoPagamento()
+        {
+            return condicaoPagamentoBm.GetAll();
+        }
+
+        public void SalvarCondicaoPagamento(IList<CondicaoPagamento> ListaCondicao)
+        {
+            foreach (var condicaoAtual in condicaoPagamentoBm.GetAll().Where(x => !ListaCondicao.Select(y => y.IdCondicaoPagamento).ToList().Contains(x.IdCondicaoPagamento)).ToList())
+                    condicaoPagamentoBm.Delete(condicaoAtual);
+
+
+
+
+            foreach (var condicao in ListaCondicao)
+            {
+                if (condicao.IdCondicaoPagamento > 0)
+                {
+                    var condicaoNova = condicaoPagamentoBm.GetByID(condicao.IdCondicaoPagamento);
+                    condicaoNova.Descricao = condicao.Descricao;
+                    condicaoPagamentoBm.Update(condicao);
+                }
+                else
+                    condicaoPagamentoBm.Insert(new CondicaoPagamento()
+                    {
+                        Descricao = condicao.Descricao
+                    });
+                
+            }
+
+
+
+
+
         }
     }
 }

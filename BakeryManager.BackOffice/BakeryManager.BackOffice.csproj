@@ -357,6 +357,8 @@
     <Content Include="Views\CadastroFornecedor\Form.cshtml" />
     <Content Include="Views\CadastroFornecedor\Editar.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\ManterParametros\ComponentesPadrao.cshtml" />
+    <Content Include="Views\ManterParametros\CondicaoPagamento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

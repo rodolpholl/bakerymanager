@@ -1,8 +1,4 @@
-﻿@using BakeryManager.BackOffice.Models;
-@model ParametrosModel
-@using BakeryManager.BackOffice.Models.Cadastros;
-@using Kendo.Mvc.UI
-
+﻿
 @{
     ViewBag.Title = "Manter Parâmetros Gerais";
 }
@@ -68,51 +64,25 @@
         </div>
     </div>
     <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
 
-            <div class="col-md-5">
-                <div class="panel panel-danger ">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Componentes Fora da Visualização</h3>
-                    </div>
-                    <div class="panel-body CustomPanelHeight">
-                        <ul id="listaSemExibicao" style="min-height: 110px;">
-                            @foreach (var comp in ((IEnumerable<TabelaNutricionalModel>)ViewData["ListaTabelaNaoExibicao"]).ToList())
-                            {
-                                <li class="list-item" data-IdTabelaNutricional="@comp.IdTabelaNutricionalModel">@comp.Nome</li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-md-offset-7">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Componentes Selecionados para Visualização</h3>
-                    </div>
-                    <div class="panel-body CustomPanelHeight">
-                        <ul id="listaExibicao" style="min-height: 110px;">
-                            @foreach (var comp in Model.ParametrosNutricionais)
-                            {
-                                <li class="list-item" data-IdTabelaNutricional="@comp.Compoonente.IdTabelaNutricionalModel">@comp.Compoonente.Nome</li>
-                            }
-                        </ul>
-                    </div>
-                </div>
+    <ul class="nav nav-tabs" data-tabs="tabs">
+        <li role="presentation" class="active"><a href="#condicaopagamento" data-toggle="tab">Condições de Pagamento</a></li>
+        <li role="presentation"><a href="#ComponentesTACO" data-toggle="tab">Componentes TACO p/ Exibição</a></li>
+    </ul>
 
-            </div>
+
+    <div class="tab-content" style="padding: 30px;">
+        <div class="tab-pane active" id="condicaopagamento">
+            @Html.Partial("CondicaoPagamento")
         </div>
-
-
-
-        @Html.Kendo().Sortable().For("#listaSemExibicao").ConnectWith("#listaExibicao").PlaceholderHandler("placeholder").Cursor("url('" + Url.Content("~/content/Imagens/grabbing.cur") + "'), default")
-        @Html.Kendo().Sortable().For("#listaExibicao").ConnectWith("#listaSemExibicao").PlaceholderHandler("placeholder").Cursor("url('" + Url.Content("~/content/Imagens/grabbing.cur") + "'), default")
-
-
+        <div class="tab-pane" id="ComponentesTACO">
+            @Html.Partial("ComponentesPadrao")
+        </div>
     </div>
-    <hr/>
+
+    
+    <hr />
     <div class="row">
         <div class="col-md-12">
             <ol class="breadcrumb">
@@ -124,50 +94,82 @@
 </div>
 <!-- /.container-fluid -->
 
+@section scripts{
+
 <script type="text/javascript">
-    function placeholder(element) {
-        return $("<li class='list-item' id='placeholder'>Solte aqui!</li>");
-    }
 
     $(function () {
 
         $("#btnSalvar").click(function () {
 
-                var listaExibicao = $("#listaExibicao").children();
-                var listaEnvio = [];
+            gravarComponentesPadrao();
 
+            gravarCondicaoPagamento();
 
-                $.each(listaExibicao, function (index, listItem) {
-
-                listaEnvio.push({
-                    IdTabelaNutricionalModel: $(listItem).attr('data-IdTabelaNutricional'),
-                    Nome: $(listItem).text(),
-                    UnidadeMedida: ''
-                });
-
-
-
-                });
-
-                $.ajax({
-                    url: '@Url.Action("SalvarConfiguracao")',
-                    data: { ListaComponentes: listaEnvio },
-                    method: "POST",
-                    dataType: "json",
-                    success: function (data) {
-
-                        alert(data.Mensagem, function () {
-                            if (data.URLDestino != undefined)
-                                window.location.href = data.URLDestino;
-                        }, data.TipoMensagem);
-
-                    }
-
-                });
-
-
+            alert("Operação Realizada com sucesso!");
+            
+            
         });
 
     });
 
-</script>
+    function gravarComponentesPadrao() {
+        var listaExibicao = $("#listaExibicao").children();
+        var listaEnvio = [];
+
+
+        $.each(listaExibicao, function (index, listItem) {
+
+            listaEnvio.push({
+                IdTabelaNutricionalModel: $(listItem).attr('data-IdTabelaNutricional'),
+                Nome: $(listItem).text(),
+                UnidadeMedida: ''
+            });
+
+
+
+        });
+
+        $.ajax({
+            url: '@Url.Action("SalvarConfiguracao")',
+            data: { ListaComponentes: listaEnvio },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+
+               @*  alert(data.Mensagem, function () {
+                    if (data.URLDestino != undefined)
+                        window.location.href = data.URLDestino;
+                }, data.TipoMensagem);*@
+
+                return data.Mensagem;
+
+            }
+
+        });
+    }
+
+    function gravarCondicaoPagamento() {
+
+
+        var listaEnvio = $("#gridCondicaoPagamento").data("kendoGrid").dataSource.view().toJSON();
+
+        $.ajax({
+            url: '@Url.Action("SalvarCondicaoPagamento")',
+            data: { ListaCondicao: listaEnvio },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+
+                return data.Mensagem;
+
+            }
+
+        });
+
+
+    }
+
+</script>    
+    
+}

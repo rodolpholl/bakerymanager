@@ -43,11 +43,16 @@
   <ItemGroup>
     <Compile Include="CategoriaIngrediente.cs" />
     <Compile Include="CategoriaProduto.cs" />
+    <Compile Include="Cliente.cs" />
+    <Compile Include="ClienteContato.cs" />
+    <Compile Include="CondicaoPagamento.cs" />
+    <Compile Include="Estoque.cs" />
     <Compile Include="Formula.cs" />
     <Compile Include="FormulaTabelaNutricional.cs" />
     <Compile Include="Fornecedor.cs" />
     <Compile Include="FornecedorContato.cs" />
     <Compile Include="Ingrediente.cs" />
+    <Compile Include="IngredienteEstoqueConfig.cs" />
     <Compile Include="IngredienteFormula.cs" />
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="IngredienteTabelaNutricional.cs" />
