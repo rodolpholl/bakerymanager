@@ -1,0 +1,176 @@
+﻿@using BakeryManager.BackOffice.Models.Cadastros.Clientes
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "Cadastro de Clientes";
+}
+
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+       <div class="col-lg-8">
+           <form role="form">
+               <label class="control-label col-sm-2">Tipo de Cliente</label>
+               <div class="form-group">
+                   @(Html.Kendo().DropDownList()
+                      .Name("cbxTipoCliente")
+                      .DataTextField("Descricao")
+                      .DataValueField("IdTipoCliente")
+                      .OptionLabel("Selecione")
+                      .DataSource(ds => ds
+                          .Read(read => read.Action("TipoCliente_filter", "CadastroCliente"))
+                      )
+                   )
+               </div>
+           </form>
+       </div>
+            
+       
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            @(Html.Kendo().Grid<ClienteModel>()
+                    .Name("grid")
+
+                    .Columns(columns =>
+                    {
+                        columns.Bound(c => c.TipoCliente.Descricao).Filterable(false).Title("Tipo de Cliente").Width(130);
+                        columns.Bound(c => c.Nome);
+                        columns.Bound(c => c.Bairro);
+                        columns.Bound(c => c.Cidade);
+                        columns.Bound(c => c.UF);
+
+                        columns.Bound(c => c.Ativo).ClientTemplate("<a href=\"" + Url.Action("Editar") + "/#=IdCliente#\"  class=\"btn btn-default btn-sm\"><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span>&nbsp;Editar</a>&nbsp;&nbsp;" +
+                                                                    "#if (Ativo) {#" +
+                                                                    "<a href=\"javascript: void(0); \" onclick=\"Desativar(#=IdCliente#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
+                                                                    "#} else {#" +
+                                                                    "<a href=\"javascript: void(0); \" onclick=\"Reativar(#=IdCliente#); \" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" +
+                                                                    "# }#")
+                                                                    .Filterable(filterable => filterable.Messages(m => m.IsFalse("Inativos").IsTrue("Ativos")));
+                    })
+                    .ToolBar(t => t.Custom().Text("Novo Cliente").Url(Url.Action("Criar")).HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-add" }))
+
+                    .Pageable()
+                    .Sortable()
+                    .Filterable(filterable => filterable
+                    .Extra(false)
+                    .Operators(operators => operators
+                        .ForString(str => str.Clear()
+                            .StartsWith("Iniciar com")
+                            .IsEqualTo("igual a")
+                            .IsNotEqualTo("Não igual a")
+                        ))
+                    )
+                    .Selectable()
+                    .Navigatable()
+                    .Scrollable(scr => scr.Height(450))
+
+                    .DataSource(datasource => datasource
+                        .Ajax()
+                        .Batch(false)
+                        .Model(model =>
+                        {
+                            model.Id(m => m.IdCliente);
+                            model.Field(m => m.Nome);
+                            model.Field(m => m.Bairro);
+                            model.Field(m => m.Cidade);
+                            model.Field(m => m.UF);
+                            model.Field(m => m.TipoCliente);
+
+                        })
+                        .Read(read => read.Action("Read", "CadastroCliente").Data("getDataRead"))
+
+                     )
+
+            )
+
+        </div>
+
+    </div>
+    
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+       
+
+        function getDataRead() {
+            return {
+                IdTipoCliente: $("#cbxTipoCliente").val()
+            }
+        }
+
+        function Desativar(IdCliente) {
+            confirm("Deseja Ralmente Desativar este Cliente?", function () {
+
+                $.ajax({
+
+                    url: '@Url.Action("Desativar")',
+                    data: { Id: IdCliente },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+
+            }, 2);
+        }
+
+
+        function Reativar(IdCliente) {
+            confirm("Deseja Ralmente Reativar este Cliente?", function () {
+                $.ajax({
+
+                    url: '@Url.Action("Reativar")',
+                    data: { Id: IdCliente },
+                    method: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.Mensagem, function () {
+                            if (data.TipoMensagem == 3)
+                                $("#grid").data("kendoGrid").dataSource.read();
+                        }, data.TipoMensagem);
+                    }
+                });
+            }, 2);
+        }
+
+
+        $(function () {
+            $("#cbxTipoCliente").change(function () {
+
+                $("#grid").data("kendoGrid").dataSource.read();
+
+            });
+        });
+
+    </script>
+
+}

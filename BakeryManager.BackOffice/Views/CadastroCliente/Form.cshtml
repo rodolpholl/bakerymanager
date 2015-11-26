@@ -1,6 +1,7 @@
-﻿@using Kendo.Mvc.UI
-@using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
-@model FornecedorModel
+﻿
+@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Clientes
+@model ClienteModel
 
 @Html.ValidationSummary(true)
 
@@ -8,9 +9,10 @@
 <div class="tab-content" style="padding-top: 40px">
 
     <div class="tab-pane active" id="dadosgerais">
-        <form id="frmFornecedor" rule="form" class="form-horizontal">
-            
-            @Html.HiddenFor(x => x.IdFornecedor)
+
+        <form id="frmCliente" rule="form" class="form-horizontal">
+
+            @Html.HiddenFor(x => x.IdCliente)
 
             <div class="col-lg-8">
 
@@ -23,6 +25,43 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(x => x.CondicaoPagamentoPreferencial, new { @class = "col-sm-2 control-label" })
+
+                    <div class="col-sm-10">
+                        @(Html.Kendo().DropDownListFor(x => x.CondicaoPagamentoPreferencial)
+                               .HtmlAttributes(new { @class = "form-control", style = "width: 300px; " })
+                               .DataTextField("Descricao")
+                               .DataValueField("IdCondicaoPagamento")
+                               .OptionLabel("Selecione...")
+                               .DataSource(datasource => datasource
+
+                                    .Read(read => read.Action("GetListaCondicaoPagamento", "CadastroCliente"))
+                               )
+                         )
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.TipoCliente, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @(Html.Kendo().DropDownListFor(x => x.TipoCliente)
+                            .DataTextField("Descricao")
+                            .DataValueField("IdTipoCliente")
+                            .DataSource(datasource => datasource
+                                 .Read(read => read.Action("TipoCliente_filter", "CadastroCliente"))
+                            )
+                        )
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DataAniversario, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.Kendo().DatePickerFor(x => x.DataAniversario).HtmlAttributes(new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group" id="divRazaoSocial">
                     @Html.LabelFor(x => x.RazaoSocial, new { @class = "col-sm-2 control-label" })
 
                     <div class="col-sm-10">
@@ -30,27 +69,22 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="divCNPJ">
                     @Html.LabelFor(x => x.CNPJ, new { @class = "col-sm-2 control-label" })
 
                     <div class="col-sm-10">
-                        @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00,000,000/0000-00").HtmlAttributes(new { @class = "form-control" })
+                        @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00,000,000/0000-00").HtmlAttributes(new { @class = "form-control"})
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(x => x.QuantidadeEntregaSemana, new { @class = "col-sm-2 control-label" })
+
+                <div class="form-group" id="divCPF">
+                    @Html.LabelFor(x => x.CPF, new { @class = "col-sm-2 control-label" })
 
                     <div class="col-sm-10">
-                        @Html.Kendo().NumericTextBoxFor(x => x.QuantidadeEntregaSemana).HtmlAttributes(new { style = "width: 70px;" }).Min(0).Step(1).Decimals(0)
+                        @Html.Kendo().MaskedTextBoxFor(x => x.CPF).Mask("000,000,000-00").HtmlAttributes(new { @class = "form-control" })
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(x => x.PrazoEntregaPrevisto, new { @class = "col-sm-2 control-label" })
 
-                    <div class="col-sm-10">
-                        @Html.Kendo().NumericTextBoxFor(x => x.PrazoEntregaPrevisto).HtmlAttributes(new { style = "width: 70px;" }).Min(0).Step(1).Decimals(0)
-                    </div>
-                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
@@ -107,14 +141,13 @@
                         @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
                     </div>
                 </div>
-                
+
             </div>
         </form>
     </div>
 
     <div class="tab-pane" id="contatos">
-
-        @(Html.Kendo().Grid<FornecedorContatoModel>()
+        @(Html.Kendo().Grid<ClienteContatoModel>()
             .Name("gridContatos")
             .Columns(column =>
             {
@@ -134,33 +167,73 @@
                 .Ajax()
                 .Batch(true)
                 .ServerOperation(false)
-                .Model(model => {
-                    model.Id(x => x.IdFornecedorContato);
+                .Model(model =>
+                {
+                    model.Id(x => x.IdClienteContato);
                     model.Field(x => x.Nome);
                     model.Field(x => x.Telefone);
                     model.Field(x => x.Email);
                     model.Field(x => x.Site);
                 })
-                .Read(read => read.Action("GetContatos", "CadastroFornecedor").Data("getParametroContato"))
+                .Read(read => read.Action("GetContatoCliente", "CadastroCliente").Data("getParametroContato"))
             )
         )
-
     </div>
 
 </div>
-
 
 <script type="text/javascript">
 
     function getParametroContato() {
         return {
-            IdFornecedor: $("#IdFornecedor").val()
+            IdCliente: $("#IdCliente").val()
         }
     }
 
-    $(function() {
+    function getFormObject() {
 
-        $("#CEP").focusout(function(evt){
+        return {
+
+            Bairro: $("#Bairro").val(),
+            CEP : $("#CEP").val(),
+            Cidade : $("#Cidade").val(),
+            CNPJ : $("#CNPJ").val(),
+            CPF : $("#CPF").val(),
+            Complemento : $("#Complemento").val(),
+            Logradouro : $("#Logradouro").val(),
+            Nome : $("#Nome").val(),
+            Numero : $("#Numero").val(),
+            RazaoSocial : $("#RazaoSocial").val(),
+            UF : $("#UF").val(),
+            DataAniversario: $("#DataAniversario").data("kendoDatePicker").value(),
+            IdCondicaoPagamento: $("#CondicaoPagamentoPreferencial").val(),
+            IdTipoCliente: $("#TipoCliente").val(),
+            IdCliente: $("#IdCliente").val()
+            
+   
+        }
+
+    }
+
+    function TipoClienteChange() {
+        if ($("#TipoCliente").data("kendoDropDownList").value() == 1) {
+            $("#divRazaoSocial").hide("slow");
+            $("#divCNPJ").hide("slow");
+            $("#divCPF").show("slow");
+        }
+        else {
+            $("#divRazaoSocial").show("slow");
+            $("#divCNPJ").show("slow");
+            $("#divCPF").hide("slow");
+        }
+    }
+
+    $(function () {
+
+
+        $("#TipoCliente").change(TipoClienteChange);
+
+        $("#CEP").focusout(function (evt) {
 
             var cep = $("#CEP").val().replace("_", "").replace("-", "");
 
@@ -180,12 +253,12 @@
                         document.getElementById("Numero").focus();
 
                     }
-                  
+
                 });
 
             }
 
-       });
+        });
 
     });
 

@@ -96,6 +96,7 @@
     <Compile Include="NHibernate\Conventions\DefaultManytoManyConvention.cs" />
     <Compile Include="NHibernate\Conventions\DefaultOneToManyTableNameConvention.cs" />
     <Compile Include="NHibernate\Conventions\DefaultStringPropertyConvention.cs" />
+    <Compile Include="NHibernate\Conventions\EnumConvention.cs" />
     <Compile Include="NHibernate\Conventions\PrimaryKeyConvention.cs" />
     <Compile Include="NHibernate\Conventions\PrimaryKeyInformedConvention.cs" />
     <Compile Include="NHibernate\Conventions\PrimaryKeySequenceConvention.cs" />

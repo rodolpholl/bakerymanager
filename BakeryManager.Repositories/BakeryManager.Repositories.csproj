@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="CategoriaIngredienteBM.cs" />
     <Compile Include="CategoriaProdutoBM.cs" />
+    <Compile Include="ClienteBM.cs" />
+    <Compile Include="ClienteContatoBM.cs" />
     <Compile Include="CondicaoPagamentoBM.cs" />
     <Compile Include="FormulaBM.cs" />
     <Compile Include="FormulaTabelaNutricionalBM.cs" />

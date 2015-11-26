@@ -80,6 +80,7 @@
     <Compile Include="BusinessProcessBase.cs" />
     <Compile Include="CadastroCategoriaProduto.cs" />
     <Compile Include="CadastroCategoriaIngrediente.cs" />
+    <Compile Include="CadastroCliente.cs" />
     <Compile Include="CadastroFornecedor.cs" />
     <Compile Include="CadastroIngredientes.cs" />
     <Compile Include="CadastroProduto.cs" />

@@ -8,17 +8,18 @@ namespace BakeryManager.Entities
 {
     public enum TipoCliente
     {
-        PessoaFisica = 1,
-        PessoaJuridica = 2
+        Fisica = 1,
+        Juridica = 2
     }
     public class Cliente
     {
         public virtual int IdCliente { get; set; }
         public virtual string Nome { get; set; }
+        public virtual string RazaoSocial { get; set; }
         public virtual TipoCliente TipoCliente { get; set; }
         public virtual string CPF { get; set; }
         public virtual string CNPJ { get; set; }
-        public virtual string DataAniversario { get; set; }
+        public virtual DateTime? DataAniversario { get; set; }
         public virtual CondicaoPagamento CondicaoPagamentoPreferencial { get; set;}
         public virtual string Logradouro { get; set; }
         public virtual string Numero { get; set; }

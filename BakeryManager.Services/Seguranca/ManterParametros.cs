@@ -57,7 +57,7 @@ namespace BakeryManager.Services.Seguranca
                 var parametroTabelaNutricional = new ParametroTabelaNutricional()
                 {
                     Compoonente = tabelaNutricionalBm.GetByID(novo.Compoonente.IdTabelaNutricional),
-                    Parametros = parametrosGeraisBm.GetByID(1)
+                    Parametros = parametrosGeraisBm.GetAll().FirstOrDefault()
                 };
 
                 parametroTabelaNutricionalBm.Insert(parametroTabelaNutricional);

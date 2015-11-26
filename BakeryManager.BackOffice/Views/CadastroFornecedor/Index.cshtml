@@ -45,7 +45,8 @@
                                                                     "<a href=\"javascript: void(0); \" onclick=\"Desativar(#=IdFornecedor#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span>&nbsp;Desativar</a>" +
                                                                     "#} else {#" +
                                                                     "<a href=\"javascript: void(0); \" onclick=\"Reativar(#=IdFornecedor#); \" class=\"btn btn-primary btn-sm\"><span class=\"glyphicon glyphicon-repeat\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;Reativar</a>" +
-                                                                    "# }#");
+                                                                    "# }#")
+                                                                    .Filterable(filterable => filterable.Messages(m => m.IsFalse("Inativos").IsTrue("Ativos")));
                     })
                     .ToolBar(t => t.Custom().Text("Novo Fornecedor").Url(Url.Action("Criar")).HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-add" }))
 

@@ -18,6 +18,7 @@ namespace BakeryManager.InfraEstrutura.Repository.NHibernate.Conventions
                                             new DefaultClassConvention(),
                                             new DefaultForeignKeyConvention(),
                                             //new DefaultManytoManyConvention(),
+                                            new EnumConvention(),
                                             new DefaultOneToManyTableNameConvention(),
                                             new DefaultStringPropertyConvention(),
                                             new DefaultHasManyToManyConvention(),

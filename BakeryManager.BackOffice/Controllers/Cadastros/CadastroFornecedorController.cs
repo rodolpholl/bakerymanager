@@ -298,7 +298,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 using (var cadForn = new CadastroFornecedor())
                 {
 
-                    cadForn.AtualizarContato(contatos.Select(x => new FornecedorContato()
+                    cadForn.AtualizarContato((contatos ?? new List<FornecedorContatoModel>()).Select(x => new FornecedorContato()
                     {
                         Email = x.Email,
                         Nome = x.Nome,

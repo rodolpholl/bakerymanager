@@ -248,6 +248,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaProdutoController.cs" />
+    <Compile Include="Controllers\Cadastros\CadastroClienteController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroFornecedorController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroPerfilController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroProdutoController.cs" />
@@ -264,6 +265,9 @@
     <Compile Include="Helpers\BMWebHelper.cs" />
     <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Controllers\Cadastros\CadastroIngredientesController.cs" />
+    <Compile Include="Models\Cadastros\Clientes\ClienteContatoModel.cs" />
+    <Compile Include="Models\Cadastros\Clientes\ClienteModel.cs" />
+    <Compile Include="Models\Cadastros\Clientes\TipoClienteModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorContatoModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />
@@ -359,6 +363,10 @@
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\ManterParametros\ComponentesPadrao.cshtml" />
     <Content Include="Views\ManterParametros\CondicaoPagamento.cshtml" />
+    <Content Include="Views\CadastroCliente\Index.cshtml" />
+    <Content Include="Views\CadastroCliente\Criar.cshtml" />
+    <Content Include="Views\CadastroCliente\Form.cshtml" />
+    <Content Include="Views\CadastroCliente\Editar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
