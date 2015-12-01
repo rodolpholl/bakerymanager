@@ -278,7 +278,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     return Json(new
                     {
                         TipoMensagem = TipoMensagemRetorno.Ok,
-                        Mensagem = "Fornecedor Desativado com sucesso!",
+                        Mensagem = "Cliente Desativado com sucesso!",
                     }, "text/html", JsonRequestBehavior.AllowGet);
 
                 }
@@ -306,7 +306,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     return Json(new
                     {
                         TipoMensagem = TipoMensagemRetorno.Ok,
-                        Mensagem = "Fornecedor Desativado com sucesso!",
+                        Mensagem = "Cliente Reativado com sucesso!",
                     }, "text/html", JsonRequestBehavior.AllowGet);
 
                 }

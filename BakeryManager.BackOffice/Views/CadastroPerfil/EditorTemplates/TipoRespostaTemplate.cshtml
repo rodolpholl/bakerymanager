@@ -1,0 +1,11 @@
+﻿@using BakeryManager.BackOffice.Models.Questionario
+@using Kendo.Mvc.UI
+@model TipoRespostaModel
+
+@(Html.Kendo().DropDownListFor(x => x)
+    .DataTextField("Descricao")
+    .DataValueField("IdTipoResposta")
+    .DataSource(datasource => datasource
+            .Read(read => read.Action("GetListaTipoResposta", "ManterQuestionario"))
+    )
+ )

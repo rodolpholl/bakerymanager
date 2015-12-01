@@ -57,6 +57,8 @@
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="IngredienteTabelaNutricional.cs" />
     <Compile Include="ProdutoFoto.cs" />
+    <Compile Include="Questionario.cs" />
+    <Compile Include="QuestionarioPergunta.cs" />
     <Compile Include="Seguranca\ParametrosGerais.cs" />
     <Compile Include="Pedido.cs" />
     <Compile Include="Produto.cs" />

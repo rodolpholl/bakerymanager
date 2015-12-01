@@ -1,0 +1,6 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Questionario
+@model int?
+    @(Html.Kendo().NumericTextBoxFor(x => x)
+        .Decimals(0).Format("n0").Min(0).Step(1)
+    )

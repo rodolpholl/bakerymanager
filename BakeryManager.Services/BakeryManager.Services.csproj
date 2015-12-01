@@ -84,6 +84,7 @@
     <Compile Include="CadastroFornecedor.cs" />
     <Compile Include="CadastroIngredientes.cs" />
     <Compile Include="CadastroProduto.cs" />
+    <Compile Include="ManterQuestionario.cs" />
     <Compile Include="ManterReceituario.cs" />
     <Compile Include="Seguranca\CadastroPerfil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

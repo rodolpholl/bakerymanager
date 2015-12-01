@@ -256,6 +256,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManterParametrosController.cs" />
+    <Compile Include="Controllers\ManterQuestionarioController.cs" />
     <Compile Include="Controllers\ManterReceituarioController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SimuladorController.cs" />
@@ -287,6 +288,8 @@
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
     <Compile Include="Models\Login\LoginModel.cs" />
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
+    <Compile Include="Models\Questionario\QuestionarioModel.cs" />
+    <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
     <Compile Include="Models\SecurityIdentityModel.cs" />
     <Compile Include="Models\SecurityPrincipalModel.cs" />
     <Compile Include="Models\TipoMensagemRetorno.cs" />
@@ -367,6 +370,13 @@
     <Content Include="Views\CadastroCliente\Criar.cshtml" />
     <Content Include="Views\CadastroCliente\Form.cshtml" />
     <Content Include="Views\CadastroCliente\Editar.cshtml" />
+    <Content Include="Views\ManterQuestionario\Index.cshtml" />
+    <Content Include="Views\ManterQuestionario\Criar.cshtml" />
+    <Content Include="Views\ManterQuestionario\Form.cshtml" />
+    <Content Include="Views\CadastroPerfil\EditorTemplates\TipoRespostaTemplate.cshtml" />
+    <Content Include="Views\ManterQuestionario\EditorTemplates\TipoResposta.cshtml" />
+    <Content Include="Views\ManterQuestionario\EditorTemplates\Peso.cshtml" />
+    <Content Include="Views\ManterQuestionario\Editar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
