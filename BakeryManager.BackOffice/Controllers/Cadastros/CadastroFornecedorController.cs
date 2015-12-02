@@ -56,7 +56,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult Criar( FornecedorModel fornecedorModel)
+        public JsonResult Criar(FornecedorModel fornecedorModel)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                             RazaoSocial = fornecedorModel.RazaoSocial.ToUpper(),
                             UF = fornecedorModel.UF.ToUpper(),
                             PrazoEntregaPrevisto = fornecedorModel.PrazoEntregaPrevisto,
-                            QuantidadeEntregaSemana = fornecedorModel.QuantidadeEntregaSemana                            
+                            QuantidadeEntregaSemana = fornecedorModel.QuantidadeEntregaSemana
                         };
 
                         cadForn.InserirFornecedor(forn);
@@ -106,7 +106,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
             else
             {
-                
+
                 return Json(new
                 {
                     TipoMensagem = TipoMensagemRetorno.Erro,
@@ -114,12 +114,12 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 }, "text/html", JsonRequestBehavior.AllowGet);
 
             }
-                
+
 
 
         }
 
-        
+
 
         public ActionResult Editar(int Id)
         {
@@ -162,7 +162,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                         var forn = cadForn.GetFornecedorById(fornecedorModel.IdFornecedor);
 
-              
+
                         forn.Bairro = fornecedorModel.Bairro.ToUpper();
                         forn.CEP = fornecedorModel.CEP.ToUpper();
                         forn.Cidade = fornecedorModel.Cidade.ToUpper();
@@ -230,7 +230,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new
                 {
@@ -271,7 +271,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         public JsonResult GetContatos([DataSourceRequest] DataSourceRequest request, int IdFornecedor)
         {
             if (IdFornecedor == 0)
-                return Json(new List<FornecedorContatoModel>().ToDataSourceResult(request) , JsonRequestBehavior.AllowGet);
+                return Json(new List<FornecedorContatoModel>().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             else
             {
                 using (var cadForn = new CadastroFornecedor())
@@ -283,13 +283,13 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Nome = x.Nome,
                         Site = x.Site,
                         Telefone = x.Telefone
-                    }).ToDataSourceResult(request) , JsonRequestBehavior.AllowGet);
+                    }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
                 }
             }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult AtualizarContatos(IList<FornecedorContatoModel> contatos, int IdFornecedor)
+        public JsonResult AtualizarContatos(IList<FornecedorContatoModel> contatos, IList<FornecedorQuestionarioConfigModel> questionarios, int IdFornecedor)
         {
             try
             {
@@ -306,6 +306,11 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Telefone = x.Telefone
                     }).ToList(), IdFornecedor);
 
+                    cadForn.AtualizarQuestionario((questionarios ?? new List<FornecedorQuestionarioConfigModel>()).Where(x => x.Selecionado).Select(x => new FornecedorQuestionarioConfig() {
+                        Fornecedor = cadForn.GetFornecedorById(IdFornecedor),
+                        Questionario = cadForn.GetQuestionarioById(x.IdQuestionario)
+                    }).ToList(),IdFornecedor);
+
                     return Json(new
                     {
                         TipoMensagem = TipoMensagemRetorno.Ok,
@@ -314,13 +319,29 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new
                 {
                     TipoMensagem = TipoMensagemRetorno.Erro,
                     Mensagem = ex.Message,
                 }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetQuestionarioFornecedor([DataSourceRequest] DataSourceRequest request, int IdFornecedor)
+        {
+            using (var cadForn = new CadastroFornecedor())
+            {
+                var questionarioFornecedor = cadForn.GetQuestionarioFornecedor(cadForn.GetFornecedorById(IdFornecedor)).Select(x => x.Questionario.IdQuestionario).ToList();
+                var questionario = cadForn.GetQuestionarioAtivo().Select(x => new FornecedorQuestionarioConfigModel()
+                {
+                    IdQuestionario = x.IdQuestionario,
+                    Questionario = x.Nome,
+                    Selecionado = questionarioFornecedor.Contains(x.IdQuestionario)
+                }).ToList();
+
+                return Json(questionario.ToTreeDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
 

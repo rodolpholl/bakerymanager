@@ -12,17 +12,23 @@ namespace BakeryManager.Services
     {
         private FornecedorBM fornecedorBm;
         private FornecedorContatoBM fornecedorContatoBm;
+        private FornecedorQuestionarioConfigBM fornecedorQuestionarioConfigBm;
+        private QuestionarioBM QuestionarioBm;
 
         public CadastroFornecedor()
         {
             fornecedorBm = GetObject<FornecedorBM>();
             fornecedorContatoBm = GetObject<FornecedorContatoBM>();
+            fornecedorQuestionarioConfigBm = GetObject<FornecedorQuestionarioConfigBM>();
+            QuestionarioBm = GetObject<QuestionarioBM>();
         }
 
         public void Dispose()
         {
             fornecedorBm.Dispose();
             fornecedorContatoBm.Dispose();
+            fornecedorQuestionarioConfigBm.Dispose();
+            QuestionarioBm.Dispose();
         }
 
         public IList<Fornecedor> GetFornecedores()
@@ -78,6 +84,40 @@ namespace BakeryManager.Services
             {
                 contato.Fornecedor = fornecedorBm.GetByID(idFornecedor);
                 fornecedorContatoBm.Insert(contato);
+            }
+        }
+
+        public IList<FornecedorQuestionarioConfig> GetQuestionarioFornecedor(Fornecedor fornecedor)
+        {
+            if (fornecedor == null)
+                return new List<FornecedorQuestionarioConfig>();
+            else
+                return fornecedorQuestionarioConfigBm.GetForneceodrQuestionarioByFornecedor(fornecedor);
+            
+        }
+
+        public IList<Questionario> GetQuestionarioAtivo()
+        {
+            return QuestionarioBm.GetQuestionariosAtivos();
+        }
+
+        public Questionario GetQuestionarioById(int idQuestionario)
+        {
+            return QuestionarioBm.GetByID(idQuestionario);
+        }
+
+        public void AtualizarQuestionario(List<FornecedorQuestionarioConfig> ListaQuestionario, int idFornecedor)
+        {
+            var listaAtual = fornecedorQuestionarioConfigBm.GetForneceodrQuestionarioByFornecedor(fornecedorBm.GetByID(idFornecedor));
+
+            foreach (var questionarioAtual in listaAtual)
+                fornecedorQuestionarioConfigBm.Delete(questionarioAtual);
+
+
+            foreach (var questionario in ListaQuestionario)
+            {
+                questionario.Fornecedor = fornecedorBm.GetByID(idFornecedor);
+                fornecedorQuestionarioConfigBm.Insert(questionario);
             }
         }
     }

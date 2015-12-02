@@ -66,6 +66,9 @@
     <Compile Include="FormulaTabelaNutricionalBM.cs" />
     <Compile Include="FornecedorBM.cs" />
     <Compile Include="FornecedorContatoBM.cs" />
+    <Compile Include="FornecedorQuestionarioBM.cs" />
+    <Compile Include="FornecedorQuestionarioConfigBM.cs" />
+    <Compile Include="FornecedorQuestionarioRespostaBM.cs" />
     <Compile Include="IngredienteBM.cs" />
     <Compile Include="IngredienteFormulaBM.cs" />
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />

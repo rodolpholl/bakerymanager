@@ -51,6 +51,9 @@
     <Compile Include="FormulaTabelaNutricional.cs" />
     <Compile Include="Fornecedor.cs" />
     <Compile Include="FornecedorContato.cs" />
+    <Compile Include="FornecedorQuestionario.cs" />
+    <Compile Include="FornecedorQuestionarioConfig.cs" />
+    <Compile Include="FornecedorQuestionarioResposta.cs" />
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteEstoqueConfig.cs" />
     <Compile Include="IngredienteFormula.cs" />

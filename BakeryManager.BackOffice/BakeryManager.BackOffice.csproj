@@ -152,6 +152,9 @@
     <Content Include="Content\kendo.bootstrap.mobile.min.css" />
     <Content Include="Content\kendo.common.min.css" />
     <Content Include="Content\plugins\morris.css" />
+    <Content Include="Content\rateit\delete.gif" />
+    <Content Include="Content\rateit\rateit.css" />
+    <Content Include="Content\rateit\star.gif" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -239,6 +242,8 @@
     <Content Include="Scripts\plugins\morris\morris.min.js" />
     <Content Include="Scripts\plugins\morris\raphael.min.js" />
     <Content Include="Scripts\crypto\sha256.js" />
+    <Content Include="Scripts\rateit\jquery.rateit.js" />
+    <Content Include="Scripts\rateit\jquery.rateit.min.js" />
     <Content Include="Scripts\utils.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -271,6 +276,7 @@
     <Compile Include="Models\Cadastros\Clientes\TipoClienteModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorContatoModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorModel.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorQuestionarioModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
@@ -377,6 +383,7 @@
     <Content Include="Views\ManterQuestionario\EditorTemplates\TipoResposta.cshtml" />
     <Content Include="Views\ManterQuestionario\EditorTemplates\Peso.cshtml" />
     <Content Include="Views\ManterQuestionario\Editar.cshtml" />
+    <Content Include="Scripts\rateit\jquery.rateit.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

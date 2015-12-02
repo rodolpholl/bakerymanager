@@ -68,16 +68,16 @@ namespace BakeryManager.Services
 
         private void AtualizarPrazo(Questionario questionario)
         {
-            if (questionario.UsaPrazoExpiracao)
+            if (questionario.UsaPrazoExpiracao && !questionario.DataExpiracao.HasValue)
             {
+                
                 if (questionario.PrazoExpiracao <= 0)
                     throw new BusinessProcessException("O prazo deve ser maior ou igual a que 1 dia");
 
                 questionario.DataExpiracao = DateTime.Now.Date.AddDays(questionario.PrazoExpiracao);
 
             }
-            else
-                questionario.PrazoExpiracao = 0;
+           
             
                 
         }

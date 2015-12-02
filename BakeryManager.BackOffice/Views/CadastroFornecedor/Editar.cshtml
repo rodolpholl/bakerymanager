@@ -37,6 +37,7 @@
         <ul class="nav nav-tabs" data-tabs="tabs">
             <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais</a></li>
             <li role="presentation"><a href="#contatos" data-toggle="tab">Contatos</a></li>
+            <li role="presentation"><a href="#questionarios" data-toggle="tab">Questionários</a></li>
         </ul>
 
         @Html.AntiForgeryToken()
@@ -89,7 +90,9 @@
                                     if (data.TipoMensagem == 1) {
                                         alert(data.Mensagem, null, 1);
                                     } else {
+
                                         var listaConatos = $("#gridContatos").data("kendoGrid").dataSource.view().toJSON();
+                                        var listaQuestionario = $("#gridQuestionarios").data("kendoGrid").dataSource.view().toJSON();
 
                                         $.ajax({
                                             url: "@Url.Action("AtualizarContatos")",
@@ -97,6 +100,7 @@
                                             method: "POST",
                                             data: {
                                                 contatos: listaConatos,
+                                                questionarios: listaQuestionario,
                                                 IdFornecedor: data.IdFornecedor
                                             },
                                             success: function (data) {

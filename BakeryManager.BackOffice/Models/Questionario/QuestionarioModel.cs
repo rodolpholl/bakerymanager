@@ -19,5 +19,6 @@ namespace BakeryManager.BackOffice.Models.Questionario
         [Display(Name = "Data de Expiração")]
         public  DateTime? DataExpiracao { get; set; }
         public bool Ativo { get; set; }
+        public bool Expirado { get; set; }
     }
 }

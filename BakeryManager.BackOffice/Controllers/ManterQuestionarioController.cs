@@ -51,7 +51,8 @@ namespace BakeryManager.BackOffice.Controllers
                     IdQuestionario = x.IdQuestionario,
                     Nome = x.Nome,
                     PrazoExpiracao = x.PrazoExpiracao,
-                    UsaPrazoExpiracao = x.UsaPrazoExpiracao
+                    UsaPrazoExpiracao = x.UsaPrazoExpiracao,
+                    Expirado = (x.UsaPrazoExpiracao && x.DataExpiracao.Value.Date < DateTime.Now.Date)
                 }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
