@@ -64,11 +64,12 @@
     <Compile Include="CondicaoPagamentoBM.cs" />
     <Compile Include="FormulaBM.cs" />
     <Compile Include="FormulaTabelaNutricionalBM.cs" />
+    <Compile Include="FornecedorAvaliacaoBM.cs" />
     <Compile Include="FornecedorBM.cs" />
     <Compile Include="FornecedorContatoBM.cs" />
-    <Compile Include="FornecedorQuestionarioBM.cs" />
+    <Compile Include="FornecedorAvaliacaoQuestionarioBM.cs" />
     <Compile Include="FornecedorQuestionarioConfigBM.cs" />
-    <Compile Include="FornecedorQuestionarioRespostaBM.cs" />
+    <Compile Include="FornecedorAvaliacaoQuestionarioRespostaBM.cs" />
     <Compile Include="IngredienteBM.cs" />
     <Compile Include="IngredienteFormulaBM.cs" />
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />

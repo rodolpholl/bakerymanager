@@ -251,6 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AvaliacaoFornecedorController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaProdutoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroClienteController.cs" />
@@ -274,6 +275,9 @@
     <Compile Include="Models\Cadastros\Clientes\ClienteContatoModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\ClienteModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\TipoClienteModel.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorAvaliacaoModel.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorAvaliacaoQuestionarioModel.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorAvaliacaoRespostaModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorContatoModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorQuestionarioModel.cs" />
@@ -384,6 +388,9 @@
     <Content Include="Views\ManterQuestionario\EditorTemplates\Peso.cshtml" />
     <Content Include="Views\ManterQuestionario\Editar.cshtml" />
     <Content Include="Scripts\rateit\jquery.rateit.min.js.map" />
+    <Content Include="Views\AvaliacaoFornecedor\Index.cshtml" />
+    <Content Include="Views\AvaliacaoFornecedor\Form.cshtml" />
+    <Content Include="Views\AvaliacaoFornecedor\Criar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

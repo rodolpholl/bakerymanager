@@ -1,0 +1,74 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
+
+@model IList<FornecedorAvaliacaoModel>
+
+
+<ul class="nav nav-tabs" data-tabs="tabs">
+    <li role="presentation" class="active"><a href="#avaliacao" data-toggle="tab">Avaliação</a></li>
+    <li role="presentation"><a href="#observacoes" data-toggle="tab">Obsevações</a></li>
+</ul>
+
+
+
+<div class="tab-content" style="padding-top: 40px">
+
+    <div class="tab-pane active" id="avaliacao">
+
+        @foreach (var questionario in Model)
+        {
+        
+            <div class="row" data-IdQuestionario="@questionario.IdQuestionario.ToString()">
+                <div class="col-lg-10">
+
+                    <div class="page-header">
+                        <h2>@questionario.Nome</h2>
+                    </div>
+                    <div class="lead">
+                        <table class="table table-striped">
+                            <tbody>
+
+                                @foreach (var pergunta in questionario.Respostas)
+                                {
+                                    <tr data-IdPergunta="@pergunta.IdPergunta.ToString()" data-TipoResposta="@pergunta.TipoResposta">
+                                        <td>@pergunta.TextoPergunta</td>
+                                        @if (pergunta.TipoResposta == TipoRespostaModel.Avaliacao)
+                                        {
+
+                                            var nameComp = "rate" + pergunta.IdPergunta.ToString();
+                                            var valor = (pergunta.Nota ?? 0).ToString();
+
+                                            <td width="150px">
+                                                <input type="range" value="@valor" step="0.5" max="5" min="0" id="@nameComp" />
+                                                <div class="rateit" data-rateit-backingfld="#@nameComp" data-rateit-resetable="false" data-rateit-ispreset="true" />
+
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.CheckBox("opt" + pergunta.IdPergunta.ToString(), pergunta.OpcaoEletiva ?? false, new { @class = "switchOption", width = "150px", onchange ="checkChangeEvent('opt"+ pergunta.IdPergunta.ToString() + "')"})
+
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+    <div class="tab-pane" id="observacoes">
+        @Html.Kendo().Editor().Name("Observacoes")
+        
+    </div>
+
+</div>
+

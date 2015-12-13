@@ -1,0 +1,59 @@
+﻿@using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
+@using Kendo.Mvc.UI
+@model FornecedorAvaliacaoModel
+
+@{
+    ViewBag.Title = "Nova Avaliação de Fornecedores";
+}
+
+<div class="container-fluid">
+
+    @*Header*@
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> Fornecedores
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+    @* --------------- *@
+
+    @*Body*@
+    <div class="row">
+
+      @Html.Partial("Form")
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <hr />
+                <button class="btn btn-primary" type="button" id="btnSalvar">Salvar</button>
+                Ou
+                <button class="btn btn-default" onclick="window.history.back(-1);">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+
+    @* --------------- *@
+
+
+
+
+</div>
+

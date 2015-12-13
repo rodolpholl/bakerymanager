@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.Repositories
 {
-    public class FornecedorBM : BusinessManagementBase<Fornecedor>
+    public class FornecedorAvaliacaoBM : BusinessManagementBase<FornecedorAvaliacao>
     {
-        public IList<Fornecedor> getFornecedoresAtivos()
+        public IList<FornecedorAvaliacao> GetListaAvaliacaoByFornecedor(Fornecedor fornecedor)
         {
-            return Query().Where(x => x.Ativo).ToList();
+            return Query().Where(x => x.Fornecedor.IdFornecedor == fornecedor.IdFornecedor).ToList();
         }
     }
 }

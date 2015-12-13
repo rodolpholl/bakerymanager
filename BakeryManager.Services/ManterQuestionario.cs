@@ -63,6 +63,7 @@ namespace BakeryManager.Services
         public void InserirQuestionario(Questionario questionario)
         {
             AtualizarPrazo(questionario);
+            
             questionarioBm.Insert(questionario);
         }
 
@@ -76,6 +77,12 @@ namespace BakeryManager.Services
 
                 questionario.DataExpiracao = DateTime.Now.Date.AddDays(questionario.PrazoExpiracao);
 
+            }
+
+            if (!questionario.UsaPrazoExpiracao)
+            {
+                questionario.PrazoExpiracao = 0;
+                questionario.DataExpiracao = null;
             }
            
             

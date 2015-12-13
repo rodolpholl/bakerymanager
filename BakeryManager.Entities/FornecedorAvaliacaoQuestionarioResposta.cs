@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.Entities
 {
-    public class FornecedorQuestionarioResposta
+    public class FornecedorAvaliacaoQuestionarioResposta
     {
-        public virtual int IdFornecedorQuestionarioResposta { get; set; }
-        public virtual FornecedorQuestionario FornecedorQuestionario { get; set; }
+        public virtual int IdFornecedorAvaliacaoQuestionarioResposta { get; set; }
+        public virtual FornecedorAvaliacaoQuestionario FornecedorQuestionario { get; set; }
         public virtual QuestionarioPergunta Pergunta { get; set; }
-        public virtual decimal Avaliacao { get; set; }
+        public virtual double? Avaliacao { get; set; }
         public virtual bool Verdadeiro { get; set; }
 
     }

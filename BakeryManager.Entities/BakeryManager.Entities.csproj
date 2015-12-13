@@ -50,10 +50,11 @@
     <Compile Include="Formula.cs" />
     <Compile Include="FormulaTabelaNutricional.cs" />
     <Compile Include="Fornecedor.cs" />
+    <Compile Include="FornecedorAvaliacao.cs" />
     <Compile Include="FornecedorContato.cs" />
-    <Compile Include="FornecedorQuestionario.cs" />
+    <Compile Include="FornecedorAvaliacaoQuestionario.cs" />
     <Compile Include="FornecedorQuestionarioConfig.cs" />
-    <Compile Include="FornecedorQuestionarioResposta.cs" />
+    <Compile Include="FornecedorAvaliacaoQuestionarioResposta.cs" />
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteEstoqueConfig.cs" />
     <Compile Include="IngredienteFormula.cs" />
