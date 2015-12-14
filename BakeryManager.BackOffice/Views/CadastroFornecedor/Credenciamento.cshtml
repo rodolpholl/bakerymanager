@@ -1,0 +1,177 @@
+﻿
+@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros
+
+
+<div class="col-lg-8">
+
+    <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Categoria</label>
+            <div class="col-sm-4">
+                @(Html.Kendo().DropDownList().Name("cbxCategoriaIngredientePesquisa").DataTextField("Nome").DataValueField("IdCategoriaIngrediente")
+                    .OptionLabel("Todos").HtmlAttributes(new { style = "min-width: 450px" })
+                    .DataSource(ds =>
+                    {
+                        ds.Read(r => r.Action("ListarCategoriasIngrediente", "CadastroFornecedor"));
+                    }))
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Ingrediente</label>
+            <div class="col-sm-4 ">
+                <div class="input-group">
+                    @(Html.Kendo().DropDownList().Name("cbxIngredientePesquisa")
+                                          .DataTextField("Nome")
+                                          .HtmlAttributes(new { style = "min-width: 450px" })
+                                          .DataValueField("IdIngrediente")
+                                          .Filter("contains")
+                                          .OptionLabel("Selecione...")
+                                          .MinLength(3)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetIngredietesDisponiveis", "CadastroFornecedor").Data("getCategoriaForPesquisa").Type(HttpVerbs.Post);
+                                              })
+                                                  .ServerFiltering(false);
+                                          })
+
+
+                    )
+
+                    <span class="input-group-btn"><button class="btn btn-sm btn-default" type="button" id="btnAddIngrediente"><i class="fa fa-arrow-down"></i></button></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Ingredientes Selecionados</label>
+            <div class="col-sm-10">
+                @(Html.Kendo().Grid<CredenciamentoFornecedorIngredienteModel>()
+                    .Name("gridCredenciamento")
+                    .Columns(column =>
+                    {
+                        column.Bound(x => x.NomeIngrediente);
+                        column.Bound(x => x.IdIngrediente).Title("").Width(50).ClientTemplate("<a href=\"javascript: void(0);\" title=\"Excluir Ingrediente\" onclick=\"excluirIngredienteCredenciamento(#=IdIngrediente#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span></a>");
+                    })
+                    .Sortable()
+                    .Scrollable(scr => scr.Height(400))
+                    .Editable(ed => ed.Enabled(false))
+                    .Events(evt => evt.DataBound("gridDataBound"))
+                    .Navigatable()
+                    .Resizable(r => r.Columns(true))
+                    .DataSource(ds => ds
+                        .Ajax()
+                        .Batch(true)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(x => x.IdIngrediente);
+                            model.Field(x => x.NomeIngrediente).Editable(false);
+                        })
+                        .Events(e => e.Change("DataSouceFormulaChange"))
+
+                        .Read(read => read.Action("GetCredenciamentoFornecedor", "CadastroFornecedor").Data("getInfFornecedor"))
+
+                    )
+
+                )
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    function getInfFornecedor() {
+        return {
+            IdFornecedor: $("#IdFornecedor").val()
+        }
+    }
+
+    function getCategoriaForPesquisa() {
+
+        var idCat = $("#cbxCategoriaIngredientePesquisa").val();
+
+        var IdSelect = [];
+
+        if ($("#gridCredenciamento").data("kendoGrid") != undefined) {
+            var data = $("#gridCredenciamento").data("kendoGrid").dataSource.data();
+
+            for (var i = 0; i < data.length; i++) {
+
+                IdSelect.push(data[i].IdIngrediente);
+
+            }
+        }
+
+        return {
+            IdCategoria: idCat,
+            IngredientesJaSelecionados: IdSelect
+        }
+
+    }
+
+    function DataSouceFormulaChange() {
+        $("#gridCredenciamento").data("kendoGrid").refresh();
+    }
+
+    
+    function excluirIngredienteCredenciamento(idIngrediente) {
+
+        confirm("Deseja Realmente Excluir Esse Ingrediente?", function () {
+
+            var data = $("#gridCredenciamento").data("kendoGrid").dataSource;
+            data.remove(data.get(idIngrediente));
+            $("#cbxIngredientePesquisa").data("kendoDropDownList").dataSource.read();
+
+        }, 2);
+    }
+
+    function gridDataBound() {
+        $("#cbxIngredientePesquisa").data("kendoDropDownList").dataSource.read();
+    }
+
+    $(function () {
+
+        $("#cbxCategoriaIngredientePesquisa").change(function () {
+
+            $("#cbxIngredientePesquisa").data("kendoDropDownList").dataSource.read();
+
+        });
+
+        $("#btnAddIngrediente").click(function () {
+
+            if ($("#cbxIngredientePesquisa").data("kendoDropDownList").value() == "")
+                return;
+
+            var ds = $("#gridCredenciamento").data("kendoGrid").dataSource;
+
+            var newItem = {
+                IdIngrediente: $("#cbxIngredientePesquisa").data("kendoDropDownList").value(),
+                NomeIngrediente: $("#cbxIngredientePesquisa").data("kendoDropDownList").text(),
+                Quantidade: 0
+
+            };
+
+            if ($("#IdProduto").val() != "" && $("#IdProduto").val() != "0")
+                newItem.IdFormula = $("#IdProduto").val();
+
+            ds.add(newItem);
+
+            $("#cbxIngredientePesquisa").data("kendoDropDownList").dataSource.read();
+
+        });
+
+    });
+
+    
+
+
+</script>

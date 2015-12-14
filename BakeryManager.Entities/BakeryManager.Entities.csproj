@@ -46,6 +46,7 @@
     <Compile Include="Cliente.cs" />
     <Compile Include="ClienteContato.cs" />
     <Compile Include="CondicaoPagamento.cs" />
+    <Compile Include="CredenciamentoFornecedorIngrediente.cs" />
     <Compile Include="Estoque.cs" />
     <Compile Include="Formula.cs" />
     <Compile Include="FormulaTabelaNutricional.cs" />

@@ -281,6 +281,7 @@
     <Compile Include="Models\Cadastros\Clientes\ClienteContatoModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\ClienteModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\TipoClienteModel.cs" />
+    <Compile Include="Models\Cadastros\CredenciamentoFornecedorIngredienteModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorAvaliacaoModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorAvaliacaoQuestionarioModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorAvaliacaoRespostaModel.cs" />
@@ -398,6 +399,7 @@
     <Content Include="Views\AvaliacaoFornecedor\Form.cshtml" />
     <Content Include="Views\AvaliacaoFornecedor\Criar.cshtml" />
     <Content Include="Views\AvaliacaoFornecedor\Editar.cshtml" />
+    <Content Include="Views\CadastroFornecedor\Credenciamento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

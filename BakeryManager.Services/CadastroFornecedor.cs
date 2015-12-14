@@ -14,6 +14,9 @@ namespace BakeryManager.Services
         private FornecedorContatoBM fornecedorContatoBm;
         private FornecedorQuestionarioConfigBM fornecedorQuestionarioConfigBm;
         private QuestionarioBM QuestionarioBm;
+        private CategoriaIngredienteBM categoriaIngredienteBm;
+        private IngredienteBM ingredienteBm;
+        private CredenciamentoFornecedorIngredienteBM credenciamentoFornecedorIngredienteBm;
 
         public CadastroFornecedor()
         {
@@ -21,6 +24,9 @@ namespace BakeryManager.Services
             fornecedorContatoBm = GetObject<FornecedorContatoBM>();
             fornecedorQuestionarioConfigBm = GetObject<FornecedorQuestionarioConfigBM>();
             QuestionarioBm = GetObject<QuestionarioBM>();
+            categoriaIngredienteBm = GetObject<CategoriaIngredienteBM>();
+            ingredienteBm = GetObject<IngredienteBM>();
+            credenciamentoFornecedorIngredienteBm = GetObject<CredenciamentoFornecedorIngredienteBM>();
         }
 
         public void Dispose()
@@ -29,6 +35,9 @@ namespace BakeryManager.Services
             fornecedorContatoBm.Dispose();
             fornecedorQuestionarioConfigBm.Dispose();
             QuestionarioBm.Dispose();
+            categoriaIngredienteBm.Dispose();
+            ingredienteBm.Dispose();
+            credenciamentoFornecedorIngredienteBm.Dispose();
         }
 
         public IList<Fornecedor> GetFornecedores()
@@ -38,6 +47,7 @@ namespace BakeryManager.Services
 
         public void InserirFornecedor(Fornecedor Fornecedor)
         {
+            Fornecedor.Ativo = true;
             fornecedorBm.Insert(Fornecedor);
         }
 
@@ -118,6 +128,42 @@ namespace BakeryManager.Services
             {
                 questionario.Fornecedor = fornecedorBm.GetByID(idFornecedor);
                 fornecedorQuestionarioConfigBm.Insert(questionario);
+            }
+        }
+
+        public IList<CategoriaIngrediente> GetCategoriaIngredientes()
+        {
+            return categoriaIngredienteBm.GetAll();
+        }
+
+        public IList<Ingrediente> GetCategoriaIngredientesByCategoria(int IdCategoria)
+        {
+            if (IdCategoria == 0)
+                return ingredienteBm.GetAll();
+            else
+                return ingredienteBm.GetByCategoria(categoriaIngredienteBm.GetByID(IdCategoria));
+        }
+
+        public IList<CredenciamentoFornecedorIngrediente> GetCredenciamentoByFornecedor(int idFornecedor)
+        {
+            if (idFornecedor == 0)
+                return new List<CredenciamentoFornecedorIngrediente>();
+            else
+                return credenciamentoFornecedorIngredienteBm.GetCredenciamentoByFornecedor(fornecedorBm.GetByID(idFornecedor));
+        }
+
+        public void AtualizarCredenciamento(List<CredenciamentoFornecedorIngrediente> listaCredenciamento, int idFornecedor)
+        {
+            var listaAtual = credenciamentoFornecedorIngredienteBm.GetCredenciamentoByFornecedor(fornecedorBm.GetByID(idFornecedor));
+
+            foreach (var atual in listaAtual)
+                credenciamentoFornecedorIngredienteBm.Delete(atual);
+
+            foreach(var credenciamento in listaCredenciamento)
+            {
+                credenciamento.Ingrediente = ingredienteBm.GetByID(credenciamento.Ingrediente.IdIngrediente);
+                credenciamento.Fornecedor = fornecedorBm.GetByID(credenciamento.Fornecedor.IdFornecedor);
+                credenciamentoFornecedorIngredienteBm.Insert(credenciamento);
             }
         }
     }
