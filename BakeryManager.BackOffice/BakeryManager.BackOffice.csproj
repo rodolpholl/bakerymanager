@@ -147,6 +147,10 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\Imagens\grabbing.cur" />
     <Content Include="Content\Imagens\load.gif" />
+    <Content Include="Content\Images\back.png" />
+    <Content Include="Content\Images\kendoui.svg" />
+    <Content Include="Content\Images\wp8_icons.png" />
+    <Content Include="Content\Images\wp8_inverseicons.png" />
     <Content Include="Content\img\uploadify-cancel.png" />
     <Content Include="Content\kendo.bootstrap.min.css" />
     <Content Include="Content\kendo.bootstrap.mobile.min.css" />
@@ -209,6 +213,8 @@
     <Content Include="Scripts\crypto\sha512.js" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\Images\kendoui.ttf" />
+    <Content Include="Content\Images\kendoui.woff" />
     <None Include="Properties\PublishProfiles\PublishLocal.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -391,6 +397,7 @@
     <Content Include="Views\AvaliacaoFornecedor\Index.cshtml" />
     <Content Include="Views\AvaliacaoFornecedor\Form.cshtml" />
     <Content Include="Views\AvaliacaoFornecedor\Criar.cshtml" />
+    <Content Include="Views\AvaliacaoFornecedor\Editar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

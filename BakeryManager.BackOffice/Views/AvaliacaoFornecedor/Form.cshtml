@@ -1,7 +1,7 @@
 ﻿@using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
 
-@model IList<FornecedorAvaliacaoModel>
+@model FornecedorAvaliacaoModel
 
 
 <ul class="nav nav-tabs" data-tabs="tabs">
@@ -9,16 +9,19 @@
     <li role="presentation"><a href="#observacoes" data-toggle="tab">Obsevações</a></li>
 </ul>
 
-
+@Html.HiddenFor(x => x.IdFornecedor)
+@Html.HiddenFor(x => x.IdFornecedorAvaliacao)
 
 <div class="tab-content" style="padding-top: 40px">
 
-    <div class="tab-pane active" id="avaliacao">
+    
 
-        @foreach (var questionario in Model)
+    <div class="tab-pane active" id="avaliacao">
+        
+        @foreach (var questionario in Model.ListaQuestionarios)
         {
         
-            <div class="row" data-IdQuestionario="@questionario.IdQuestionario.ToString()">
+            <div class="row" data-IdQuestionario="@questionario.IdQuestionario.ToString()" data-IdFornecedorAvaliacaoQuestionario="@questionario.IdFornecedorAvaliacaoQuestionario">
                 <div class="col-lg-10">
 
                     <div class="page-header">
@@ -30,7 +33,22 @@
 
                                 @foreach (var pergunta in questionario.Respostas)
                                 {
-                                    <tr data-IdPergunta="@pergunta.IdPergunta.ToString()" data-TipoResposta="@pergunta.TipoResposta">
+                                   
+                                        var valorSelecionado = string.Empty;
+                                    if (pergunta.TipoResposta == TipoRespostaModel.Avaliacao)
+                                    {
+                                        valorSelecionado = pergunta.Nota.ToString();
+                                    }
+                                    else
+                                    {
+                                        valorSelecionado = pergunta.OpcaoEletiva.HasValue ? pergunta.OpcaoEletiva.Value ? "true" : "false" : "false";
+                                    }
+                                    
+
+
+
+                                    <tr data-IdPergunta="@pergunta.IdPergunta.ToString()" data-TipoResposta="@pergunta.TipoResposta" data-valorselecionado="@valorSelecionado">
+                                        
                                         <td>@pergunta.TextoPergunta</td>
                                         @if (pergunta.TipoResposta == TipoRespostaModel.Avaliacao)
                                         {
@@ -65,10 +83,88 @@
 
     </div>
 
-    <div class="tab-pane" id="observacoes">
-        @Html.Kendo().Editor().Name("Observacoes")
+    <div class="tab-pane" id="observacoes" >
+        @Html.Kendo().EditorFor(x => x.Observacao)
         
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+    function checkChangeEvent(e) {
+        $("#" + e.sender.options.Name).parent().parent().parent().attr("data-valorselecionado", e.checked);
+    }
+
+    function avaliacaoChange(e, value) {
+
+        $(e.target).parent().parent().attr("data-valorselecionado", value);
+    }
+
+    function GetListaEnvio() {
+        var listaQuestionarioComp = $("#avaliacao").children();
+        
+        var listaEnvio = [];
+
+        $.each(listaQuestionarioComp, function (index, listItem) {
+
+
+            var listaRespostas = $(listItem).children().find(".lead>table>tbody>tr");
+            var listResposta = [];
+
+            $.each(listaRespostas, function (index, pergunta) {
+
+                listResposta.push({
+                    IdPergunta: $(pergunta).attr("data-idpergunta"),
+                    TipoPergunta: $(pergunta).attr("data-tiporesposta"),
+                    OpcaoEletiva: $(pergunta).attr("data-tiporesposta") == "Eletiva" ? ($(pergunta).attr("data-valorselecionado") != undefined ? $(pergunta).attr("data-valorselecionado") == "true" : false) : null,
+                    Nota: $(pergunta).attr("data-tiporesposta") == "Avaliacao" ? ($(pergunta).attr("data-valorselecionado") != undefined ? $(pergunta).attr("data-valorselecionado").replace(",",".") : "0") : null
+                });
+
+            });
+
+            listaEnvio.push({
+                IdQuestionario: $(listItem).attr("data-IdQuestionario"),
+                IdFornecedorAvaliacaoQuestionario: $(listItem).attr("data-IdFornecedorAvaliacaoQuestionario"),
+                Respostas: listResposta
+            });
+
+        });
+
+        return listaEnvio;
+    }
+
+    $(function () {
+
+        var rateList = $.find(".rateit");
+
+        $.each(rateList, function (index, rate) {
+
+            $(rate).rateit({
+                min: 0,
+                max: 5,
+                step: 0.5,
+
+            }).bind('rated', avaliacaoChange);
+
+        });
+
+
+        var switchList = $.find(".switchOption");
+
+        $.each(switchList, function (index, sw) {
+
+            $(sw).kendoMobileSwitch({
+                onLabel: "SIM",
+                offLabel: "NÃO",
+                change: checkChangeEvent,
+                Name: $(sw).attr("id"),
+                value: $(sw).is(":checked")
+            });
+
+
+        });
+
+    });
+</script>
 

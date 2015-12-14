@@ -18,8 +18,11 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Fornecedores
         public string Observacao { get; set; }
         public string UsuarioAteracao { get; set; }
         public string IpAlteracao { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public bool HabilitaEdicao { get; set; }
+        public double MediaAvaliacao { get; set; }
+
+        public IList<FornecedorAvaliacaoQuestionarioModel> ListaQuestionarios { get; set; }
     }
 }

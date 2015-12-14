@@ -57,3 +57,43 @@
 
 </div>
 
+@section scripts{
+
+   <script type="text/javascript">
+
+       $(function () {
+           $("#btnSalvar").click(function () {
+
+               
+
+               var listaQuestionarioEnvio = GetListaEnvio();
+
+               var strData = JSON.stringify({
+                   IdFornecedor: $("#IdFornecedor").val(),
+                   Observacao: $("#Observacao").data("kendoEditor").value(),
+                   ListaQuestionarios: listaQuestionarioEnvio
+               });
+
+               $.ajax({
+
+                   url: '@Url.Action("Criar")',
+                   dataType: "json",
+                   method: "POST",
+                   data: { strFornecedorAvaliacao: strData },
+                   success: function(data) {
+                       if (data.TipoMensagem == 1)
+                           alert(data.Mensagem, null, 1);
+                       else
+                           alert(data.Mensagem, function () {
+                               window.location.href = '@Url.Action("Index")';
+                           }, data.TipoMensagem);
+                   }
+               });
+              
+
+           });
+       });
+
+    </script>
+    
+}

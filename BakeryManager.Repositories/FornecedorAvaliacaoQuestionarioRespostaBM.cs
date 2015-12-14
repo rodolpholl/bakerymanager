@@ -14,5 +14,10 @@ namespace BakeryManager.Repositories
         {
             return Query().Where(x => x.FornecedorQuestionario.Avaliacao.Fornecedor.IdFornecedor == fornecedor.IdFornecedor).ToList();
         }
+
+        public IList<FornecedorAvaliacaoQuestionarioResposta> GetByFornecedorQuestionario(FornecedorAvaliacaoQuestionario fornecedorQuestionarip)
+        {
+            return Query().Where(x => x.FornecedorQuestionario.IdFornecedorAvaliacaoQuestionario == fornecedorQuestionarip.IdFornecedorAvaliacaoQuestionario).ToList();
+        }
     }
 }

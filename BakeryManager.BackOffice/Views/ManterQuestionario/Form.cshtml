@@ -32,7 +32,7 @@
             <div class="form-group" id="divPrazo">
                 @Html.LabelFor(x => x.PrazoExpiracao, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10">
-                    @Html.Kendo().NumericTextBoxFor(x => x.PrazoExpiracao).HtmlAttributes(new {  style = "width: 100px;" }).Value(0).Min(0).Step(1).Decimals(0).Format("n0")
+                    @Html.Kendo().NumericTextBoxFor(x => x.PrazoExpiracao).HtmlAttributes(new {  style = "width: 100px;" }).Value(0).Min(1).Step(1).Decimals(0).Format("n0")
                 </div>
             </div>
 

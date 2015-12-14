@@ -17,6 +17,7 @@ namespace BakeryManager.BackOffice.Models.Questionario
     {
         public int IdQuestionarioPergunta { get; set; }
         public string Descricao { get; set; }
+        [Range(1,9999,ErrorMessage = "O valor atribuido ao peso deve estar entre 1 e 9999")]
         public int Peso { get; set; }
         [UIHint("TipoResposta")]
         public TipoRespostaModel TipoResposta { get; set; }

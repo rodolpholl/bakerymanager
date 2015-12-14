@@ -53,6 +53,13 @@ namespace BakeryManager.Services
 
         }
 
+        public IList<FornecedorQuestionarioConfig> GetQuestionarioConfigByFornecedor(int idFornecedor)
+        {
+            return configBm.GetForneceodrQuestionarioByFornecedor(fornecedorBm.GetByID(idFornecedor)).Where(x => x.Questionario.Ativo &&
+                                               (!x.Questionario.UsaPrazoExpiracao || (x.Questionario.UsaPrazoExpiracao && x.Questionario.DataExpiracao.Value.Date > DateTime.Now.Date)))
+                                               .ToList();
+        }
+
         public IList<FornecedorAvaliacaoQuestionarioResposta> GetQuestionarioFornecedor(int idFornecedor)
         {
             var listaQuestionarioFornecedor = fornecedorAvaliacaoQuestionarioRespostaBm.GetForneceodrQuestionarioByFornecedor(fornecedorBm.GetByID(idFornecedor)).ToList();
@@ -99,6 +106,113 @@ namespace BakeryManager.Services
             fornecedorAvaliacaoQuestionarioRespostaBm.Dispose();
             fornecedorAvaliacaoQuestionarioBm.Dispose();
             fornecedorAvaliacaoBm.Dispose();
+        }
+
+      
+
+        public IList<QuestionarioPergunta> GetPerguntasByQuestionario(int idQuestionario)
+        {
+            return questionarioPerguntaBm.GetByQuestionario(questionarioBm.GetByID(idQuestionario));
+        }
+
+        public void InserirAvaliacao(FornecedorAvaliacao fornecedorAvaliacao)
+        {
+            fornecedorAvaliacao.DataAlteracao = DateTime.Now;
+            fornecedorAvaliacao.DataCriacao = DateTime.Now;
+            fornecedorAvaliacaoBm.Insert(fornecedorAvaliacao);
+        }
+
+        public Fornecedor GetFornecedorById(int idFornecedor)
+        {
+            return fornecedorBm.GetByID(idFornecedor);
+        }
+
+        public Questionario getQuestionarioById(int idQuestionario)
+        {
+            return questionarioBm.GetByID(idQuestionario);
+        }
+
+        public void AtualizarQuestionario(FornecedorAvaliacao avaliacao, FornecedorAvaliacaoQuestionario fornecedorQuestionario, 
+            List<FornecedorAvaliacaoQuestionarioResposta> listaFornecedorQuestionarioResposta)
+        {
+            var questionario = fornecedorAvaliacaoQuestionarioBm.GetByID(fornecedorQuestionario.IdFornecedorAvaliacaoQuestionario);
+
+            if (questionario != null)
+                foreach (var respostaAtual in fornecedorAvaliacaoQuestionarioRespostaBm.GetByFornecedorQuestionario(questionario))
+                    fornecedorAvaliacaoQuestionarioRespostaBm.Delete(respostaAtual);
+            else
+            {
+                questionario = new FornecedorAvaliacaoQuestionario()
+                {
+                    Avaliacao = fornecedorAvaliacaoBm.GetByID(avaliacao.IdFornecedorAvaliacao),
+                    Questionario = questionarioBm.GetByID(fornecedorQuestionario.Questionario.IdQuestionario),
+                    DataPreenchimento = DateTime.Now,
+                };
+
+                fornecedorAvaliacaoQuestionarioBm.Insert(questionario);
+            }
+
+            questionario.MediaObtida = 0;
+            var somaPeso = 0;
+            
+
+            foreach (var respostas in listaFornecedorQuestionarioResposta)
+            {
+                var novaResposta = new FornecedorAvaliacaoQuestionarioResposta()
+                {
+                    Avaliacao = respostas.Avaliacao,
+                    Pergunta = questionarioPerguntaBm.GetByID(respostas.Pergunta.IdQuestionarioPergunta),
+                    Verdadeiro = respostas.Verdadeiro,
+                    FornecedorQuestionario = questionario
+                };
+
+                fornecedorAvaliacaoQuestionarioRespostaBm.Insert(novaResposta);
+
+                somaPeso += novaResposta.Pergunta.Peso;
+                
+                switch (novaResposta.Pergunta.TipoResposta)
+                {
+                    case TipoResposta.Avaliativa:
+                        questionario.MediaObtida += (novaResposta.Avaliacao.Value * novaResposta.Pergunta.Peso);
+                        break;
+
+                    case TipoResposta.Eletiva:
+                        questionario.MediaObtida += novaResposta.Verdadeiro ? 1 * novaResposta.Pergunta.Peso : 0 ;
+                        break;
+                }
+                
+            }
+
+            if (somaPeso == 0)
+                somaPeso = 1;
+
+            questionario.MediaObtida = questionario.MediaObtida / somaPeso;
+            
+            fornecedorAvaliacaoQuestionarioBm.Update(questionario);
+
+            
+        }
+
+        public void AtualizarMediaAvaliacao(FornecedorAvaliacao avaliacao)
+        {
+            avaliacao.MediaObtida = fornecedorAvaliacaoQuestionarioBm.getFornecedorQuestionarioByAvaliacao(avaliacao).Average(x => x.MediaObtida);
+            fornecedorAvaliacaoBm.Update(avaliacao);
+        }
+
+        public IList<FornecedorAvaliacaoQuestionario> GetFornecedorAvaliacaoQuestionarioByAvaliacao(FornecedorAvaliacao avaliacao)
+        {
+            return fornecedorAvaliacaoQuestionarioBm.getFornecedorQuestionarioByAvaliacao(avaliacao).Where(x => x.Questionario.Ativo).ToList();
+        }
+
+        public IList<FornecedorAvaliacaoQuestionarioResposta> GetFornecedorAvaliacaoQuestionarioRespostaByAvaliacaoQuestionario(FornecedorAvaliacaoQuestionario FornecedorQuestionario)
+        {
+            return fornecedorAvaliacaoQuestionarioRespostaBm.GetByFornecedorQuestionario(FornecedorQuestionario);
+        }
+
+        public void AlterarAvaliacao(FornecedorAvaliacao avaliacao)
+        {
+            avaliacao.DataAlteracao = DateTime.Now;
+            fornecedorAvaliacaoBm.Update(avaliacao);
         }
     }
 }
