@@ -1,7 +1,6 @@
 ﻿using BakeryManager.BackOffice.Helpers;
 using BakeryManager.BackOffice.Models.Login;
 using BakeryManager.Entities;
-using BakeryManager.Entities.Seguranca.Enums;
 using BakeryManager.InfraEstrutura.Helpers;
 using BakeryManager.Services.Seguranca;
 using System;
@@ -37,7 +36,7 @@ namespace BakeryManager.BackOffice.Controllers
                 {
                     Login = user.Login,
                     Nome = user.Nome,
-                    Atribuicao = controleAcesso.GetPerfilAtivo(user).Atribuicao
+                    Atribuicao = (int)controleAcesso.GetPerfilAtivo(user).Atribuicao
                 }, JsonRequestBehavior.AllowGet);
 
             }

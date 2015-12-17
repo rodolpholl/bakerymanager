@@ -288,6 +288,7 @@
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorContatoModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorQuestionarioModel.cs" />
+    <Compile Include="Models\Cadastros\Fornecedores\FornecedorUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
@@ -400,6 +401,9 @@
     <Content Include="Views\AvaliacaoFornecedor\Criar.cshtml" />
     <Content Include="Views\AvaliacaoFornecedor\Editar.cshtml" />
     <Content Include="Views\CadastroFornecedor\Credenciamento.cshtml" />
+    <Content Include="Views\CadastroFornecedor\Usuarios.cshtml" />
+    <Content Include="Views\CadastroFornecedor\EditorTemplates\LoginTemplate.cshtml" />
+    <Content Include="Views\CadastroFornecedor\EditorTemplates\PerfilTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

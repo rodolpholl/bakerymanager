@@ -39,6 +39,7 @@
             <li role="presentation"><a href="#contatos" data-toggle="tab">Contatos</a></li>
             <li role="presentation"><a href="#questionarios" data-toggle="tab">Questionários</a></li>
             <li role="presentation"><a href="#credenciamento" data-toggle="tab">Credenciamento</a></li>
+            <li role="presentation"><a href="#usuario" data-toggle="tab">Usuário</a></li>
         </ul>
 
         @Html.AntiForgeryToken()
@@ -99,6 +100,7 @@
                                         var listaConatos = $("#gridContatos").data("kendoGrid").dataSource.view().toJSON();
                                         var listaQuestionario = $("#gridQuestionarios").data("kendoGrid").dataSource.view().toJSON();
                                         var listaCredenciamento = $("#gridCredenciamento").data("kendoGrid").dataSource.view().toJSON();
+                                        var listaUsuario = $("#gridUsuarios").data("kendoGrid").dataSource.view().toJSON();
 
                                         $.ajax({
                                             url: "@Url.Action("AtualizarContatos")",
@@ -108,6 +110,7 @@
                                                 contatos: listaConatos,
                                                 questionarios: listaQuestionario,
                                                 listaCredenciamento: listaCredenciamento,
+                                                listaUsuarios: listaUsuario,
                                                 IdFornecedor: data.IdFornecedor
                                             },
                                             success: function (data) {

@@ -1,5 +1,4 @@
-﻿using BakeryManager.Entities.Seguranca.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace BakeryManager.Entities
         [Required]
         public virtual string Nome { get; set; }
         [Required]
-        public virtual byte Atribuicao { get; set; }
+        public virtual Rule Atribuicao { get; set; }
         [Required]
         public virtual bool Ativo { get; set; }
     }

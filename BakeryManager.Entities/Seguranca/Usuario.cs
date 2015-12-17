@@ -11,11 +11,14 @@ namespace BakeryManager.Entities
     {
         [Required]
         public virtual int IdUsuario { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Caampo Obrigatório!")]
+        [MinLength(4, ErrorMessage = "Esta campo precisa ter ao menos 4 caracteres")]
         public virtual string Nome { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Caampo Obrigatório!")]
+        [MinLength(4,ErrorMessage = "Esta campo precisa ter ao menos 4 caracteres")]
         public virtual string Login { get; set; }
-        [Required]
+
+        [MinLength(4, ErrorMessage = "Esta campo precisa ter ao menos 4 caracteres")]
         public virtual string Password { get; set; }
         [Required]
         public virtual DateTime DataCriacao { get; set; }

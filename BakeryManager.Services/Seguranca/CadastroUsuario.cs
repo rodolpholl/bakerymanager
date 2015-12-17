@@ -31,7 +31,8 @@ namespace BakeryManager.Services.Seguranca
 
         public IList<Perfil> GetListaPerfilAtivo()
         {
-            return perfilBm.Query().Where(x => x.Ativo && x.IdPerfil != 1).ToList();
+            return perfilBm.Query().Where(x => x.Ativo && x.IdPerfil != 1)
+                .Where(x => x.Atribuicao != Rule.Fornecedor).ToList();
         }
 
 

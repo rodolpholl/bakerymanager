@@ -1,0 +1,8 @@
+﻿
+@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
+
+@model PerfilFornecedorUsuarioModel
+@(
+    Html.Kendo().DropDownListFor(x => x).DataTextField("Nome").DataValueField("IdPerfil").BindTo((IEnumerable<PerfilFornecedorUsuarioModel>)ViewData["ListaPerfilFornecedor"])
+)

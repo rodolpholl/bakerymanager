@@ -33,6 +33,10 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
            new AtribuicaoPerfilModel() {
                Nome = "Cliente",
                IdAtribuicaoPerfil = 3
+           },
+           new AtribuicaoPerfilModel() {
+               Nome = "Fornecedor",
+               IdAtribuicaoPerfil = 4
            }
            };
 
@@ -61,30 +65,37 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         }
 
 
-        private AtribuicaoPerfilModel GetAtribuicaoPerfil(byte atribuicao)
+        private AtribuicaoPerfilModel GetAtribuicaoPerfil(Rule atribuicao)
         {
             switch (atribuicao)
             {
 
-                case 1:
+                case Rule.Administrador:
                     return new AtribuicaoPerfilModel()
                     {
                         Nome = "Administrativo",
                         IdAtribuicaoPerfil = 1
                     };
 
-                case 2:
+                case Rule.Operador:
                     return new AtribuicaoPerfilModel()
                     {
                         Nome = "Operador",
                         IdAtribuicaoPerfil = 2
                     };
 
-                default:
+                case Rule.Cliente:
                     return new AtribuicaoPerfilModel()
                     {
                         Nome = "Cliente",
                         IdAtribuicaoPerfil = 3
+                    };
+
+                default:
+                    return new AtribuicaoPerfilModel()
+                    {
+                        Nome = "Fornecedor",
+                        IdAtribuicaoPerfil = 4
                     };
 
             }
@@ -111,7 +122,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                             var perfil = new Perfil()
                             {
                                 Ativo = p.Ativo,
-                                Atribuicao = byte.Parse(p.Atribuicao.IdAtribuicaoPerfil.ToString()),
+                                Atribuicao = (Rule)p.Atribuicao.IdAtribuicaoPerfil,
                                 Nome = p.Nome
                             };
 
@@ -154,7 +165,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
 
                             perfil.Ativo = p.Ativo;
-                            perfil.Atribuicao = byte.Parse(p.Atribuicao.IdAtribuicaoPerfil.ToString());
+                            perfil.Atribuicao = (Rule)p.Atribuicao.IdAtribuicaoPerfil;
                             perfil.Nome = p.Nome;
 
 

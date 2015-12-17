@@ -23,6 +23,6 @@ namespace BakeryManager.BackOffice.Models.Login
         public string ErrorMensage { get; set; }
 
         [Display(Name ="Atribuição")]
-        public byte Atribuicao { get; set; }
+        public int Atribuicao { get; set; }
     }
 }

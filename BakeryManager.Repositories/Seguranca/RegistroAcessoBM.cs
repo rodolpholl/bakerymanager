@@ -10,6 +10,14 @@ namespace BakeryManager.Repositories.Seguranca
 {
     public class RegistroAcessoBM : BusinessManagementBase<RegistroAcesso>
     {
-       
+        public IList<RegistroAcesso> GetByUsuario(Usuario usuario)
+        {
+            return Query().Where(x => x.Usuario.IdUsuario == usuario.IdUsuario).ToList();
+        }
+
+        public bool VerificaExistenciaAcessoComSucesso(Usuario usuario)
+        {
+            return Query().Any(x => x.Usuario.IdUsuario == usuario.IdUsuario && x.Sucesso);
+        }
     }
 }

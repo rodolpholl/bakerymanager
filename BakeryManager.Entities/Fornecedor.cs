@@ -22,6 +22,7 @@ namespace BakeryManager.Entities
         public virtual bool Ativo                   { get; set; }
         public virtual int PrazoEntregaPrevisto     { get; set; }
         public virtual int QuantidadeEntregaSemana  { get; set; }
+        public virtual string EmailComunicacaoCotacao { get; set; }
         public virtual CondicaoPagamento CondicaoPagamentoPreferencial { get; set; }
     }
 }

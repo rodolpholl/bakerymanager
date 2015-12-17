@@ -1,0 +1,84 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Fornecedores
+
+   
+
+@(Html.Kendo().Grid<FornecedorUsuarioModel>()
+    .Name("gridUsuarios")
+    .Columns(columns =>
+    {
+        columns.Bound(x => x.Nome);
+        columns.Bound(x => x.Login).Width(150).EditorTemplateName("LoginTemplate");
+        columns.Bound(x => x.Email).Title("E-Mail");
+        columns.Bound(x => x.Perfil).Title("Perfil").ClientTemplate("#:Perfil.Nome#").EditorTemplateName("PerfilTemplate");
+        columns.Bound(x => x.UtilizaEmailComunicacao).Title("Usar e-mail do usuário nas notificações").ClientTemplate("# if (UtilizaEmailComunicacao) {# Sim #} else {# Não #}#");
+        columns.Bound(x => x.HabilitaEdicao).Title("").Width(50).ClientTemplate("# if (HabilitaEdicao) {#" +
+                                                                                    "<a href=\"javascript: void(0);\" title=\"Excluir Usuário\" onclick=\"excluirUsuario(#=IdFornecedorUsuario#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\" data-tooltip=\"Histórico de Desativação e Reativação\" ></span></a>#}#");
+
+
+    })
+    .ToolBar(tb => tb.Create().Text("Adicionar"))
+    .Editable(edt => edt.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(true))
+    .Events(evt => evt.Edit("onEdit"))
+    .Sortable()
+    .Scrollable(scr => scr.Height(400))
+    .Navigatable()
+    .Resizable(r => r.Columns(true))
+    .DataSource(datasource => datasource
+
+        .Ajax()
+        .Batch(true)
+        .ServerOperation(false)
+        .Model(model =>
+        {
+            model.Id(m => m.IdFornecedorUsuario);
+            model.Field(m => m.Nome);
+            model.Field(m => m.Email);
+            model.Field(m => m.IdUsuario);
+            model.Field(m => m.Login);
+            model.Field(m => m.Perfil).DefaultValue((PerfilFornecedorUsuarioModel)((IEnumerable<PerfilFornecedorUsuarioModel>)ViewData["ListaPerfilFornecedor"]).FirstOrDefault());
+            model.Field(m => m.UtilizaEmailComunicacao);
+            model.Field(m => m.HabilitaEdicao).DefaultValue(true);
+
+
+        })
+        .Events(e => e.Change("DataSouceFormulaChange"))
+        .Read(read => read.Action("GetUsuarioFornecedor","CadastroFornecedor").Data("getIdFornecedor"))
+
+    )
+    )
+
+
+            
+
+<script type="text/javascript">
+
+
+    function getIdFornecedor() {
+        return {
+            IdFornecedor: $("#IdFornecedor").val()
+        }
+    }
+
+    function onEdit(e) {
+        
+        if (e.model.hasOwnProperty("HabilitaEdicao") && !model.PermiteAlteracao)
+            this.closeCell();
+
+    }
+
+    function DataSouceFormulaChange() {
+        $("#gridUsuarios").data("kendoGrid").refresh();
+    }
+
+    function excluirUsuario(idIngrediente) {
+
+        confirm("Deseja Realmente Excluir este Usuário?", function () {
+
+            var data = $("#gridUsuarios").data("kendoGrid").dataSource;
+            data.remove(data.get(idIngrediente));
+
+        }, 2);
+    }
+
+</script>

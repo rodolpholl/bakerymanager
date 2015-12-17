@@ -50,11 +50,28 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         public ActionResult Criar()
         {
+
+            GetPerfilFornecedor();
+
             return View(new FornecedorModel()
             {
                 Ativo = true,
                 IdFornecedor = 0
             });
+        }
+
+        private void GetPerfilFornecedor()
+        {
+            using (var cadForn = new CadastroFornecedor())
+            {
+                var lista = cadForn.GetPerfilFornecedor().OrderBy(x => x.Nome).Select(x => new PerfilFornecedorUsuarioModel()
+                {
+                    IdPerfil = x.IdPerfil,
+                    Nome = x.Nome
+                }).ToList();
+
+                ViewData["ListaPerfilFornecedor"] = lista;
+            }
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -126,7 +143,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         {
             using (var cadForn = new CadastroFornecedor())
             {
-
+                GetPerfilFornecedor();
                 var forn = cadForn.GetFornecedorById(Id);
 
                 return View(new FornecedorModel()
@@ -290,11 +307,13 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult AtualizarContatos(IList<FornecedorContatoModel> contatos, IList<FornecedorQuestionarioConfigModel> questionarios, IList<CredenciamentoFornecedorIngredienteModel> listaCredenciamento, int IdFornecedor)
+        public JsonResult AtualizarContatos(IList<FornecedorContatoModel> contatos, IList<FornecedorQuestionarioConfigModel> questionarios,
+                                           IList<CredenciamentoFornecedorIngredienteModel> listaCredenciamento, IList<FornecedorUsuarioModel> listaUsuarios,
+                                           int IdFornecedor)
         {
+
             try
             {
-
 
                 using (var cadForn = new CadastroFornecedor())
                 {
@@ -322,6 +341,25 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         }
                     }).ToList(), IdFornecedor);
 
+                    cadForn.AtualizarUsuario((listaUsuarios ?? new List<FornecedorUsuarioModel>()).Select(x => new FornecedorUsuario()
+                    {
+                        Fornecedor = cadForn.GetFornecedorById(IdFornecedor),
+                        Usuario = new Usuario()
+                        {
+                            Nome = x.Nome,
+                            Login = x.Login,
+                            Email = x.Email,
+                            IdUsuario = x.IdUsuario
+                        },
+                        Perfil = new Perfil()
+                        {
+                            IdPerfil = x.Perfil.IdPerfil,
+                            Nome = x.Perfil.Nome
+                        },
+                        UtilizaEmailComunicacao = x.UtilizaEmailComunicacao
+
+                    }).ToList(), IdFornecedor);
+
                     return Json(new
                     {
                         TipoMensagem = TipoMensagemRetorno.Ok,
@@ -338,6 +376,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Mensagem = ex.Message,
                 }, "text/html", JsonRequestBehavior.AllowGet);
             }
+
+
         }
 
         public JsonResult GetQuestionarioFornecedor([DataSourceRequest] DataSourceRequest request, int IdFornecedor)
@@ -374,12 +414,12 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         public JsonResult GetIngredietesDisponiveis(int? IdCategoria, int[] IngredientesJaSelecionados)
         {
 
-            
+
 
             using (var cadForn = new CadastroFornecedor())
             {
 
-      
+
                 var result = cadForn.GetCategoriaIngredientesByCategoria(IdCategoria.HasValue ? IdCategoria.Value : 0).AsQueryable();
 
 
@@ -410,6 +450,32 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     IdCredenciamentoFornecedorIngrediente = x.IdCredenciamentoFornecedorIngrediente,
                     IdIngrediente = x.Ingrediente.IdIngrediente,
                     NomeIngrediente = string.IsNullOrWhiteSpace(x.Ingrediente.Nome) ? x.Ingrediente.NomeTACO : x.Ingrediente.Nome
+                });
+
+                return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public JsonResult GetUsuarioFornecedor([DataSourceRequest] DataSourceRequest request, int IdFornecedor)
+        {
+            using (var cadForn = new CadastroFornecedor())
+            {
+                var result = cadForn.GetUsuarioFornecedor(IdFornecedor).Select(x => new FornecedorUsuarioModel()
+                {
+                    Email = IdFornecedor == 0 ? string.Empty : x.Usuario.Email,
+                    Nome = IdFornecedor == 0 ? string.Empty : x.Usuario.Nome,
+                    IdUsuario = IdFornecedor == 0 ? 0 : x.Usuario.IdUsuario,
+                    Login = IdFornecedor == 0 ? string.Empty : x.Usuario.Login,
+                    Perfil = new PerfilFornecedorUsuarioModel()
+                    {
+                        IdPerfil = (IdFornecedor == 0 || x.Perfil == null) ? 0 : x.Perfil.IdPerfil,
+                        Nome = (IdFornecedor == 0 || x.Perfil == null) ? string.Empty : x.Perfil.Nome
+                    },
+                    IdFornecedorUsuario = x.IdFornecedorUsuario,
+                    UtilizaEmailComunicacao = x.UtilizaEmailComunicacao,
+                    HabilitaEdicao = IdFornecedor == 0 ? true : cadForn.VerificaPossibilidadeEdicao(x)
                 });
 
                 return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);

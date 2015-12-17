@@ -1,5 +1,4 @@
-﻿
-@using Kendo.Mvc.UI
+﻿@using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Cadastros
 
 
@@ -125,7 +124,7 @@
     
     function excluirIngredienteCredenciamento(idIngrediente) {
 
-        confirm("Deseja Realmente Excluir Esse Ingrediente?", function () {
+        confirm("Deseja Realmente Excluir este Ingrediente?", function () {
 
             var data = $("#gridCredenciamento").data("kendoGrid").dataSource;
             data.remove(data.get(idIngrediente));
