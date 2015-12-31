@@ -126,6 +126,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\BakeryManager.mdf" />
+    <Content Include="App_Data\BakeryManager_log.ldf">
+      <DependentUpon>BakeryManager.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -359,7 +363,6 @@
     <Content Include="Views\CadastroIngredientes\HistoricoDesativarReativar.cshtml" />
     <Content Include="Views\CadastroIngredientes\TabelaNutricional.cshtml" />
     <Content Include="Views\CadastroCategoriaIngredientes\Index.cshtml" />
-    <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
     <Content Include="Views\ManterParametros\Index.cshtml" />
     <Content Include="Views\CadastroCategoriaProduto\Index.cshtml" />
     <Content Include="Views\CadastroProduto\Index.cshtml" />
@@ -404,6 +407,7 @@
     <Content Include="Views\CadastroFornecedor\Usuarios.cshtml" />
     <Content Include="Views\CadastroFornecedor\EditorTemplates\LoginTemplate.cshtml" />
     <Content Include="Views\CadastroFornecedor\EditorTemplates\PerfilTemplate.cshtml" />
+    <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -411,9 +415,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">
       <Project>{1af5ef4a-47ec-4287-baf5-8e92b5731088}</Project>
