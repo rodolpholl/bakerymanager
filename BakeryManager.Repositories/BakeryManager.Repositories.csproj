@@ -76,6 +76,7 @@
     <Compile Include="IngredienteFormulaBM.cs" />
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />
     <Compile Include="IngredienteTabelaNutricionalBM.cs" />
+    <Compile Include="MaterialAdicionalBM.cs" />
     <Compile Include="ProdutoBM.cs" />
     <Compile Include="ProdutoFotoBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="TabelaNutricionalBM.cs" />
     <Compile Include="Seguranca\UsuarioHistoricoSenhaBM.cs" />
     <Compile Include="Seguranca\UsuarioPerfilHistoricoBM.cs" />
+    <Compile Include="TipoPedidoBM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

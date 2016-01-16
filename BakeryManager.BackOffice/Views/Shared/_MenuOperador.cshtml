@@ -25,6 +25,7 @@
             </li>
         </ul>
         <a href="@Url.Action("Index","CadastroCliente")">Clientes</a>
+        
     </li>
 
 </ul>
@@ -38,5 +39,15 @@
         <a href="@Url.Action("Index","Simulador")">Simulador de Pedidos</a>
 
     </li>
+    
 
+</ul>
+<a href="javascript:;" data-toggle="collapse" data-target="#MenuPedidoVenda"><i class="fa fa-fw fa-edit"></i> Pedidos de Venda <i class="fa fa-fw fa-caret-down"></i></a>
+<ul id="MenuPedidoVenda" class="collapse">
+    <li>
+        <a href="@Url.Action("Index","CadastrarTipoPedido")">Tipo de Pedido</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index","CadastrarMaterialAdicional")">Material Adicional</a>
+    </li>
 </ul>

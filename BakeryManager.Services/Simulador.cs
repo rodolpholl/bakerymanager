@@ -105,32 +105,39 @@ namespace BakeryManager.Services
 
             var listaIgrediente = SimularReceita(idFormula, qtdSimulacao);
             var listaComponentesExibicao = parametroTabelaNutrucionalBm.GetAll().Select(x => x.Compoonente).ToList();
-            
 
-            IList<IngredienteTabelaNutricional> listaRetorno = new List<IngredienteTabelaNutricional>();
 
-            foreach(var componente in listaComponentesExibicao)
+            IList<IngredienteTabelaNutricional> listaRetorno = listaComponentesExibicao.Select(x => new IngredienteTabelaNutricional()
             {
-                var ingredienteTabela = ingredienteTabelaNutricionalBm.GetIngredientesByTabelaNutriconal(componente)
-                                        .Where(x => listaIgrediente.Select(y => y.Ingrediente.IdIngrediente).ToList().Contains(x.Ingrediente.IdIngrediente)).ToList();
+                Componente = x,
+                PercValorDiario = 0,
+                Valor = 0
+            }).ToList();
 
+            //Calculando o valor das porções simuladas
+            foreach(var ing in listaIgrediente)
+            {
+                var componentesPadrao = ingredienteTabelaNutricionalBm.GetInformacoesNutricionaisByIngrediente(ing.Ingrediente)
+                                  .Where(x => listaRetorno.Select(y => y.Componente.IdTabelaNutricional).ToList().Contains(x.Componente.IdTabelaNutricional)).ToList();
 
-
-                var ValorNormal = ingredienteTabela.Where(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional).Sum(x => x.Valor);
-                                  
-                var PercNormal = ingredienteTabela.Where(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional).Sum(x => x.PercValorDiario);
-
-                var ValorParcial = ValorNormal / listaIgrediente.Where(x => ingredienteTabela.Select(y => y.Ingrediente.IdIngrediente).ToList().Contains(x.Ingrediente.IdIngrediente)).Sum(x => x.Quantidade); 
-                var PercParcial = PercNormal / listaIgrediente.Where(x => ingredienteTabela.Select(y => y.Ingrediente.IdIngrediente).ToList().Contains(x.Ingrediente.IdIngrediente)).Sum(x => x.Quantidade); 
-
-                listaRetorno.Add(new IngredienteTabelaNutricional()
+                foreach (var comp in componentesPadrao)
                 {
-                    Componente = componente,
-                    PercValorDiario = PercParcial,
-                    Valor = ValorParcial
-                });
+                    var valorReceita = comp.Valor * ing.Quantidade / 100;
+                    listaRetorno.FirstOrDefault(x => x.Componente.IdTabelaNutricional == comp.Componente.IdTabelaNutricional).Valor += valorReceita;
+
+                }
 
             }
+
+            //Calculando o percentual diário
+            foreach(var ret in listaRetorno)
+            {
+                var valDiario = listaComponentesExibicao.FirstOrDefault(x => x.IdTabelaNutricional == ret.Componente.IdTabelaNutricional).ValorDiario ?? 0;
+                ret.PercValorDiario = ret.Valor / valDiario * 100;
+            }
+            
+
+            
 
             return listaRetorno;
         }

@@ -79,6 +79,8 @@
   <ItemGroup>
     <Compile Include="AvaliacaoFornecedor.cs" />
     <Compile Include="BusinessProcessBase.cs" />
+    <Compile Include="CadastrarMaterialAdiconal.cs" />
+    <Compile Include="CadastrarTipoPedido.cs" />
     <Compile Include="CadastroCategoriaProduto.cs" />
     <Compile Include="CadastroCategoriaIngrediente.cs" />
     <Compile Include="CadastroCliente.cs" />

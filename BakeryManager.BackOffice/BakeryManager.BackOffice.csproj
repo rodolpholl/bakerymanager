@@ -262,6 +262,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AvaliacaoFornecedorController.cs" />
+    <Compile Include="Controllers\Pedidos\CadastrarMaterialAdicionalController.cs" />
+    <Compile Include="Controllers\Pedidos\CadastrarTipoPedidoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaProdutoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroClienteController.cs" />
@@ -311,6 +313,8 @@
     <Compile Include="Models\Login\LoginModel.cs" />
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
     <Compile Include="Models\ManterReceita\TabelaNutricionalSimuladorModel.cs" />
+    <Compile Include="Models\Pedido\MaterialAdicionalModel.cs" />
+    <Compile Include="Models\Pedido\TipoPedidoModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
     <Compile Include="Models\SecurityIdentityModel.cs" />
@@ -409,6 +413,8 @@
     <Content Include="Views\CadastroFornecedor\EditorTemplates\LoginTemplate.cshtml" />
     <Content Include="Views\CadastroFornecedor\EditorTemplates\PerfilTemplate.cshtml" />
     <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
+    <Content Include="Views\CadastrarTipoPedido\Index.cshtml" />
+    <Content Include="Views\CadastrarMaterialAdicional\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -445,6 +451,7 @@
       <Name>BakeryManager.Services</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

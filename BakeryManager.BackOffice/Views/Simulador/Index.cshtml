@@ -78,7 +78,7 @@
                         <label class="col-sm-2 control-label">Quantidade</label>
                         <div class="col-sm-5">
                             <div class="input-group">
-                                @(Html.Kendo().NumericTextBox().HtmlAttributes(new { @class = "form-control" }).Placeholder("Informe a quantidade a ser simulada.").Name("txtQuantidadeSimulacao").Decimals(0).Min(0).Step(1))
+                                @(Html.Kendo().NumericTextBox().Placeholder("Informe a quantidade a ser simulada.").Name("txtQuantidadeSimulacao").Decimals(0).Min(0).Step(1))
                                 <span class="input-group-btn" title="Simular Pedido"><button id="btnPesquisa" class="btn btn-default btn-sm" type="button"><i class="fa fa-search"></i></button></span>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                     .Columns(column =>
                     {
                         column.Bound(x => x.Nome).Title("Ingrediente"); 
-                        column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(200)
+                        column.Bound(x => x.Quantidade).Title("Qtd").EditorTemplateName("tmplQuantidade").Width(100)
                         .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
                     })
                     .AutoBind(false)
@@ -162,7 +162,7 @@
                     .Columns(column =>
                     {
                         column.Bound(x => x.Nome).Title("Ingrediente");
-                        column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(100)
+                        column.Bound(x => x.Quantidade).Title("Qtd").ClientTemplate("#=Quantidade# g").Width(100)
                         .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
                     })
                     .AutoBind(false)
@@ -203,7 +203,7 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <label>Componentes Nutricionais Simuladas</label>
+                    <label>Tab. Nutricional</label>
                 </div>
             </div>
             <div class="row">
@@ -213,8 +213,8 @@
                     .Columns(column =>
                     {
                         column.Bound(x => x.Nome).Title("Componente");
-                        column.Bound(x => x.ValorDiario).Title("Valor Diário").Width(100);
-                        column.Bound(x => x.Quantidade).Title("Quantidade").Width(100).ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
+                        column.Bound(x => x.Quantidade).Title("Qtd").Width(50).ClientTemplate("#=Quantidade# #=UnidadeMedida#");
+                        column.Bound(x => x.ValorDiario).Title("VD %").Width(50).ClientTemplate("#=ValorDiario# %");
                     })
                     .AutoBind(false)
                     .Sortable()
