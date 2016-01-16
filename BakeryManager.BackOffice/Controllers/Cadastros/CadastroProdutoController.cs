@@ -320,7 +320,6 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                 {
                     IdIngredienteTabelaNutricional = x.IdFormulaTabelaNutricional,
                     Ingrediente = x.Componente.Nome,
-                    PercValorDiario = x.PercentualDiario,
                     Valor = x.Valor,
                     UnidadeMedida = x.Componente.UnidadeMedida
                 }).ToList();

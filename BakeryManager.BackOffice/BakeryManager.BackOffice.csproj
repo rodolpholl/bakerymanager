@@ -304,12 +304,13 @@
     <Compile Include="Models\Cadastros\Produtos\IngredienteTabelaNutricionalProduto.cs" />
     <Compile Include="Models\Cadastros\Produtos\ProdutoGaleriaFotoModel.cs" />
     <Compile Include="Models\Cadastros\TabelaNutricionalModel.cs" />
-    <Compile Include="Models\ManteReceita\FormulaModel.cs" />
-    <Compile Include="Models\ManteReceita\IngredienteFormulaModel.cs" />
+    <Compile Include="Models\ManterReceita\FormulaModel.cs" />
+    <Compile Include="Models\ManterReceita\IngredienteFormulaModel.cs" />
     <Compile Include="Models\Cadastros\Produtos\ProdutoModel.cs" />
     <Compile Include="Models\Login\AlterarSenhaModel.cs" />
     <Compile Include="Models\Login\LoginModel.cs" />
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
+    <Compile Include="Models\ManterReceita\TabelaNutricionalSimuladorModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
     <Compile Include="Models\SecurityIdentityModel.cs" />
@@ -415,7 +416,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">
       <Project>{1af5ef4a-47ec-4287-baf5-8e92b5731088}</Project>

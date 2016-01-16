@@ -1,5 +1,4 @@
 ﻿@using Kendo.Mvc.UI
-@using BakeryManager.BackOffice.Models.Cadastros.Produtos
 @using BakeryManager.BackOffice.Models.ManterReceita
 
 @{
@@ -98,7 +97,7 @@
     <!-- /.row -->
     <div class="row">
 
-        <div class="col-sm-6">
+        <div class="col-sm-4">
 
             <div class="row">
                 <div class="col-sm-4">
@@ -149,7 +148,7 @@
             
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-4">
 
             <div class="row">
                 <div class="col-sm-4">
@@ -163,7 +162,7 @@
                     .Columns(column =>
                     {
                         column.Bound(x => x.Nome).Title("Ingrediente");
-                        column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(200)
+                        column.Bound(x => x.Quantidade).EditorTemplateName("tmplQuantidade").Width(100)
                         .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
                     })
                     .AutoBind(false)
@@ -182,6 +181,7 @@
                             model.Field(x => x.Nome).Editable(false);
                             model.Field(x => x.IdIngrediente).Editable(false);
                             model.Field(x => x.Quantidade);
+                            
                         })
                         .Aggregates(aggregate =>
                         {
@@ -199,6 +199,59 @@
 
 
         </div>
+        <div class="col-sm-4">
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Componentes Nutricionais Simuladas</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    @(Html.Kendo().Grid<TabelaNutricionalSimuladorModel>()
+                    .Name("gridTabelaNutricionalSimulado")
+                    .Columns(column =>
+                    {
+                        column.Bound(x => x.Nome).Title("Componente");
+                        column.Bound(x => x.ValorDiario).Title("Valor Diário").Width(100);
+                        column.Bound(x => x.Quantidade).Title("Quantidade").Width(100).ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
+                    })
+                    .AutoBind(false)
+                    .Sortable()
+                    .Scrollable(scr => scr.Height(400))
+                    .Editable(ed => ed.Enabled(true).Mode(GridEditMode.InCell))
+                    .Navigatable()
+                    .Resizable(r => r.Columns(true))
+                    .DataSource(ds => ds
+                        .Ajax()
+                        .Batch(true)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(x => x.IdTabelaNutricional);
+                            model.Field(x => x.Nome).Editable(false);
+                            model.Field(x => x.ValorDiario).Editable(false);
+                            model.Field(x => x.Quantidade).Editable(false);
+
+                        })
+                        .Aggregates(aggregate =>
+                        {
+                            aggregate.Add(x => x.Quantidade).Sum();
+                        })
+                        .Read(read => read.Action("SimuladorComponentesNutricionais", "Simulador").Data("getDataSimulacao"))
+
+
+                    )
+
+                    )
+                </div>
+            </div>
+
+
+
+        </div>
+
+
 
     </div>
 
@@ -275,6 +328,7 @@
             $("#btnPesquisa").click(function () {
 
                 $("#gridFormulaSimulado").data("kendoGrid").dataSource.read();
+                $("#gridTabelaNutricionalSimulado").data("kendoGrid").dataSource.read();
 
             });
 

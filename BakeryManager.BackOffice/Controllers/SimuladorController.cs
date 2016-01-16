@@ -24,7 +24,8 @@ namespace BakeryManager.BackOffice.Controllers
         {
             using (var simulador = new Simulador())
             {
-                var listaCategoria = simulador.GetListaCategoria().OrderBy(x => x.Nome).Select(x => new {
+                var listaCategoria = simulador.GetListaCategoria().OrderBy(x => x.Nome).Select(x => new
+                {
                     x.IdCategoriaProduto,
                     x.Nome
                 }).ToList();
@@ -37,7 +38,8 @@ namespace BakeryManager.BackOffice.Controllers
         {
             using (var simulador = new Simulador())
             {
-                var listaProduto = simulador.GetListaProdutoByCategiria(IdCategoria).OrderBy(x => x.Nome).Select(x => new  {
+                var listaProduto = simulador.GetListaProdutoByCategiria(IdCategoria).OrderBy(x => x.Nome).Select(x => new
+                {
                     x.IdProduto,
                     x.Nome
                 }).ToList();
@@ -50,7 +52,8 @@ namespace BakeryManager.BackOffice.Controllers
         {
             using (var simulador = new Simulador())
             {
-                var listaProduto = simulador.GetListaFormulaByCategiria(IdProduto).OrderBy(x => x.Descricao).Select(x => new {
+                var listaProduto = simulador.GetListaFormulaByCategiria(IdProduto).OrderBy(x => x.Descricao).Select(x => new
+                {
                     x.IdFormula,
                     x.Descricao
                 }).ToList();
@@ -74,18 +77,35 @@ namespace BakeryManager.BackOffice.Controllers
             }
         }
 
-        public JsonResult SimularReceita ([DataSourceRequest] DataSourceRequest request, int IdFormula, int QtdSimulacao)
+        public JsonResult SimularReceita([DataSourceRequest] DataSourceRequest request, int IdFormula, int QtdSimulacao)
         {
             using (var simulador = new Simulador())
             {
                 var listaSimulada = simulador.SimularReceita(IdFormula, QtdSimulacao).Select(x => new IngredienteFormulaModel()
                 {
                     AGosto = x.AGosto,
-                    Nome = x.Ingrediente.Nome ,
+                    Nome = string.IsNullOrWhiteSpace(x.Ingrediente.Nome) ? x.Ingrediente.NomeTACO : x.Ingrediente.Nome,
                     Quantidade = x.Quantidade
                 }).ToList();
 
                 return Json(listaSimulada.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult SimuladorComponentesNutricionais([DataSourceRequest] DataSourceRequest request, int IdFormula, int QtdSimulacao)
+        {
+            using (var simulador = new Simulador())
+            {
+                var listaSimulada = simulador.SimulaComponentesNutricionais(IdFormula, QtdSimulacao).Select(x => new TabelaNutricionalSimuladorModel()
+                {
+                    Nome = x.Componente.Nome,
+                    IdTabelaNutricional = x.Componente.IdTabelaNutricional,
+                    Quantidade = Math.Round(x.Valor,2),
+                    ValorDiario = Math.Round(x.PercValorDiario.Value,2),
+                    UnidadeMedida = x.Componente.UnidadeMedida
+                }).ToList();
+                return Json(listaSimulada.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
             }
         }
     }

@@ -16,6 +16,7 @@ namespace BakeryManager.BackOffice.Models.ManterReceita
         public string Nome { get; set; }
         [Required(ErrorMessage ="Campo Obrigatório")]
         public  double Quantidade { get; set; }
+        public double PercDiario { get; set; }
         [Display(Name = "A Gosto?")]
         public  bool AGosto { get; set; }
     }

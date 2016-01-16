@@ -31,5 +31,10 @@ namespace BakeryManager.Repositories
             return Query().FirstOrDefault(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional && 
                                                x.Ingrediente.IdIngrediente == ingrediente.IdIngrediente);
         }
+
+        public IList<IngredienteTabelaNutricional> GetIngredientesByTabelaNutriconal(TabelaNutricional componente)
+        {
+            return Query().Where(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional).ToList();
+        }
     }
 }

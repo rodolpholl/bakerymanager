@@ -12,8 +12,6 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Produtos
         public int IdIngredienteTabelaNutricional { get; set; }
         public string Ingrediente { get; set; }
         public double? Valor { get; set; }
-        [Display(Name ="% VD")]
-        public double? PercValorDiario { get; set; }
         public string UnidadeMedida { get; set; }
         
     }

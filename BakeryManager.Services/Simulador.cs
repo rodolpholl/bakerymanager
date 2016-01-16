@@ -1,5 +1,6 @@
 ﻿using BakeryManager.Entities;
 using BakeryManager.Repositories;
+using BakeryManager.Repositories.Seguranca;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace BakeryManager.Services
         private FormulaBM formulaBm;
         private FormulaTabelaNutricionalBM formulaTabelaNutricionalBm;
         private IngredienteFormulaBM ingredienteFormulaBm;
+        private ParametroTabelaNutricionalBM parametroTabelaNutrucionalBm;
+        private IngredienteTabelaNutricionalBM ingredienteTabelaNutricionalBm;
         public Simulador()
         {
             categoriaProdutoBm = GetObject<CategoriaProdutoBM>();
@@ -23,6 +26,8 @@ namespace BakeryManager.Services
             formulaBm = GetObject<FormulaBM>();
             formulaTabelaNutricionalBm = GetObject<FormulaTabelaNutricionalBM>();
             ingredienteFormulaBm = GetObject<IngredienteFormulaBM>();
+            parametroTabelaNutrucionalBm = GetObject<ParametroTabelaNutricionalBM>();
+            ingredienteTabelaNutricionalBm = GetObject<IngredienteTabelaNutricionalBM>();
         }
         public void Dispose()
         {
@@ -31,6 +36,8 @@ namespace BakeryManager.Services
             formulaBm.Dispose();
             formulaTabelaNutricionalBm.Dispose();
             ingredienteFormulaBm.Dispose();
+            parametroTabelaNutrucionalBm.Dispose();
+            ingredienteTabelaNutricionalBm.Dispose();
         }
 
 
@@ -75,6 +82,8 @@ namespace BakeryManager.Services
             var formula = formulaBm.GetByID(idFormula);
             var fatorConversao = qtdSimulacao / formula.RendimentoPadrao;
 
+            var PercDiario = formulaTabelaNutricionalBm.GetByFormula(formula);
+
             var listaIngredienteFormula = ingredienteFormulaBm.GetByFormula(formula).Select(x => new IngredienteFormula() {
 
                     AGosto = x.AGosto,
@@ -82,10 +91,48 @@ namespace BakeryManager.Services
                     IdIngredienteFormula = x.IdIngredienteFormula,
                     Ingrediente = x.Ingrediente,
                     Quantidade = Math.Round(x.Quantidade * fatorConversao,2)
+                    
                 }).ToList();
 
             return listaIngredienteFormula;
 
+        }
+
+        public IList<IngredienteTabelaNutricional> SimulaComponentesNutricionais(int idFormula, int qtdSimulacao)
+        {
+            var formula = formulaBm.GetByID(idFormula);
+          
+
+            var listaIgrediente = SimularReceita(idFormula, qtdSimulacao);
+            var listaComponentesExibicao = parametroTabelaNutrucionalBm.GetAll().Select(x => x.Compoonente).ToList();
+            
+
+            IList<IngredienteTabelaNutricional> listaRetorno = new List<IngredienteTabelaNutricional>();
+
+            foreach(var componente in listaComponentesExibicao)
+            {
+                var ingredienteTabela = ingredienteTabelaNutricionalBm.GetIngredientesByTabelaNutriconal(componente)
+                                        .Where(x => listaIgrediente.Select(y => y.Ingrediente.IdIngrediente).ToList().Contains(x.Ingrediente.IdIngrediente)).ToList();
+
+
+
+                var ValorNormal = ingredienteTabela.Where(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional).Sum(x => x.Valor);
+                                  
+                var PercNormal = ingredienteTabela.Where(x => x.Componente.IdTabelaNutricional == componente.IdTabelaNutricional).Sum(x => x.PercValorDiario);
+
+                var ValorParcial = ValorNormal / listaIgrediente.Where(x => ingredienteTabela.Select(y => y.Ingrediente.IdIngrediente).ToList().Contains(x.Ingrediente.IdIngrediente)).Sum(x => x.Quantidade); 
+                var PercParcial = PercNormal / listaIgrediente.Where(x => ingredienteTabela.Select(y => y.Ingrediente.IdIngrediente).ToList().Contains(x.Ingrediente.IdIngrediente)).Sum(x => x.Quantidade); 
+
+                listaRetorno.Add(new IngredienteTabelaNutricional()
+                {
+                    Componente = componente,
+                    PercValorDiario = PercParcial,
+                    Valor = ValorParcial
+                });
+
+            }
+
+            return listaRetorno;
         }
     }
 }
