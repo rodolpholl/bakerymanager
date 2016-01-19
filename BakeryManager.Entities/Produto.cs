@@ -15,6 +15,9 @@ namespace BakeryManager.Entities
         public virtual CategoriaProduto Categoria { get; set; }
         public virtual int DiasPrazoValidade { get; set; }
         public virtual int ProporcaoTabelaNutricional { get; set; }
+
+        public virtual double PrecoCusto { get; set; }
+        public virtual double PrecoVenda { get; set; }
         
     }
 }

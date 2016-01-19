@@ -30,5 +30,11 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Produtos
 
         [Display(Name = "Porção para tabela nutricional", Prompt = "Proção utilizada para cáculo da tabela nutricional (em gramas)")]
         public int ProporcaoTabelaNutricional { get; set; }
+
+        [Display(Name = "Preço de Custo")]
+        public double PrecoCusto { get; set; }
+
+        [Display(Name = "Preço de Venda")]
+        public double PrecoVenda { get; set; }
     }
 }

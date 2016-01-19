@@ -59,7 +59,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Nome = x.Categoria.Nome
                     },
                     Nome = x.Nome,
-                    PossuiTabelaNutricional = cadProduto.VerificaExistenciaFormulaAssociada(x)
+                    PossuiTabelaNutricional = cadProduto.VerificaExistenciaFormulaAssociada(x),
+                    PrecoCusto = x.PrecoCusto,
+                    PrecoVenda = x.PrecoVenda
                 }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
@@ -87,7 +89,9 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         Nome = pProdutoModel.Nome,
                         DiasPrazoValidade = pProdutoModel.DiasPrazoValidade,
                         ProporcaoTabelaNutricional = pProdutoModel.ProporcaoTabelaNutricional,
-                        Categoria = cadProduto.GetCategoriaById(pProdutoModel.Categoria.IdCategoriaProduto)
+                        Categoria = cadProduto.GetCategoriaById(pProdutoModel.Categoria.IdCategoriaProduto),
+                        PrecoVenda = pProdutoModel.PrecoVenda,
+                        PrecoCusto = pProdutoModel.PrecoCusto
                     };
 
                     cadProduto.InserirProduto(prod);
@@ -125,6 +129,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             //Carregando as fotos do produto no diretório temporário
             var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", ViewData["galeriaFotoUID"].ToString())));
             var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/", Id.ToString())));
+            if (!directoryProd.Exists)
+                directoryProd.Create();
 
 
             foreach (var f in directoryProd.GetFiles())
@@ -144,6 +150,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     IdProduto = prod.IdProduto,
                     Nome = prod.Nome,
                     GTIN = prod.GTIN,
+                    PrecoCusto = prod.PrecoCusto,
+                    PrecoVenda = prod.PrecoVenda,
                     ProporcaoTabelaNutricional = prod.ProporcaoTabelaNutricional,
                     DiasPrazoValidade = prod.DiasPrazoValidade,
                     Categoria = new CategoriaProdutoModel()
@@ -166,6 +174,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     var prod = cadProduto.GetProdutoById(pProdutoModel.IdProduto);
                     prod.Nome = pProdutoModel.Nome;
                     prod.GTIN = pProdutoModel.GTIN;
+                    prod.PrecoVenda = pProdutoModel.PrecoVenda;
+                    prod.PrecoCusto = pProdutoModel.PrecoCusto;
                     prod.ProporcaoTabelaNutricional = pProdutoModel.ProporcaoTabelaNutricional;
                     prod.DiasPrazoValidade = pProdutoModel.DiasPrazoValidade;
                     prod.Categoria = cadProduto.GetCategoriaById(pProdutoModel.Categoria.IdCategoriaProduto);
@@ -418,7 +428,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         public ActionResult ExcluirGaleriaTemporaria(string galeriaFotoUID)
         {
             var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID)));
-            direcotryTemp.Delete(true);
+            if (direcotryTemp.Exists)
+                direcotryTemp.Delete(true);
 
             return View();
         }
