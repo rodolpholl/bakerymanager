@@ -276,6 +276,7 @@
     <Compile Include="Controllers\ManterParametrosController.cs" />
     <Compile Include="Controllers\ManterQuestionarioController.cs" />
     <Compile Include="Controllers\ManterReceituarioController.cs" />
+    <Compile Include="Controllers\Pedidos\PreConfiguracaoTipoPedidoController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SimuladorController.cs" />
     <Compile Include="Global.asax.cs">
@@ -314,6 +315,7 @@
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
     <Compile Include="Models\ManterReceita\TabelaNutricionalSimuladorModel.cs" />
     <Compile Include="Models\Pedido\MaterialAdicionalModel.cs" />
+    <Compile Include="Models\Pedido\PedidoMaterialAdicionalPreConfigModel.cs" />
     <Compile Include="Models\Pedido\TipoPedidoModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
@@ -415,6 +417,10 @@
     <Content Include="Views\CadastroIngredientes\EditorTemplates\Valor.cshtml" />
     <Content Include="Views\CadastrarTipoPedido\Index.cshtml" />
     <Content Include="Views\CadastrarMaterialAdicional\Index.cshtml" />
+    <Content Include="Views\PreConfiguracaoTipoPedido\Index.cshtml" />
+    <Content Include="Views\PreConfiguracaoTipoPedido\EditorTemplates\MaterialComboTemplate.cshtml" />
+    <Content Include="Views\PreConfiguracaoTipoPedido\EditorTemplates\QuantidadeTemplate.cshtml" />
+    <Content Include="Views\PreConfiguracaoTipoPedido\EditorTemplates\TipoAquisicaoTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

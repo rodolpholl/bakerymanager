@@ -77,6 +77,7 @@
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />
     <Compile Include="IngredienteTabelaNutricionalBM.cs" />
     <Compile Include="MaterialAdicionalBM.cs" />
+    <Compile Include="PedidoMaterialAdicionalPreConfigBM.cs" />
     <Compile Include="ProdutoBM.cs" />
     <Compile Include="ProdutoFotoBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

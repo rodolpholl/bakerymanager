@@ -62,12 +62,13 @@
     <Compile Include="IngredienteFormula.cs" />
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="IngredienteTabelaNutricional.cs" />
-    <Compile Include="MaterialAdicional.cs" />
+    <Compile Include="Pedido\MaterialAdicional.cs" />
+    <Compile Include="Pedido\PedidoMaterialAdicionalPreConfig.cs" />
     <Compile Include="ProdutoFoto.cs" />
     <Compile Include="Questionario.cs" />
     <Compile Include="QuestionarioPergunta.cs" />
     <Compile Include="Seguranca\ParametrosGerais.cs" />
-    <Compile Include="Pedido.cs" />
+    <Compile Include="Pedido\Pedido.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\Enums\Rule.cs" />
@@ -80,7 +81,7 @@
     <Compile Include="Seguranca\UsuarioPerfil.cs" />
     <Compile Include="Seguranca\UsuarioPerfilHistorico.cs" />
     <Compile Include="TabelaNutricional.cs" />
-    <Compile Include="TipoPedido.cs" />
+    <Compile Include="Pedido\TipoPedido.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
