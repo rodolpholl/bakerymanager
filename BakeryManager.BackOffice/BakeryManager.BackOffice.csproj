@@ -262,6 +262,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AvaliacaoFornecedorController.cs" />
+    <Compile Include="Controllers\Cadastros\ManterFunconariosController.cs" />
     <Compile Include="Controllers\Pedidos\CadastrarMaterialAdicionalController.cs" />
     <Compile Include="Controllers\Pedidos\CadastrarTipoPedidoController.cs" />
     <Compile Include="Controllers\Cadastros\CadastroCategoriaIngredientesController.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorQuestionarioModel.cs" />
     <Compile Include="Models\Cadastros\Fornecedores\FornecedorUsuarioModel.cs" />
+    <Compile Include="Models\Cadastros\Funcionarios\FuncionarioModel.cs" />
     <Compile Include="Models\Cadastros\Ingredientes\IngredientesModel.cs" />
     <Compile Include="Models\Cadastros\CadastroUsuarioModel.cs" />
     <Compile Include="Models\Cadastros\CadastroPerfilModel.cs" />
@@ -421,6 +423,10 @@
     <Content Include="Views\PreConfiguracaoTipoPedido\EditorTemplates\MaterialComboTemplate.cshtml" />
     <Content Include="Views\PreConfiguracaoTipoPedido\EditorTemplates\QuantidadeTemplate.cshtml" />
     <Content Include="Views\PreConfiguracaoTipoPedido\EditorTemplates\TipoAquisicaoTemplate.cshtml" />
+    <Content Include="Views\ManterFunconarios\Index.cshtml" />
+    <Content Include="Views\ManterFunconarios\Criar.cshtml" />
+    <Content Include="Views\ManterFunconarios\Form.cshtml" />
+    <Content Include="Views\ManterFunconarios\Editar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

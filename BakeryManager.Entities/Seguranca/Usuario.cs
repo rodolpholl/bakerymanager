@@ -32,5 +32,6 @@ namespace BakeryManager.Entities
         public virtual string Email { get; set; }
 
         public virtual string Telefone { get; set; }
+        public virtual Funcionario FuncionarioAssociado { get; set; }
     }
 }

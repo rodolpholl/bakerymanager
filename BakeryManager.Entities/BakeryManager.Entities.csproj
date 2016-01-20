@@ -57,6 +57,7 @@
     <Compile Include="FornecedorQuestionarioConfig.cs" />
     <Compile Include="FornecedorAvaliacaoQuestionarioResposta.cs" />
     <Compile Include="FornecedorUsuario.cs" />
+    <Compile Include="Funcionario.cs" />
     <Compile Include="Ingrediente.cs" />
     <Compile Include="IngredienteEstoqueConfig.cs" />
     <Compile Include="IngredienteFormula.cs" />

@@ -106,7 +106,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         return Json(new
                         {
                             TipoMensagem = TipoMensagemRetorno.Ok,
-                            Mensagem = "Fornecedor Inserido com sucesso!",
+                            Mensagem = "Cliente Inserido com sucesso!",
                             IdCliente = cliente.IdCliente
                         }, "text/html", JsonRequestBehavior.AllowGet);
                     }

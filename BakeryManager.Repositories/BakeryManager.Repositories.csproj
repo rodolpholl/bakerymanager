@@ -72,6 +72,7 @@
     <Compile Include="FornecedorQuestionarioConfigBM.cs" />
     <Compile Include="FornecedorAvaliacaoQuestionarioRespostaBM.cs" />
     <Compile Include="FornecedorUsuarioBM.cs" />
+    <Compile Include="FuncionarioBM.cs" />
     <Compile Include="IngredienteBM.cs" />
     <Compile Include="IngredienteFormulaBM.cs" />
     <Compile Include="IngredienteHistoricoDesativacaoBM.cs" />
