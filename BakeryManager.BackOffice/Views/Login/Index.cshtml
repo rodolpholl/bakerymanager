@@ -12,62 +12,54 @@
 
     <div class="row">
         @*cl-lg-offset é que centraliza na horizontal*@
-        <div class="col-lg-4 col-lg-offset-4">
+        <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default" style="margin-top: 100px;">
                 <div class="panel-heading">
-                    <h2 class="panel-title"><strong>Login</strong></h2>
+                    <h3 class="panel-title">Login</h3>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12" style="margin-top: 30px">
-
-                        @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "frmLogin", data_messageType = "modal", @class = "form-horizontal", rule = "form" }))
-                        {
+                <div class="panel-body">
+                    @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "frmLogin", data_messageType = "modal", @class = "form-horizontal", rule = "form" }))
+                    {
+                        <fieldset>
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true)
 
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.Login, new { @class = "col-sm-2 control-label" })
-                                <div class="col-sm-10">
-                                    @Html.TextBoxFor(x => x.Login, new { @class = "form-control", style = "width: 200px; text-transform: uppercase;", placeHolder = "informe seu Login" })
+                            <div class="form-group" >
+                                
+                                    @Html.TextBoxFor(x => x.Login, new { @class = "form-control", style = "text-transform: uppercase;", placeHolder = "informe seu Login", autofocus = true })
                                     @Html.ValidationMessageFor(m => m.Login)
-                                </div>
-
+                              
                             </div>
                             <div class="form-group">
-                                @Html.LabelFor(x => x.Senha, new { @class = "col-sm-2 control-label" })
-                                <div class="col-sm-10">
-                                    @Html.PasswordFor(x => x.Senha, new { @class = "form-control", style = "width: 200px", placeHolder = "Informe sua Senha" })
+                                
+                                    @Html.PasswordFor(x => x.Senha, new { @class = "form-control",  placeHolder = "Informe sua Senha" })
                                     @Html.ValidationMessageFor(m => m.Senha)
-                                    <i>Deixe este campo em branco e for o primeiro acesso.</i>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="button" id="btnEnviar" class="btn btn-primary">
-                                        Entrar
-                                    </button>
                                     
-                                </div>
-                             
                             </div>
+                            <div class="text">
+                                <label>
+                                    Deixe este campo em branco se for o primeiro acesso.
+                                </label>
+                            </div>
+                            <a href="#" id="btnEnviar" class="btn btn-lg btn-success btn-block">Entrar</a>
 
-                           
-                            if (Model.ErrorMensage != null && Model.ErrorMensage != string.Empty)
+                            @if (Model.ErrorMensage != null && Model.ErrorMensage != string.Empty)
                             {
                                 <div class="form-group">
-                                    <div class="col-sm-10">
-                                        <div class="alert alert-danger">
-                                            <strong>Erro de Autenticação!</strong><br />
-                                            @Model.ErrorMensage
-                                        </div>
+                                
+                                    <div class="alert alert-danger">
+                                        <strong>Erro de Autenticação!</strong><br />
+                                        @Model.ErrorMensage
                                     </div>
+                                
                                 </div>
                             }
-                        }
-                    </div>
+                        </fieldset>
+                    }
                 </div>
-            </div>
+                    
+                </div>
+
         </div>
     </div>
 

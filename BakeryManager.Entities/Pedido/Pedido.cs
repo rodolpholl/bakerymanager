@@ -50,7 +50,7 @@ namespace BakeryManager.Entities
         public virtual DateTime DataHoraEntrega { get; set; }
         public virtual TipoContato TipoContato { get; set; }
         public virtual Funcionario FuncionarioContato { get; set; }
+        public virtual CondicaoPagamento CondicaoPagamento { get; set; }
         
-
     }
 }

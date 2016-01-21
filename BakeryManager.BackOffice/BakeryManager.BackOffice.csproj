@@ -155,15 +155,26 @@
     <Content Include="Content\Images\kendoui.svg" />
     <Content Include="Content\Images\wp8_icons.png" />
     <Content Include="Content\Images\wp8_inverseicons.png" />
+    <Content Include="Content\img\bread.png" />
+    <Content Include="Content\img\bread2.jpg" />
+    <Content Include="Content\img\papel.jpg" />
+    <Content Include="Content\img\papelamarelo.jpg" />
+    <Content Include="Content\img\papelazul.jpg" />
+    <Content Include="Content\img\papellaranja.jpg" />
+    <Content Include="Content\img\papelverde.jpg" />
+    <Content Include="Content\img\papelvermelho.jpg" />
     <Content Include="Content\img\uploadify-cancel.png" />
     <Content Include="Content\kendo.bootstrap.min.css" />
     <Content Include="Content\kendo.bootstrap.mobile.min.css" />
     <Content Include="Content\kendo.common.min.css" />
+    <Content Include="Content\metisMenu.min.css" />
     <Content Include="Content\plugins\morris.css" />
     <Content Include="Content\rateit\delete.gif" />
     <Content Include="Content\rateit\rateit.css" />
     <Content Include="Content\rateit\star.gif" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\sb-admin-2.css" />
+    <Content Include="Content\sb-admin-3.css" />
+    <Content Include="Content\Site_old.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -219,6 +230,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\Images\kendoui.ttf" />
     <Content Include="Content\Images\kendoui.woff" />
+    <Content Include="Content\img\papel FONTE.psd" />
     <None Include="Properties\PublishProfiles\PublishLocal.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -239,6 +251,7 @@
     <Content Include="Scripts\kendo.aspnetmvc.min.js" />
     <Content Include="Scripts\kendo.culture.pt-BR.min.js" />
     <Content Include="Scripts\kendo.messages.pt-BR.min.js" />
+    <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\notifyui.js" />
     <Content Include="Scripts\plugins\flot\excanvas.min.js" />
@@ -254,6 +267,7 @@
     <Content Include="Scripts\crypto\sha256.js" />
     <Content Include="Scripts\rateit\jquery.rateit.js" />
     <Content Include="Scripts\rateit\jquery.rateit.min.js" />
+    <Content Include="Scripts\sb-admin-2.js" />
     <Content Include="Scripts\utils.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -277,6 +291,7 @@
     <Compile Include="Controllers\ManterParametrosController.cs" />
     <Compile Include="Controllers\ManterQuestionarioController.cs" />
     <Compile Include="Controllers\ManterReceituarioController.cs" />
+    <Compile Include="Controllers\Pedidos\ManterPedidosController.cs" />
     <Compile Include="Controllers\Pedidos\PreConfiguracaoTipoPedidoController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SimuladorController.cs" />
@@ -317,7 +332,11 @@
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
     <Compile Include="Models\ManterReceita\TabelaNutricionalSimuladorModel.cs" />
     <Compile Include="Models\Pedido\MaterialAdicionalModel.cs" />
+    <Compile Include="Models\Pedido\PedidoHistoricoStatusModel.cs" />
     <Compile Include="Models\Pedido\PedidoMaterialAdicionalPreConfigModel.cs" />
+    <Compile Include="Models\Pedido\PedidoMaterialAdiconalModel.cs" />
+    <Compile Include="Models\Pedido\PedidoModel.cs" />
+    <Compile Include="Models\Pedido\PedidoProdutoModel.cs" />
     <Compile Include="Models\Pedido\TipoPedidoModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
@@ -331,7 +350,7 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\Layout_old.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -393,7 +412,7 @@
     <Content Include="Views\CadastroFornecedor\Criar.cshtml" />
     <Content Include="Views\CadastroFornecedor\Form.cshtml" />
     <Content Include="Views\CadastroFornecedor\Editar.cshtml" />
-    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Shared\LayoutLogin_old.cshtml" />
     <Content Include="Views\ManterParametros\ComponentesPadrao.cshtml" />
     <Content Include="Views\ManterParametros\CondicaoPagamento.cshtml" />
     <Content Include="Views\CadastroCliente\Index.cshtml" />
@@ -427,6 +446,9 @@
     <Content Include="Views\ManterFunconarios\Criar.cshtml" />
     <Content Include="Views\ManterFunconarios\Form.cshtml" />
     <Content Include="Views\ManterFunconarios\Editar.cshtml" />
+    <Content Include="Views\ManterPedidos\PedidoView.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
