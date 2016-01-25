@@ -13,11 +13,9 @@ namespace BakeryManager.BackOffice.Models.Pedido
     }
     public class PedidoProdutoModel
     {
-        public  int IdPedidoProduto { get; set; }
-        public  PedidoModel Pedido { get; set; }
-        public  ProdutoModel Produto { get; set; }
+        public  int IdProduto { get; set; }
+        public  string NomeProduto { get; set; }
         public  int Quantidade { get; set; }
-        public StatusPedidoProdutoModel Status { get; set; }
         public  double PrecoUnitario { get; set; }
         public  double PrecoTotal { get; set; }
     }

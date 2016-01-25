@@ -1,0 +1,123 @@
+﻿@using BakeryManager.BackOffice.Models.Pedido
+
+@model PedidoModel
+
+@{
+    ViewBag.Title = "Novo Pedido";
+}
+
+
+<div class="container-fluid">
+
+    @*Header*@
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Pedidos</a>
+                </li>
+                
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+    @* --------------- *@
+</div>
+
+<div class="row">
+    
+    @Html.Partial("Form",Model)
+   
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-6">
+            <hr />
+            <button class="btn btn-primary" type="button" id="btnSalvar">Salvar</button>
+            Ou
+            <button class="btn btn-default" onclick="window.history.back(-1);">Cancelar</button>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+<script type="text/javascript">
+    
+    var validator = $("#frmDadosGerais").kendoValidator().data("kendoValidator");
+
+    $(function () {
+
+        $("#btnSalvar").click(function (evt) {
+
+            evt.preventDefault();
+
+            var ListaProduto = $("#gridProduto").data("kendoGrid").dataSource.data()
+            if (ListaProduto.length == 0) {
+                alert("Informe ao menos um produto!", null, 1);
+                return;
+            }
+              
+
+            if (validator.validate()) {
+
+                var formPedido = getFormPedido();
+
+                $.ajax({
+
+                    url: '@Url.Action("Create")',
+                    method: "POST",
+                    data: { strPedido: JSON.stringify(formPedido) },
+                    success: function (data) {
+
+                        if (data.TipoMensagem == 1) 
+                            alert(data.Mensagem, null, 1);
+                        else {
+                            var ListaProduto = $("#gridProduto").data("kendoGrid").dataSource.data();
+                            var ListaMaterial = $("#gridMaterialAdicional").data("kendoGrid").dataSource.data();
+
+
+                            $.ajax({
+
+                                url: '@Url.Action("AtualizarProdutoMaterialAdicional")',
+                                method: "POST",
+                                data: {
+                                    ListaProduto: JSON.stringify(ListaProduto),
+                                    ListaMateraial: JSON.stringify(ListaMaterial),
+                                    IdPedido: data.IdPedido
+                                },
+                                success: function(data){
+
+                                    if (data.TipoMensagem == 3)
+                                        alert(data.Mensagem, null, 1);
+                                    else
+                                        alert(data.Mensagem, function () {
+                                            window.location.href = '@Url.Action("Index","Home")';
+                                        }, data.TipoMensagem);
+                                }
+
+                            });
+
+                        }
+
+
+                    }
+
+                });
+            }
+        });
+
+
+
+    });
+</script>
+
+}

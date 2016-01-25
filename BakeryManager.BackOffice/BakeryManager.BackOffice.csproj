@@ -251,9 +251,11 @@
     <Content Include="Scripts\kendo.aspnetmvc.min.js" />
     <Content Include="Scripts\kendo.culture.pt-BR.min.js" />
     <Content Include="Scripts\kendo.messages.pt-BR.min.js" />
+    <Content Include="Scripts\languages.min.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\notifyui.js" />
+    <Content Include="Scripts\numeral.min.js" />
     <Content Include="Scripts\plugins\flot\excanvas.min.js" />
     <Content Include="Scripts\plugins\flot\flot-data.js" />
     <Content Include="Scripts\plugins\flot\jquery.flot.js" />
@@ -449,6 +451,13 @@
     <Content Include="Views\ManterPedidos\PedidoView.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\ManterPedidos\Create.cshtml" />
+    <Content Include="Views\ManterPedidos\Form.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\QuantidadeProdutoTemplate.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\QuantidadeMaterialTemplate.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\PrecoUnitarioMaterialTemplate.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\TipoAquisicaoTemporariaTemplate.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\MaterialAdicionalTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

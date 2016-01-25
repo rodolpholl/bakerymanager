@@ -10,6 +10,9 @@ namespace BakeryManager.Repositories
 {
     public class MaterialAdicionalBM : BusinessManagementBase<MaterialAdicional>
     {
-        
+        public IList<MaterialAdicional> GetMaterialForaLista(int[] listaMaterialSelect)
+        {
+            return Query().Where(x => !listaMaterialSelect.Contains(x.IdMaterialAdicional)).ToList();
+        }
     }
 }

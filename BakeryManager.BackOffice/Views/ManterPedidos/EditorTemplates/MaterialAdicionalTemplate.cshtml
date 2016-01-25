@@ -1,0 +1,10 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Pedido
+
+@model MaterialAdicionalModel
+
+@(
+  Html.Kendo().DropDownListFor(x => x).DataTextField("Descricao").DataValueField("IdMaterialAdicional")
+  .Filter(FilterType.Contains)
+  .BindTo((IList<MaterialAdicionalModel>)ViewData["ListaMaterialAdicional"])
+)

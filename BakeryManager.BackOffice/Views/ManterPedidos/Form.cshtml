@@ -1,0 +1,663 @@
+﻿@using BakeryManager.BackOffice.Models.Pedido
+@using BakeryManager.BackOffice.Models.Cadastros.Clientes
+@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+
+@model PedidoModel
+
+<ul class="nav nav-tabs" data-tabs="tabs">
+    <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais</a></li>
+    <li role="presentation"><a href="#produtos" data-toggle="tab">Produtos</a></li>
+    <li role="presentation" id="liMaterialAdicional"><a href="#materiaisadicionais" data-toggle="tab">Materiais Adicionais</a></li>
+</ul>
+
+@Html.AntiForgeryToken()
+
+@Html.ValidationSummary(true)
+
+@Html.HiddenFor(x => x.IdPedido)
+
+
+<div class="tab-content" style="padding: 30px;">
+
+    <div class="tab-pane active" id="dadosgerais">
+        <form id="frmDadosGerais" role="form" class="form-horizontal">
+            <fieldset>
+                <fieldset>
+                    <legend>Cabeçalho</legend>
+
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.NumeroPedido, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            <strong><i>@Html.DisplayFor(x => x.NumeroPedido, new { @class = "form-control" })</i></strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Cliente, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownListFor(x => x.Cliente).DataValueField("IdCliente").DataTextField("Nome").OptionLabel("Selecione").HtmlAttributes(new { style = "width: 450px" })
+                            .DataSource(datasource =>
+                            {
+                                datasource.Read(read => read.Action("GetListaCliente", "ManterPedidos"));
+
+                            })
+
+                            .Filter(FilterType.Contains)
+                            )
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.DataEvento, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().DatePickerFor(x => x.DataEvento).Culture("pt-BR")
+                        </div>
+                    </div>
+
+
+                    @*<div class="form-group">
+                        @Html.LabelFor(x => x.Natureza, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownListFor(x => x.Natureza).DataValueField("IdNaturezaPedido").DataTextField("Descricao").HtmlAttributes(new { style = "width: 250px" })
+                            .DataSource(datasource =>
+                            {
+                                datasource.Read(read => read.Action("GetLitaNaturezaPedido", "ManterPedidos"));
+
+                            })
+
+
+                            )
+                        </div>
+                    </div>*@
+
+                    <div class="form-group" id="grpTipoEvento">
+                        @Html.LabelFor(x => x.TipoPedido, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownListFor(x => x.TipoPedido).DataValueField("IdTipoPedido").DataTextField("Descricao").OptionLabel("Selecione").HtmlAttributes(new { style = "width: 250px" })
+                            .DataSource(datasource =>
+                            {
+                                datasource.Read(read => read.Action("GetListaTipoPedido", "ManterPedidos"));
+
+                            })
+
+                            .Filter(FilterType.Contains)
+                            )
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.CondicaoPagamento, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownListFor(x => x.CondicaoPagamento).DataValueField("IdCondicaoPagamento").DataTextField("Descricao").OptionLabel("Selecione").HtmlAttributes(new { style = "width: 250px" })
+                            .DataSource(datasource =>
+                            {
+                                datasource.Read(read => read.Action("GetListaCondicaoPagamento", "ManterPedidos"));
+
+                            })
+
+                            .Filter(FilterType.Contains)
+                            )
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.PrecoVenda, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().NumericTextBoxFor(x => x.PrecoVenda).Decimals(2).Step(0.5).Min(0.01).Format("{0:C}")
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset id="fdsEntrega">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.LocalEvento, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.LocalEvento).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <legend>Endereço de Entrega</legend>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Logradouro, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.Logradouro).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Numero, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.Numero).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Complemento, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.Complemento).HtmlAttributes(new { @class = "form-control", style = "width: 300px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Bairro, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.Bairro).HtmlAttributes(new { @class = "form-control", style = "width: 300px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Cidade, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.Cidade).HtmlAttributes(new { @class = "form-control", style = "width: 300px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.UF, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.DataHoraEntrega, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TimePickerFor(x => x.DataHoraEntrega).Culture("pt-BR").HtmlAttributes(new { style = "width: 100px; " })
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset id="fdsContato">
+                    <legend>Contatos</legend>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.TipoContato, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownListFor(x => x.TipoContato).DataValueField("IdTipoContato").DataTextField("Descricao").OptionLabel("Selecione").HtmlAttributes(new { style = "width: 250px" })
+                            .DataSource(datasource =>
+                            {
+                                datasource.Read(read => read.Action("GetListaTipoContato", "ManterPedidos"));
+
+                            })
+                            
+                            )
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.PessoaResponsavel, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.PessoaResponsavel).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.TelefoneResponsavel, new { @class = "col-sm-2 control-label" })
+
+                        <div class="col-sm-10">
+                            @Html.Kendo().TextBoxFor(x => x.TelefoneResponsavel).HtmlAttributes(new { @class = "form-control", style = "width: 200px; text-transform: uppercase;" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.FuncionarioContato, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownListFor(x => x.FuncionarioContato).DataValueField("IdFuncionario").DataTextField("Nome").OptionLabel("Selecione").HtmlAttributes(new { style = "width: 450px" })
+                            .DataSource(datasource =>
+                            {
+                                datasource.Read(read => read.Action("GetListaFuncionario", "ManterPedidos"));
+
+                            })
+
+                            )
+                        </div>
+                    </div>
+
+                </fieldset>
+            </fieldset>
+
+
+        </form>
+    </div>
+
+    <div class="tab-pane" id="produtos">
+        <form role="form" class="form-horizontal">
+            <fieldset>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Categoria</label>
+                    <div class="col-sm-4">
+                        @(Html.Kendo().DropDownList().Name("cbxCategoriaProdutoPesquisa").DataTextField("Nome").DataValueField("IdCategoriaProduto")
+                    .OptionLabel("Todos").HtmlAttributes(new { style = "min-width: 350px" })
+                    .DataSource(ds =>
+                    {
+                        ds.Read(r => r.Action("ListarCategoriasProduto", "ManterPedidos"));
+                    }))
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Produto</label>
+                    <div class="col-sm-4 ">
+                        <div class="input-group">
+                            @(Html.Kendo().DropDownList().Name("cbxProdutoPesquisa")
+                                          .DataTextField("Nome")
+                                          .HtmlAttributes(new { style = "min-width: 350px" })
+                                          .DataValueField("IdProduto")
+                                          .Filter("contains")
+                                          .OptionLabel("Selecione...")
+                                          .MinLength(3)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetProdutoByCategoria", "ManterPedidos").Data("GetCategoriaProdutoSelect").Type(HttpVerbs.Post);
+                                              })
+                                                  .ServerFiltering(false);
+                                          })
+
+
+                            )
+
+
+                            <span class="input-group-btn"><button class="btn btn-sm btn-default" type="button" id="btnAddProduto"><i class="fa fa-arrow-down"></i></button></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-10">
+                        @(
+                       Html.Kendo().Grid<PedidoProdutoModel>()
+                       .Name("gridProduto")
+                       .Columns(columns =>
+                       {
+                           columns.Bound(c => c.NomeProduto).Title("Produto");
+                           columns.Bound(c => c.Quantidade).EditorTemplateName("QuantidadeProdutoTemplate").Width(100)
+                           .ClientFooterTemplate("<div>Total: #= FooterQuantidade() #</div>");
+                           columns.Bound(c => c.PrecoUnitario).Title("Preço Unitário").Format("{0:C}").Width(115);
+                           columns.Bound(c => c.PrecoTotal).Title("Preço Total").Format("{0:C}").Width(100)
+                           .ClientFooterTemplate("<div>Total:  #= FooterPrecoTotal() #</div>");
+                           columns.Bound(x => x.IdProduto).Title("").Width(50).ClientTemplate("<a href=\"javascript: void(0);\" title=\"Excluir Produto\" onclick=\"excluirProduto(#=IdProduto#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\"></span></a>");
+                       })
+                       .Sortable()
+                       .Scrollable(scr => scr.Height(400))
+                       .Editable(ed => ed.Enabled(true).Mode(GridEditMode.InCell))
+                       .Navigatable()
+                       .Resizable(r => r.Columns(true))
+                       .DataSource(datasource => datasource
+                           .Ajax()
+                           .Batch(true)
+                           .Model(model =>
+                           {
+                               model.Id(m => m.IdProduto);
+                               model.Field(m => m.NomeProduto).Editable(false);
+                               model.Field(m => m.Quantidade);
+                               model.Field(m => m.PrecoUnitario).Editable(false);
+                               model.Field(m => m.PrecoTotal).Editable(false);
+
+                           })
+                           .Events(evt => evt.Change("gridProdutoEdit"))
+                           .Aggregates(aggregate =>
+                           {
+                               aggregate.Add(x => x.Quantidade).Sum();
+                               aggregate.Add(x => x.PrecoTotal).Sum();
+                           })
+                           .Read(read => read.Action("GetProdutosByPedido", "ManterPedidos").Data("GetIdPedido"))
+                        )
+
+                        )
+                    </div>
+                </div>
+
+
+            </fieldset>
+        </form>
+
+    </div>
+    <div class="tab-pane" id="materiaisadicionais">
+        <fieldset>
+
+            <div class="form-group">
+                <fieldset>
+                    <div class="col-sm-10">
+                        @(
+                       Html.Kendo().Grid<PedidoMaterialAdiconalModel>()
+                       .Name("gridMaterialAdicional")
+                       .Columns(columns =>
+                       {
+                           columns.Bound(c => c.Material).ClientTemplate("#=Material.Descricao#").EditorTemplateName("MaterialAdicionalTemplate");
+                           columns.Bound(c => c.TipoAquisicao).ClientTemplate("#=TipoAquisicao.Nome#").EditorTemplateName("TipoAquisicaoTemporariaTemplate");
+                           columns.Bound(c => c.Quantidade).EditorTemplateName("QuantidadeMaterialTemplate").Width(100)
+                           .ClientFooterTemplate("<div>Total: #= FooterQuantidadeMaterial() #</div>");
+                           columns.Bound(c => c.PrecoUnitario).Title("Preço Unitário")
+                           .EditorTemplateName("PrecoUnitarioMaterialTemplate").Format("{0:C}").Width(115);
+                           columns.Bound(c => c.PrecoTotal).Title("Preço Total").Format("{0:C}").Width(100)
+                           .ClientFooterTemplate("<div>Total:  #= FooterPrecoTotalMaterial() #</div>");
+                           columns.Bound(c => c.Material).Title("").Width(50).ClientTemplate("<a href=\"javascript: void(0);\" title=\"Excluir Produto\" onclick=\"excluirMaterialAdicional(#=Material.IdMaterialAdicional#); \" class=\"btn btn-danger btn-sm\"><span class=\"glyphicon glyphicon-remove\"></span></a>");
+                       })
+                       .ToolBar(tb => tb.Create())
+                       .Sortable()
+                       .Scrollable(scr => scr.Height(400))
+                       .Editable(ed => ed.Enabled(true).Mode(GridEditMode.InCell))
+                       .Navigatable()
+                       .Resizable(r => r.Columns(true))
+                       .DataSource(datasource => datasource
+                           .Ajax()
+                           .Batch(true)
+                           .Model(model =>
+                           {
+                               model.Id(m => m.Material.IdMaterialAdicional);
+                               model.Field(m => m.Material).DefaultValue(new MaterialAdicionalModel()
+                               {
+                                   IdMaterialAdicional = 0
+                               });
+                               model.Field(m => m.TipoAquisicao).DefaultValue(new TipoAquisicaoTemporariaModel()
+                               {
+                                   IdTipoAquisicaoTemporaria = 0
+                               });
+                               model.Field(m => m.Quantidade);
+                               model.Field(m => m.TipoAquisicao);
+                               model.Field(m => m.PrecoUnitario);
+                               model.Field(m => m.PrecoTotal).Editable(false);
+
+                           })
+                           .Events(evt => evt.Change("gridMaterialAdicionalEdit"))
+                           .Aggregates(aggregate =>
+                           {
+                               aggregate.Add(x => x.Quantidade).Sum();
+                               aggregate.Add(x => x.PrecoTotal).Sum();
+                           })
+                           .Read(read => read.Action("GetMaterialAdicionalByPedido", "ManterPedidos").Data("GetPedidoProduto"))
+                        )
+
+                        )
+                    </div>
+                </fieldset>
+            </div>
+
+        </fieldset>
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+    var IgnoraIdPedido = false;
+
+    function GetIdPedido() {
+        return {
+            IdPedido: $("#IdPedido").val()
+        }
+    }
+
+    function GetPedidoProduto() {
+        return {
+            IdPedido: $("#IdPedido").val(),
+            IdTipoPedido: $("#TipoPedido").val(),
+            IgnoraIdPedido: IgnoraIdPedido
+        }
+    }
+    function GetCategoriaProdutoSelect() {
+        return {
+            IdCategoriaProduto: $("#cbxCategoriaProdutoPesquisa").val()
+        }
+    }
+
+    function gridProdutoEdit() {
+        var dsProduto = $("#gridProduto").data("kendoGrid").dataSource.data();
+        if (dsProduto.length == 0)
+            return;
+
+
+        $(dsProduto).each(function (index, item) {
+
+            item.PrecoTotal = item.PrecoUnitario * item.Quantidade;
+        });
+
+
+        $("#gridProduto").data("kendoGrid").refresh();
+
+
+    }
+
+    function FooterPrecoTotal() {
+
+        numeral.language('pt-br');
+
+        var dsProduto = $("#gridProduto").data("kendoGrid").dataSource.data();
+        if (dsProduto.length == 0)
+            return numeral(0).format("$0,0.00");
+
+        var total = 0;
+        $(dsProduto).each(function (index, item) {
+            total += item.PrecoTotal;
+        });
+
+        return numeral(total).format("$0,0.00");
+
+    }
+
+    function FooterQuantidade() {
+        numeral.language('pt-br');
+
+        var dsProduto = $("#gridProduto").data("kendoGrid").dataSource.data();
+        if (dsProduto.length == 0)
+            return numeral(total).format("0,0");
+
+        var total = 0;
+        $(dsProduto).each(function (index, item) {
+            total += item.Quantidade;
+        });
+
+        return numeral(total).format("0,0");
+
+    }
+
+
+
+    function excluirProduto(idProduto) {
+        confirm("Deseja Realmente Excluir esse Produto do Pedido?", function () {
+
+            var data = $("#gridProduto").data("kendoGrid").dataSource;
+            data.remove(data.get(idProduto));
+
+
+
+        }, 2);
+    }
+
+    function gridMaterialAdicionalEdit() {
+
+        var dsMaterialAdicional = $("#gridMaterialAdicional").data("kendoGrid").dataSource.data();
+        if (dsMaterialAdicional.length == 0)
+            return;
+
+
+        $(dsMaterialAdicional).each(function (index, item) {
+
+            item.PrecoTotal = item.PrecoUnitario * item.Quantidade;
+        });
+
+
+        $("#gridMaterialAdicional").data("kendoGrid").refresh();
+
+    }
+
+    function FooterPrecoTotalMaterial() {
+
+        numeral.language('pt-br');
+
+        var dsProduto = $("#gridMaterialAdicional").data("kendoGrid").dataSource.data();
+        if (dsProduto.length == 0)
+            return numeral(0).format("$0,0.00");
+
+        var total = 0;
+        $(dsProduto).each(function (index, item) {
+            total += item.PrecoTotal;
+        });
+
+        return numeral(total).format("$0,0.00");
+
+    }
+
+    function FooterQuantidadeMaterial() {
+        numeral.language('pt-br');
+
+        var dsProduto = $("#gridMaterialAdicional").data("kendoGrid").dataSource.data();
+        if (dsProduto.length == 0)
+            return numeral(total).format("0,0.000");
+
+        var total = 0;
+        $(dsProduto).each(function (index, item) {
+            total += item.Quantidade;
+        });
+
+        return numeral(total).format("0,0.000");
+
+    }
+
+
+    function getFormPedido() {
+
+        return {
+            NumeroPedido: $("#NumeroPedido").val(),
+            Cliente: { IdCliente: $("#Cliente").val() },
+            DataEvento: $("#DataEvento").data("kendoDatePicker").value(),
+            //Natureza: { IdNaturezaPedido: $("#Natureza").val() },
+            TipoPedido: { IdTipoPedido: $("#TipoPedido").val() == "" ? 0 : $("#TipoPedido").val()},
+            CondicaoPagamento: { IdCondicaoPagamento: $("#CondicaoPagamento").val() },
+            PrecoVenda: $("#PrecoVenda").data("kendoNumericTextBox").value(),
+            Bairro: $("#Bairro").val(),
+            CEP: $("#CEP").val(),
+            Cidade: $("#Cidade").val(),
+            Complemento: $("#Complemento").val(),
+            Logradouro: $("#Logradouro").val(),
+            Nome: $("#Nome").val(),
+            Numero: $("#Numero").val(),
+            UF: $("#UF").val(),
+            TipoContato: { IdTipoContato: $("#TipoContato").val() == "" ? 0 : $("#TipoContato").val() },
+            DataHoraEntrega: $("#DataHoraEntrega").data("kendoTimePicker").value(),
+            PessoaResponsavel: $("#PessoaResponsavel").val(),
+            TelefoneResponsavel: $("#TelefoneResponsavel").val(),
+            FuncionarioContato: { IdFuncionario: $("#FuncionarioContato").val() == "" ? 0 : $("#FuncionarioContato").val() }
+
+        }
+
+    }
+
+    $(function () {
+
+
+        @*$("#Natureza").change(function () {
+
+            var natureza = $("#Natureza").data("kendoDropDownList").value();
+
+            if (natureza == 1) {
+
+                $("#grpTipoEvento").show("slow");
+                $("#liMaterialAdicional").show("slow");
+                $("#fdsEntrega").show("slow");
+                $("#fdsContato").show("slow");
+
+            }
+            else {
+                $("#grpTipoEvento").hide("slow");
+                $("#liMaterialAdicional").hide("slow");
+                $("#fdsEntrega").hide("slow");
+                $("#fdsContato").hide("slow");
+
+            }
+        });*@
+
+        $("#TipoPedido").change(function () {
+            if ($("#TipoPedido").val() != "") {
+                IgnoraIdPedido = true;
+                $("#gridMaterialAdicional").data("kendoGrid").dataSource.read();
+            }
+        });
+
+        $("#cbxCategoriaProdutoPesquisa").change(function () {
+            $("#cbxProdutoPesquisa").data("kendoDropDownList").dataSource.read();
+        });
+
+        $("#btnAddProduto").click(function () {
+
+            if ($("#cbxProdutoPesquisa").val() == "")
+                return;
+
+            $.ajax({
+
+                url: '@Url.Action("GetProdutoById")',
+                data: { IdProduto: $("#cbxProdutoPesquisa").val() },
+                success: function (data) {
+                    var produto = {
+                        Quantidade: 0,
+                        PrecoUnitario: data.PrecoVenda,
+                        PrecoTotal: 0,
+                        IdProduto: data.IdProduto,
+                        NomeProduto: data.Nome
+                    }
+
+                    $("#gridProduto").data("kendoGrid").dataSource.add(produto);
+
+                }
+            });
+
+        });
+
+        $("#CEP").focusout(function (evt) {
+
+            var cep = $("#CEP").val().replace("_", "").replace("-", "");
+
+            if (cep.length == 8) {
+
+                $.ajax({
+                    url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                    data: 'json',
+                    success: function (data) {
+
+                        $("#Logradouro").val(data.logradouro);
+                        $("#Complemento").val(data.complemento);
+                        $("#Bairro").val(data.bairro);
+                        $("#Cidade").val(data.localidade);
+                        $("#UF").val(data.uf);
+
+                        document.getElementById("Numero").focus();
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    });
+
+</script>

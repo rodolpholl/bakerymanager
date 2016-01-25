@@ -1,0 +1,8 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Pedido
+@model TipoAquisicaoTemporariaModel
+
+@(
+   Html.Kendo().DropDownListFor(x => x).DataTextField("Nome").DataValueField("IdTipoAquisicaoTemporaria")
+   .BindTo((IList<TipoAquisicaoTemporariaModel>)ViewData["ListaTipoAquisicao"])
+)

@@ -46,6 +46,8 @@
     <script src="~/Scripts/utils.js"></script>
     <script src="~/Scripts/metisMenu.min.js"></script>
     <script src="~/Scripts/sb-admin-2.js"></script>
+    <script src="~/Scripts/numeral.min.js"></script>
+    
     
     
 </head>
@@ -62,10 +64,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("Index","Login")">Bakery Manager - BackOffice</a>
+                <a class="navbar-brand" href="@Url.Action("Index","Login")">Bakery Manager</a>
             </div>
             <!-- /.navbar-header -->
-            <ul class="nav navbar-top-links navbar-right">
+            <ul class="nav navbar-top-links navbar-right" >
                 @Html.Partial("_HeaderPartial")
             </ul>
                 <!-- /.navbar-top-links -->
@@ -74,7 +76,7 @@
 
 </nav>
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="opacity: .95">
             @RenderBody()
 
         </div>

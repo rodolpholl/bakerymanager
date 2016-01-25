@@ -59,7 +59,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         public ActionResult Criar()
         {
-            SetListaSituacao();
+           
 
             return View(new FuncionarioModel());
         }
@@ -117,11 +117,21 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
+        public JsonResult GetListaSituacaoFuncionario()
+        {
+            var listaRetorno = Enum.GetNames(typeof(SituacaoFuncionario)).Select(x => new SituacaoFucionarioModel()
+            {
+                Descricao = x,
+                IdSituacaoFuncionario = (int)Enum.Parse(typeof(SituacaoFuncionario), x)
+            }).ToList();
+
+            return Json( listaRetorno,JsonRequestBehavior.AllowGet);
+        }
 
 
         public ActionResult Editar(int Id)
         {
-            SetListaSituacao();
+           
 
             using (var manterFuncionario = new ManterFuncionarios())
             {
@@ -210,16 +220,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
         }
 
-        private void SetListaSituacao()
-        {
-            var ListaSituacaoFuncionaro = Enum.GetNames(typeof(SituacaoFuncionario)).Select(x => new SituacaoFucionarioModel()
-            {
-                Descricao = x,
-                IdSituacaoFuncionario = (int)Enum.Parse(typeof(SituacaoFuncionario), x)
-            }).ToList();
-
-            ViewData["ListaSituacaoFuncionaro"] = ListaSituacaoFuncionaro;
-        }
+       
 
 
     }

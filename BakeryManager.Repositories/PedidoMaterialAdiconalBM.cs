@@ -10,5 +10,11 @@ namespace BakeryManager.Repositories
 {
     public class PedidoMaterialAdiconalBM : BusinessManagementBase<PedidoMaterialAdiconal>
     {
+        public IList<PedidoMaterialAdiconal> GetMaterialAdicionalByPedido(Pedido pedido)
+        {
+            return Query().Where(x => x.Pedido.IdPedido == pedido.IdPedido).ToList();
+        }
+
+        
     }
 }

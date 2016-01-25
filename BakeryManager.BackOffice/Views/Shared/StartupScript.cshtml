@@ -4,6 +4,15 @@
 
 
     kendo.culture("pt-BR");
+    numeral.language('pt-br',{
+        delimiters: {
+            thousands: '.',
+            decimal: ','
+        },
+        currency: {
+            symbol: 'R$ '
+        }
+    });
 
     $(function () {
 

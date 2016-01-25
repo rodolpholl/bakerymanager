@@ -18,7 +18,7 @@
                     <h3 class="panel-title">Login</h3>
                 </div>
                 <div class="panel-body">
-                    @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "frmLogin", data_messageType = "modal", @class = "form-horizontal", rule = "form" }))
+                    @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { id = "frmLogin",  role = "form" }))
                     {
                         <fieldset>
                             @Html.AntiForgeryToken()

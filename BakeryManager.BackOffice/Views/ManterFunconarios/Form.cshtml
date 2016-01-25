@@ -151,8 +151,12 @@
                 <div class="col-sm-10">
                     @(Html.Kendo().DropDownListFor(x => x.SituacaoAtual).HtmlAttributes(new { style = "width: 130px;" })
                     .DataTextField("Descricao").DataValueField("IdSituacaoFuncionario")
-                    .BindTo((IList<SituacaoFucionarioModel>)ViewData["ListaSituacaoFuncionaro"])
-                     )
+                    .DataSource(ds =>                    
+                        ds.Read(read => read.Action("GetListaSituacaoFuncionario", "ManterFunconarios"))
+                    )
+                    
+                    )
+                     
                 </div>
             </div>
 
@@ -185,8 +189,7 @@
             HorarioSaida: $("#HorarioSaida").data("kendoTimePicker").value(),
             RemuneracaoAtual: $("#RemuneracaoAtual").data("kendoNumericTextBox").value(),
             SituacaoAtual: {
-                Descricao: $("#SituacaoAtual").data("kendoDropDownList").text(),
-                IdSituacaoFuncionario: $("#SituacaoAtual").data("kendoDropDownList").value()
+                IdSituacaoFuncionario: $("#SituacaoAtual").val()
             },
 
             IdFuncionario: $("#IdFuncionario").val()
