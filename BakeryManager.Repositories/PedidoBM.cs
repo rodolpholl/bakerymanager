@@ -10,5 +10,9 @@ namespace BakeryManager.Repositories
 {
     public class PedidoBM : BusinessManagementBase<Pedido>
     {
+        public IList<Pedido> GetListaPedidosEncaminhados()
+        {
+            return Query().Where(x => x.StatusAtual == StatusPedido.Encaminhado).ToList();
+        }
     }
 }

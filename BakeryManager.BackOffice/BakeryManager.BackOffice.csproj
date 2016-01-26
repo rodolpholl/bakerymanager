@@ -458,6 +458,9 @@
     <Content Include="Views\ManterPedidos\EditorTemplates\PrecoUnitarioMaterialTemplate.cshtml" />
     <Content Include="Views\ManterPedidos\EditorTemplates\TipoAquisicaoTemporariaTemplate.cshtml" />
     <Content Include="Views\ManterPedidos\EditorTemplates\MaterialAdicionalTemplate.cshtml" />
+    <Content Include="Views\ManterPedidos\PedidosPendentes.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\PedidosEncaminhadosTemplate.cshtml" />
+    <Content Include="Views\ManterPedidos\VizualizarPedido.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

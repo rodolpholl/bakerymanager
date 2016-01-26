@@ -158,6 +158,7 @@ namespace BakeryManager.Services
             pedido.Natureza = NaturezaPedido.Encomenda;
             pedido.DataInclusao = DateTime.Now;
             pedidoBm.Insert(pedido);
+            pedido.StatusAtual = StatusPedido.Encaminhado;
             pedido.NumeroPedido = pedido.IdPedido.ToString().PadLeft(6, '0');
             pedidoBm.Update(pedido);
         }
@@ -188,6 +189,11 @@ namespace BakeryManager.Services
 
             foreach (var materialNovo in listaMaterialAdicional)
                 pedidoMaterialAdiconalBm.Insert(materialNovo);
+        }
+
+        public IList<Pedido> GetListaPedidosEncaminhados()
+        {
+            return pedidoBm.GetListaPedidosEncaminhados();
         }
     }
 }

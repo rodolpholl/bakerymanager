@@ -39,6 +39,7 @@ namespace BakeryManager.BackOffice.Models.Pedido
         [Display(Name ="Status Atual")]
         public StatusPedidoModel StatusAtual { get; set; }
         [Display(Name ="Local")]
+        [Required(ErrorMessage = "Campo Obrigatório")]
         public string LocalEvento { get; set; }        
         public string Logradouro { get; set; }
         public string Numero { get; set; }

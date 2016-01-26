@@ -13,6 +13,7 @@ using BakeryManager.Entities;
 using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using Newtonsoft.Json;
 using BakeryManager.BackOffice.Models.Cadastros.Funcionarios;
+using BakeryManager.InfraEstrutura.Helpers;
 
 namespace BakeryManager.BackOffice.Controllers.Pedidos
 {
@@ -323,7 +324,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                         var listaProduto = listaProdutoModel.Select(x => new PedidoProduto()
                         {
                             Pedido = manterPedido.GetPedidoById(IdPedido),
-                            PrecoTotal = x.PrecoTotal,
+                            PrecoTotal = x.Quantidade * x.PrecoUnitario,
                             Produto = manterPedido.GetProdutoById(x.IdProduto),
                             Quantidade = x.Quantidade,
                             PrecoUnitario = x.PrecoUnitario,
@@ -335,7 +336,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                         {
                             Pedido = manterPedido.GetPedidoById(IdPedido),
                             Material = manterPedido.GetMaterialAdcionalById(x.Material.IdMaterialAdicional),
-                            PrecoTotal = x.PrecoTotal,
+                            PrecoTotal = x.Quantidade * x.PrecoUnitario,
                             Quantidade = x.Quantidade,
                             PrecoUnitario = x.PrecoUnitario,
                             TipoAquisicao = (TipoAquisicaoTemporaria)x.TipoAquisicao.IdTipoAquisicaoTemporaria
@@ -381,6 +382,89 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
 
                             }, "text/html", JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+        //Execução do processo.
+
+        public JsonResult GetListaPedidosEncaminhados()
+        {
+            using (var manterPedido = new ManterPedido())
+            {
+                var ListaRetorno = manterPedido.GetListaPedidosEncaminhados().Select(x => new PedidoModel()
+                {
+                    NumeroPedido = x.NumeroPedido,
+                    IdPedido = x.IdPedido,
+                    Cliente = new ClienteModel()
+                    {
+                        Nome = x.Cliente.Nome
+                    },
+                    LocalEvento = x.LocalEvento,
+                    DataEvento = x.DataEvento,
+                    DataHoraEntrega = x.DataHoraEntrega
+
+                }).ToList();
+
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidosEncaminhadosTemplate.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetViewPedido(int IdPedido)
+        {
+            using (var manterPedido = new ManterPedido())
+            {
+                var pedido = manterPedido.GetPedidoById(IdPedido);
+
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/VizualizarPedido.cshtml"), ParsePedidoToPedidoModel(manterPedido, pedido)), JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        private static PedidoModel ParsePedidoToPedidoModel(ManterPedido manterPedido, Pedido pedido)
+        {
+            return new PedidoModel()
+            {
+                Bairro = pedido.Bairro.ToUpper(),
+                CEP = pedido.CEP,
+                Cidade = pedido.Cidade.ToUpper(),
+                Cliente = new ClienteModel()
+                {
+                    Nome = pedido.Cliente.Nome,
+                    IdCliente = pedido.Cliente.IdCliente
+                },
+                Complemento = pedido.Complemento.ToUpper(),
+                CondicaoPagamento = new CondicaoPagamentoModel()
+                {
+                    Descricao = pedido.CondicaoPagamento.Descricao,
+                    IdCondicaoPagamento = pedido.CondicaoPagamento.IdCondicaoPagamento
+
+                },
+                DataEvento = pedido.DataEvento,
+                DataHoraEntrega = pedido.DataHoraEntrega,
+                FuncionarioContato = new FuncionarioModel()
+                {
+                    IdFuncionario = pedido.FuncionarioContato.IdFuncionario,
+                    Nome = pedido.FuncionarioContato.Nome
+                },
+                PessoaResponsavel = pedido.PessoaResponsavel.ToUpper(),
+                TipoContato = new TipoContatoModel()
+                {
+                    Descricao = Enum.GetName(typeof(TipoContato),pedido.TipoContato),
+                    IdTipoContato = (int)pedido.TipoContato
+                },
+                LocalEvento = (pedido.LocalEvento ?? string.Empty).ToUpper(),
+                Logradouro = pedido.Logradouro.ToUpper(),
+                Numero = pedido.Numero.ToUpper(),
+                NumeroPedido = pedido.NumeroPedido,
+                PrecoVenda = pedido.PrecoVenda,
+                TelefoneResponsavel = pedido.TelefoneResponsavel,
+                TipoPedido = new TipoPedidoModel()
+                {
+                    Ativo = pedido.TipoPedido.Ativo,
+                    Descricao = pedido.TipoPedido.Descricao,
+                    IdTipoPedido = pedido.TipoPedido.IdTipoPedido
+                }
+            };
         }
     }
 }

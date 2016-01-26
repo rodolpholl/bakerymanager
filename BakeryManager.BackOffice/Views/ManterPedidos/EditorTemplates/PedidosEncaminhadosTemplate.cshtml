@@ -1,0 +1,82 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Pedido
+
+@model IList<PedidoModel>
+
+
+<div class="row">
+
+
+
+    @foreach (var item in Model)
+            {
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail cardEncaminhado" id="@string.Concat("pedido",item.IdPedido.ToString())">
+
+                
+                    <div class="row">
+                        <div class="col-md-offset-10">
+                            <a href="#" onclick="VisualizarPedido(@item.IdPedido)" data-toggle="tooltip" data-placement="top" title="Detalhar Pedido" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in" /></a>
+                        </div>
+                    </div>
+                <div class="row">
+
+                    <div class="col-md-10">
+                        <fieldset>
+                            <form role="form" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">Nº Pedido:</label>
+
+                                    <div class="col-sm-6">
+                                        <label class="control-label"><i><strong>@item.NumeroPedido</strong></i></label>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">Cliente:</label>
+                                    <div class="col-sm-6">
+                                        <label class="control-label"><i>@item.Cliente.Nome</i></label>
+
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">Local:</label>
+                                    <div class="col-sm-6">
+                                        <label class="control-label"><i>@item.LocalEvento</i></label>
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">Data:</label>
+                                    <div class="col-sm-6">
+                                        <label class="control-label"><i>@item.DataEvento.ToString("dd/MM/yyyy")</i></label>
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">Hora Entrega:</label>
+                                    <div class="col-sm-6">
+                                        <label class="control-label"><i>@item.DataHoraEntrega.ToString("hh:mm")</i></label>
+                                       
+                                    </div>
+                                </div>
+
+                            </form>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <a href="#" onclick="IniciarProducaoPedido(@item.IdPedido)" data-toggle="tooltip" data-placement="buttom" class="btn btn-info btn-sm">Encaminhar p/ Produção</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+
+</div>

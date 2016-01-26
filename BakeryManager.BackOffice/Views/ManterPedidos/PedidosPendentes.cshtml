@@ -1,0 +1,91 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Pedido
+
+
+<style>
+    .cardEncaminhado{
+        background-image: url("@Url.Content("~/Content/img/papel.jpg")")
+    }
+</style>
+
+
+
+<div class="tab-pane active" id="encaminhados">
+
+</div>
+
+
+
+
+@*<div class="modal fade bs-example-modal-lg" id="mdlView" tabindex="-1" data-backdrop="static"  role="dialog" aria-labelledby="myModalLabel">
+    
+</div>*@
+<div id="mdlView"/>
+
+
+<script type="text/javascript">
+
+    function GetIdPedido() {
+        return {
+            IdPedido: $("#IdPedido").val()
+        }
+    }
+
+    function readGridMateral() {
+        $("#gridMaterialAdicionalView").data("kendoGrid").refresh();
+    }
+
+    function readGridProduto() {
+        $("#gridProdutoView").data("kendoGrid").refresh();
+    }
+
+    function VisualizarPedido(IdPedido) {
+
+        $.ajax({
+
+            url: '@Url.Action("GetViewPedido","ManterPedidos")',
+            data: {IdPedido: IdPedido},
+            success: function (data) {
+
+                $("#mdlView").html(data);
+                $("#gridProdutoView").data("kendoGrid").dataSource.read();
+                $("#gridMaterialAdicionalView").data("kendoGrid").dataSource.read();
+                $('a[data-toggle="tab"]').tab();
+
+                $("#mdlView").kendoWindow({
+                    width: "600px",
+                    title: "Dados do Pedido",
+                    visible: false,
+                    actions: [
+                        
+                        "Minimize",
+                        "Maximize",
+                        "Close"
+                    ]
+                }).data("kendoWindow").center().open();
+            }
+
+        });
+
+    }
+
+
+    $(function () {
+
+
+
+        $.ajax({
+
+            url: '@Url.Action("GetListaPedidosEncaminhados","ManterPedidos")',
+            success: function (data) {
+
+                $("#encaminhados").html(data);
+                $('[data-toggle="tooltip"]').tooltip();
+
+            }
+
+        });
+
+    });
+
+</script>

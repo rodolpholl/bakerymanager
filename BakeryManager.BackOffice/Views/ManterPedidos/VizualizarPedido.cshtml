@@ -1,0 +1,316 @@
+﻿
+@using BakeryManager.BackOffice.Models.Pedido
+@using BakeryManager.BackOffice.Models.Cadastros.Clientes
+@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+
+@model PedidoModel
+
+
+            <ul class="nav nav-tabs" data-tabs="tabs">
+                <li role="presentation" class="active"><a href="#dadosgeraisView" data-toggle="tab">Dados Gerais</a></li>
+                <li role="presentation"><a href="#produtosView" onclick="readGridProduto()" data-toggle="tab">Produtos</a></li>
+                <li role="presentation" id="liMaterialAdicionalView"><a href="#materiaisadicionaisView" onclick="readGridMateral()" data-toggle="tab">Materiais Adicionais</a></li>
+            </ul>
+
+
+            @Html.HiddenFor(x => x.IdPedido)
+
+
+            <div class="tab-content" style="padding: 15px;">
+
+                <div class="tab-pane active" id="dadosgeraisView">
+                    <form id="frmDadosGerais" role="form" class="form-horizontal">
+                        <fieldset>
+                            <fieldset>
+                                <legend>Cabeçalho</legend>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.NumeroPedido, new { @class = "col-sm-2 control-label" })
+                                    <div class="col-sm-8">
+                                        <strong><i>@Html.DisplayFor(x => x.NumeroPedido, new { @class = "form-control" })</i></strong>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.Cliente, new { @class = "col-sm-2 control-label" })
+                                    <div class="col-sm-8">
+                                        
+                                            
+                                            @Html.DisplayFor(x => x.Cliente.Nome, new { @class = "form-control" })
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.DataEvento, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.DataEvento, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group" id="grpTipoEvento">
+                                    @Html.LabelFor(x => x.TipoPedido, new { @class = "col-sm-2 control-label" })
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.TipoPedido.Descricao, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.CondicaoPagamento, new { @class = "col-sm-2 control-label" })
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.CondicaoPagamento.Descricao, new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.PrecoVenda, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.PrecoVenda, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset id="fdsEntrega">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.LocalEvento, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.LocalEvento, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <legend>Endereço de Entrega</legend>
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.CEP, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.Logradouro, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.Logradouro, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.Numero, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.Numero, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.Complemento, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.Complemento, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.Bairro, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.Bairro, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.Cidade, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayTextFor(x => x.Cidade)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.UF, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.UF, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.DataHoraEntrega, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.DataHoraEntrega, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <fieldset id="fdsContato">
+                                <legend>Contatos</legend>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoContato, new { @class = "col-sm-2 control-label" })
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.TipoContato.Descricao, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.PessoaResponsavel, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayTextFor(x => x.PessoaResponsavel)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TelefoneResponsavel, new { @class = "col-sm-2 control-label" })
+
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.TelefoneResponsavel, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.FuncionarioContato, new { @class = "col-sm-2 control-label" })
+                                    <div class="col-sm-8">
+                                        @Html.DisplayFor(x => x.FuncionarioContato.Nome, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </fieldset>
+
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="produtosView">
+                    <form role="form" class="form-horizontalView">
+                        <fieldset>
+
+                            <div class="col-sm-10">
+                                @(
+                       Html.Kendo().Grid<PedidoProdutoModel>()
+                       .Name("gridProdutoView")
+                       .Columns(columns =>
+                       {
+                           columns.Bound(c => c.NomeProduto).Title("Produto");
+                           columns.Bound(c => c.Quantidade).EditorTemplateName("QuantidadeProdutoTemplate").Width(100)
+                           .ClientFooterTemplate("<div>Total: #= sum #</div>");
+                           columns.Bound(c => c.PrecoUnitario).Title("Preço Unitário").Format("{0:C}").Width(115);
+                           columns.Bound(c => c.PrecoTotal).Title("Preço Total").Format("{0:C}").Width(100)
+                           .ClientFooterTemplate("<div>Total:  #= kendo.toString(sum,'C') #</div>");
+
+                       })
+                       .Sortable()
+                       .Scrollable(scr => scr.Height(400))
+                       .Navigatable()
+                       .Resizable(r => r.Columns(true))
+                       .DataSource(datasource => datasource
+                           .Ajax()
+                           .Batch(true)
+                           .Model(model =>
+                           {
+                               model.Id(m => m.IdProduto);
+                               model.Field(m => m.NomeProduto).Editable(false);
+                               model.Field(m => m.Quantidade);
+                               model.Field(m => m.PrecoUnitario).Editable(false);
+                               model.Field(m => m.PrecoTotal).Editable(false);
+
+                           })
+                    
+                           .Aggregates(aggregate =>
+                           {
+                               aggregate.Add(x => x.Quantidade).Sum();
+                               aggregate.Add(x => x.PrecoTotal).Sum();
+                           })
+                           .Read(read => read.Action("GetProdutosByPedido", "ManterPedidos").Data("GetIdPedido"))
+                        )
+
+                                )
+                            </div>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div class="tab-pane" id="materiaisadicionaisView">
+                    <fieldset>
+
+                        <div class="form-group">
+                            <fieldset>
+                                <div class="col-sm-10">
+                                    @(
+                       Html.Kendo().Grid<PedidoMaterialAdiconalModel>()
+                       .Name("gridMaterialAdicionalView")
+                       .Columns(columns =>
+                       {
+                           columns.Bound(c => c.Material).ClientTemplate("#=Material.Descricao#");
+                           columns.Bound(c => c.TipoAquisicao).ClientTemplate("#=TipoAquisicao.Nome#");
+                           columns.Bound(c => c.Quantidade).Width(100)
+                           .ClientFooterTemplate("<div>Total: #= sum #</div>");
+                           columns.Bound(c => c.PrecoUnitario).Title("Preço Unitário")
+                           .EditorTemplateName("PrecoUnitarioMaterialTemplate").Format("{0:C}").Width(115);
+                           columns.Bound(c => c.PrecoTotal).Title("Preço Total").Format("{0:C}").Width(100)
+                           .ClientFooterTemplate("<div>Total:  #= kendo.toString(sum,'C') #</div>");
+
+                       })
+                       
+                       .Sortable()
+                       .Scrollable(scr => scr.Height(400))
+                       .Navigatable()
+                       .Resizable(r => r.Columns(true))
+                       .DataSource(datasource => datasource
+                           .Ajax()
+
+                           .Model(model =>
+                           {
+                               model.Id(m => m.Material.IdMaterialAdicional);
+                               model.Field(m => m.Material);
+                               model.Field(m => m.TipoAquisicao);
+                               model.Field(m => m.Quantidade);
+                               model.Field(m => m.TipoAquisicao);
+                               model.Field(m => m.PrecoUnitario);
+                               model.Field(m => m.PrecoTotal);
+
+                           })
+
+                           .Aggregates(aggregate =>
+                           {
+                               aggregate.Add(x => x.Quantidade).Sum();
+                               aggregate.Add(x => x.PrecoTotal).Sum();
+                           })
+                           .Read(read => read.Action("GetMaterialAdicionalByPedido", "ManterPedidos").Data("GetPedidoProduto"))
+                        )
+
+                                    )
+                                </div>
+                            </fieldset>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-6">
+                            <hr />
+                            <button class="btn btn-primary" onclick="javascript:window.location.href = '@Url.Action("EditarPedido", "ManterPedido")/@Html.DisplayTextFor(x => x.IdPedido)';" type="button" id="btnSalvar">Editar</button>
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        
+
+
+
