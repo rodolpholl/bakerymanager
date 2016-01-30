@@ -71,5 +71,6 @@ namespace BakeryManager.BackOffice.Models.Pedido
         public TipoPedidoModel TipoPedido { get; set; }
         [Display(Name = "Valor Venda")]
         public double PrecoVenda { get; set; }
+        public bool ProdutosProduzidos { get; set; }
     }
 }

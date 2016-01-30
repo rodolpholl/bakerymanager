@@ -3,24 +3,50 @@
 
 
 <style>
-    .cardEncaminhado{
-        background-image: url("@Url.Content("~/Content/img/papel.jpg")")
+    .cardEncaminhado {
+        background-image: url("@Url.Content("~/Content/img/papel.jpg")");
+        height: 300px;
+    }
+
+    .cadAguardandoInicioProducao {
+        background-image: url("@Url.Content("~/Content/img/papelazul.jpg")");
+        height: 300px;
+    }
+
+    .cadEmProducao {
+        background-image: url("@Url.Content("~/Content/img/papelamarelo.jpg")");
+        height: 300px;
     }
 </style>
 
+<div class="row">
+    <div class="col-lg-12 col-md-12 colsd-12">
+        <ul class="nav nav-tabs" data-tabs="tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#encaminhados" aria-controls="encaminhados" role="tab" data-toggle="tab">Encaminhados</a></li>
+            <li role="presentation"><a href="#aguardandoproducao" aria-controls="aguardandoproducao" role="tab" data-toggle="tab">Aguardando Inicio da Produção</a></li>
+            <li role="presentation"><a href="#emproducao" aria-controls="emproducao" role="tab" data-toggle="tab">Em Produção</a></li>
 
+        </ul>
+        <div class="tab-content" style="padding-top: 20px">
+            <div class="tab-pane fade in active" role="tabpanel" id="encaminhados">
 
-<div class="tab-pane active" id="encaminhados">
+            </div>
+            <div class="tab-pane fade" role="tabpanel" id="aguardandoproducao">
 
+            </div>
+            <div class="tab-pane fade" role="tabpanel" id="emproducao">
+
+            </div>
+
+        </div>
+        
+    </div>
+    
 </div>
 
 
-
-
-@*<div class="modal fade bs-example-modal-lg" id="mdlView" tabindex="-1" data-backdrop="static"  role="dialog" aria-labelledby="myModalLabel">
-    
-</div>*@
-<div id="mdlView"/>
+<div id="mdlView" />
+<div id="mdlCancelamento" />
 
 
 <script type="text/javascript">
@@ -31,61 +57,71 @@
         }
     }
 
-    function readGridMateral() {
-        $("#gridMaterialAdicionalView").data("kendoGrid").refresh();
-    }
-
-    function readGridProduto() {
-        $("#gridProdutoView").data("kendoGrid").refresh();
-    }
-
-    function VisualizarPedido(IdPedido) {
+    function popUpCancelamento(IdPedido) {
 
         $.ajax({
-
-            url: '@Url.Action("GetViewPedido","ManterPedidos")',
-            data: {IdPedido: IdPedido},
+            url: '@Url.Action("PopCancelamento", "ManterPedidos")',
+            method: "POST",
+            data: {
+                IdPedido: IdPedido
+            },
             success: function (data) {
 
-                $("#mdlView").html(data);
-                $("#gridProdutoView").data("kendoGrid").dataSource.read();
-                $("#gridMaterialAdicionalView").data("kendoGrid").dataSource.read();
-                $('a[data-toggle="tab"]').tab();
+                if (data.TipoMensagem == 1)
+                    alert(data.Mensagem, null, 1)
+                else {
+                    $("#mdlCancelamento").html(data);
+                    $("#mdlCancelamento").kendoWindow({
+                        width: "800px",
+                        visible: false,
+                        title: "Cancelar Pedido",
+                        actions: [
 
-                $("#mdlView").kendoWindow({
-                    width: "600px",
-                    title: "Dados do Pedido",
-                    visible: false,
-                    actions: [
-                        
                         "Minimize",
                         "Maximize",
                         "Close"
-                    ]
-                }).data("kendoWindow").center().open();
-            }
+                        ]
+                    }).data("kendoWindow").center().open();
 
+                }
+            }
         });
 
     }
 
 
-    $(function () {
+    function cancelarPedido(IdPedido) {
 
-
+        var PedidoCancelamentoModel = {
+            IdPedido: IdPedido,
+            TextoCancelamento: $("#TextoCancelamento").data("kendoEditor").value(),
+            IdTipoCancelamento: $("#TipoCancelamento").val()
+        };
 
         $.ajax({
-
-            url: '@Url.Action("GetListaPedidosEncaminhados","ManterPedidos")',
+            url: '@Url.Action("CancelarPedido", "ManterPedidos")',
+            method: "POST",
+            data: {
+                PedidoCancelamento: PedidoCancelamentoModel
+            },
             success: function (data) {
 
-                $("#encaminhados").html(data);
-                $('[data-toggle="tooltip"]').tooltip();
-
+                if (data.TipoMensagem == 1)
+                    alert(data.Mensagem, null, 1)
+                else
+                    window.location.href = "@Url.Action("Index", "Home")";
             }
-
         });
+    }
 
-    });
+    
+
 
 </script>
+
+@Html.Partial("~/Views/ManterPedidos/Scripts/ScriptPedidoEncaminhado.cshtml")
+
+@Html.Partial("~/Views/ManterPedidos/Scripts/ScriptPedidoAguardandoInicioProducao.cshtml")
+
+@Html.Partial("~/Views/ManterPedidos/Scripts/ScriptEmProducao.cshtml")
+

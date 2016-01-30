@@ -1,5 +1,6 @@
 ﻿using BakeryManager.Entities;
 using BakeryManager.Repositories;
+using BakeryManager.Repositories.Seguranca;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,9 @@ namespace BakeryManager.Services
         private CondicaoPagamentoBM condicaoPagamentoBm;
         private MaterialAdicionalBM materialAdicionalBm;
         private FuncionarioBM functionarioBm;
+        private UsuarioBM usuarioBm;
+        private PedidoCancelamentoBM pedidoCancelamentoBm;
+      
 
         public ManterPedido()
         {
@@ -38,6 +42,8 @@ namespace BakeryManager.Services
             categoriaProdutoBm = GetObject<CategoriaProdutoBM>();
             materialAdicionalBm = GetObject<MaterialAdicionalBM>();
             functionarioBm = GetObject<FuncionarioBM>();
+            usuarioBm = GetObject<UsuarioBM>();
+            pedidoCancelamentoBm = GetObject<PedidoCancelamentoBM>();
         }
 
         public IList<TipoPedido> GetListaTipoPedido()
@@ -82,6 +88,8 @@ namespace BakeryManager.Services
             categoriaProdutoBm.Dispose();
             materialAdicionalBm.Dispose();
             functionarioBm.Dispose();
+            usuarioBm.Dispose();
+            pedidoCancelamentoBm.Dispose();
         }
 
         public IList<Funcionario> GetListaFuncionarios()
@@ -194,6 +202,67 @@ namespace BakeryManager.Services
         public IList<Pedido> GetListaPedidosEncaminhados()
         {
             return pedidoBm.GetListaPedidosEncaminhados();
+        }
+
+        public void EncaminharPedidoParaProducao(int idPedido,string UsuarioMudanca)
+        {
+            var pedido = pedidoBm.GetByID(idPedido);
+            AtualizaMudancaStatu(pedido,pedido.StatusAtual, StatusPedido.AguardandoInicioProducao, UsuarioMudanca);
+            pedido.StatusAtual = StatusPedido.AguardandoInicioProducao;
+            pedidoBm.Update(pedido);
+            
+        }
+
+        private void AtualizaMudancaStatu(Pedido pedido, StatusPedido StatusDe, StatusPedido StatusPara, string usuarioMudanca)
+        {
+            pedidoHistoricoStatusBm.Insert(new PedidoHistoricoStatus()
+            {
+                DataHoraMudança = DateTime.Now,
+                StatusDe = StatusDe,
+                StatusPara = StatusPara,
+                UsuarioResponsavel = usuarioBm.GetByLogin(usuarioMudanca)
+            });
+        }
+
+        public void AlterarPedido(Pedido pedido)
+        {
+            pedidoBm.Update(pedido);
+        }
+
+        public void CancelarPedido(PedidoCancelamento PedidoCancelamento)
+        {
+            AtualizaMudancaStatu(PedidoCancelamento.Pedido, PedidoCancelamento.Pedido.StatusAtual, StatusPedido.Cancelado, PedidoCancelamento.UsuarioCancelamento.Login);
+            PedidoCancelamento.Pedido.StatusAtual = StatusPedido.Cancelado;
+            pedidoBm.Update(PedidoCancelamento.Pedido);
+            pedidoCancelamentoBm.Insert(PedidoCancelamento);
+        }
+
+        public Usuario GetUsuarioByLogin(string Login)
+        {
+            return usuarioBm.GetByLogin(Login);
+        }
+
+        public IList<Pedido> GetListaPedidosAguardandoProducao()
+        {
+            return pedidoBm.GetListaPedidosAguardandoProducao();
+        }
+
+        public void EnviarParaLinhadeProducao(int idPedido, string UsuarioMudanca)
+        {
+            var pedido = pedidoBm.GetByID(idPedido);
+            AtualizaMudancaStatu(pedido, pedido.StatusAtual, StatusPedido.EmProducao, UsuarioMudanca);
+            pedido.StatusAtual = StatusPedido.EmProducao;
+            pedidoBm.Update(pedido);
+        }
+
+        public IList<Pedido> GetListaPedidosEmProducao()
+        {
+            return pedidoBm.GetListaPedidosEmProducao();
+        }
+
+        public bool VerificaProdutosProduzidos(Pedido pedido)
+        {
+            return !pedidoProdutoBm.GetPedidoProdutoByPedido(pedido).Any(x => x.Status != StatusPedidoProduto.Pronto);
         }
     }
 }

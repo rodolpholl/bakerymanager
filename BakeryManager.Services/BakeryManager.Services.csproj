@@ -92,6 +92,7 @@
     <Compile Include="ManterQuestionario.cs" />
     <Compile Include="ManterReceituario.cs" />
     <Compile Include="PreConfiguracaoTipoPedido.cs" />
+    <Compile Include="ProducaoPorPedido.cs" />
     <Compile Include="Seguranca\CadastroPerfil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\CadastroUsuario.cs" />

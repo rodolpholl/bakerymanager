@@ -214,11 +214,38 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
 
         public ActionResult Create()
         {
+            setViewData();
+
+            return View(new PedidoModel() { DataEvento = DateTime.Now, PrecoVenda = 0.01, IdPedido = 0 });
+        }
+
+        private void setViewData()
+        {
             ViewData["ListaTipoAquisicao"] = Enum.GetNames(typeof(TipoAquisicaoTemporaria)).Select(x => new TipoAquisicaoTemporariaModel()
             {
                 Nome = x,
                 IdTipoAquisicaoTemporaria = (int)Enum.Parse(typeof(TipoAquisicaoTemporaria), x)
             }).ToList();
+            ViewData["ListaTipoCancelamento"] = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "Abertura Incorreta",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "Desistência",
+                    Value = "2"
+                },
+                new SelectListItem()
+                {
+                    Text = "Pagamento Não Efetuado",
+                    Value = "3"
+                },
+            };
+                
+            
 
             using (var manterPedido = new ManterPedido())
             {
@@ -229,8 +256,6 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     IdMaterialAdicional = x.IdMaterialAdicional
                 }).ToList();
             }
-
-            return View(new PedidoModel() { DataEvento = DateTime.Now, PrecoVenda = 0.01, IdPedido = 0 });
         }
 
         [HttpPost]
@@ -245,7 +270,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
 
                     using (var manterPedido = new ManterPedido())
                     {
-                        var pedido = new Pedido()
+                        Pedido pedido = new Pedido()
                         {
                             Bairro = pedidoModel.Bairro.ToUpper(),
                             CEP = pedidoModel.CEP,
@@ -255,23 +280,23 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                             CondicaoPagamento = manterPedido.GetCondicaoPagamentoById(pedidoModel.CondicaoPagamento.IdCondicaoPagamento),
                             DataEvento = pedidoModel.DataEvento,
                             DataHoraEntrega = new DateTime(pedidoModel.DataEvento.Year,
-                                                           pedidoModel.DataEvento.Month,
-                                                           pedidoModel.DataEvento.Day,
-                                                           pedidoModel.DataHoraEntrega.Hour,
-                                                           pedidoModel.DataHoraEntrega.Minute, 0),
+                                               pedidoModel.DataEvento.Month,
+                                               pedidoModel.DataEvento.Day,
+                                               pedidoModel.DataHoraEntrega.Hour,
+                                               pedidoModel.DataHoraEntrega.Minute, 0),
                             FuncionarioContato = manterPedido.GetFuncionarioById(pedidoModel.FuncionarioContato.IdFuncionario),
                             PessoaResponsavel = pedidoModel.PessoaResponsavel.ToUpper(),
                             TipoContato = pedidoModel.TipoContato.IdTipoContato == 0 ? TipoContato.Site :
-                                 (TipoContato)Enum.Parse(typeof(TipoContato), pedidoModel.TipoContato.IdTipoContato.ToString()),
+                     (TipoContato)Enum.Parse(typeof(TipoContato), pedidoModel.TipoContato.IdTipoContato.ToString()),
                             LocalEvento = pedidoModel.LocalEvento.ToUpper(),
                             Logradouro = pedidoModel.Logradouro.ToUpper(),
                             Numero = pedidoModel.Numero.ToUpper(),
                             PrecoVenda = pedidoModel.PrecoVenda,
                             TelefoneResponsavel = pedidoModel.TelefoneResponsavel,
-                            TipoPedido = manterPedido.GetTipoPedidoById(pedidoModel.TipoPedido.IdTipoPedido)
+                            TipoPedido = manterPedido.GetTipoPedidoById(pedidoModel.TipoPedido.IdTipoPedido),
+                            UF = pedidoModel.UF
 
                         };
-
 
                         manterPedido.InserirPedido(pedido);
 
@@ -307,6 +332,92 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
             }
 
 
+        }
+
+
+
+        public ActionResult Edit(int Id)
+        {
+            setViewData();
+
+            using (var manterPedido = new ManterPedido())
+            {
+                var pedido = manterPedido.GetPedidoById(Id);
+
+                return View(ParsePedidoToPedidoModel(manterPedido, pedido));
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult Edit(string strPedido)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    var pedidoModel = JsonConvert.DeserializeObject<PedidoModel>(strPedido);
+
+                    using (var manterPedido = new ManterPedido())
+                    {
+                        Pedido pedido = manterPedido.GetPedidoById(pedidoModel.IdPedido);
+                        pedido.Bairro = pedidoModel.Bairro.ToUpper();
+                        pedido.CEP = pedidoModel.CEP;
+                        pedido.Cidade = pedidoModel.Cidade.ToUpper();
+                        pedido.Cliente = manterPedido.GetListaClienteById(pedidoModel.Cliente.IdCliente);
+                        pedido.Complemento = pedidoModel.Complemento.ToUpper();
+                        pedido.CondicaoPagamento = manterPedido.GetCondicaoPagamentoById(pedidoModel.CondicaoPagamento.IdCondicaoPagamento);
+                        pedido.DataEvento = pedidoModel.DataEvento;
+                        pedido.DataHoraEntrega = new DateTime(pedidoModel.DataEvento.Year,
+                                                       pedidoModel.DataEvento.Month,
+                                                       pedidoModel.DataEvento.Day,
+                                                       pedidoModel.DataHoraEntrega.Hour,
+                                                       pedidoModel.DataHoraEntrega.Minute, 0);
+                        pedido.FuncionarioContato = manterPedido.GetFuncionarioById(pedidoModel.FuncionarioContato.IdFuncionario);
+                        pedido.PessoaResponsavel = pedidoModel.PessoaResponsavel.ToUpper();
+                        pedido.TipoContato = pedidoModel.TipoContato.IdTipoContato == 0 ? TipoContato.Site :
+                             (TipoContato)Enum.Parse(typeof(TipoContato), pedidoModel.TipoContato.IdTipoContato.ToString());
+                        pedido.LocalEvento = pedidoModel.LocalEvento.ToUpper();
+                        pedido.Logradouro = pedidoModel.Logradouro.ToUpper();
+                        pedido.Numero = pedidoModel.Numero.ToUpper();
+                        pedido.PrecoVenda = pedidoModel.PrecoVenda;
+                        pedido.TelefoneResponsavel = pedidoModel.TelefoneResponsavel;
+                        pedido.TipoPedido = manterPedido.GetTipoPedidoById(pedidoModel.TipoPedido.IdTipoPedido);
+                        pedido.UF = pedidoModel.UF;
+
+                        manterPedido.AlterarPedido(pedido);
+
+                        return Json(new { IdPedido = pedido.IdPedido, TipoMensagem = TipoMensagemRetorno.Ok }, JsonRequestBehavior.AllowGet);
+                    }
+
+
+                }
+                else
+                {
+
+                    return Json(
+                       new
+                       {
+                           TipoMensagem = TipoMensagemRetorno.Erro,
+                           Mensagem = "Erro ao Inserir o Pedido. Verifique o dados informados."
+
+                       }, "text/html", JsonRequestBehavior.AllowGet);
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Erro,
+                                Mensagem = ex.Message
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
@@ -424,6 +535,13 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
         {
             return new PedidoModel()
             {
+                IdPedido = pedido.IdPedido,
+                UF = pedido.UF,
+                StatusAtual = new StatusPedidoModel()
+                {
+                    Descricao = Enum.GetName(typeof(StatusPedido), pedido.StatusAtual),
+                    IdStatusPedido = (int)pedido.StatusAtual
+                },
                 Bairro = pedido.Bairro.ToUpper(),
                 CEP = pedido.CEP,
                 Cidade = pedido.Cidade.ToUpper(),
@@ -449,7 +567,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                 PessoaResponsavel = pedido.PessoaResponsavel.ToUpper(),
                 TipoContato = new TipoContatoModel()
                 {
-                    Descricao = Enum.GetName(typeof(TipoContato),pedido.TipoContato),
+                    Descricao = Enum.GetName(typeof(TipoContato), pedido.TipoContato),
                     IdTipoContato = (int)pedido.TipoContato
                 },
                 LocalEvento = (pedido.LocalEvento ?? string.Empty).ToUpper(),
@@ -466,5 +584,144 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                 }
             };
         }
+
+        [HttpPost]
+        public ActionResult IniciarProducaoPedido(int IdPedido)
+        {
+            try
+            {
+                using (var manterPedido = new ManterPedido())
+                {
+                    manterPedido.EncaminharPedidoParaProducao(IdPedido, User.Identity.Name);
+
+                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                       new
+                       {
+                           TipoMensagem = TipoMensagemRetorno.Erro,
+                           Mensagem = ex.Message
+
+                       }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult PopCancelamento(int IdPedido)
+        {
+            setViewData();
+            return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/CancelamentoPedido.cshtml"),new PedidoCancelamentoModel()
+            {
+                IdPedido = IdPedido
+            }), JsonRequestBehavior.AllowGet);
+            
+        }
+
+        [HttpPost]
+        public JsonResult CancelarPedido(PedidoCancelamentoModel PedidoCancelamento)
+        {
+            try
+            {
+                using (var manterPedido = new ManterPedido())
+                {
+                    manterPedido.CancelarPedido(new PedidoCancelamento()
+                    {
+                        DataCancelamnto = DateTime.Now,
+                        IpCancelamento = Request.ServerVariables["REMOTE_ADDR"],
+                        Pedido = manterPedido.GetPedidoById(PedidoCancelamento.IdPedido),
+                        TextoCancelamento = PedidoCancelamento.TextoCancelamento,
+                        TipoCancelamento = (TipoCancelamenoPedido)PedidoCancelamento.IdTipoCancelamento,
+                        UsuarioCancelamento = manterPedido.GetUsuarioByLogin(User.Identity.Name)
+                    });
+
+                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                       new
+                       {
+                           TipoMensagem = TipoMensagemRetorno.Erro,
+                           Mensagem = ex.Message
+
+                       }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetListaPedidosAguardandoProducao()
+        {
+            using (var manterPedido = new ManterPedido())
+            {
+                var ListaRetorno = manterPedido.GetListaPedidosAguardandoProducao().Select(x => new PedidoModel()
+                {
+                    NumeroPedido = x.NumeroPedido,
+                    IdPedido = x.IdPedido,
+                    Cliente = new ClienteModel()
+                    {
+                        Nome = x.Cliente.Nome
+                    },
+                    LocalEvento = x.LocalEvento,
+                    DataEvento = x.DataEvento,
+                    DataHoraEntrega = x.DataHoraEntrega
+
+                }).ToList();
+
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoAguardandoInicioProducao.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult EnviarParaLinhadeProducao(int IdPedido)
+        {
+            try
+            {
+                using (var manterPedido = new ManterPedido())
+                {
+                    manterPedido.EnviarParaLinhadeProducao(IdPedido, User.Identity.Name);
+
+                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                       new
+                       {
+                           TipoMensagem = TipoMensagemRetorno.Erro,
+                           Mensagem = ex.Message
+
+                       }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        public JsonResult GetListaPedidosEmProducao()
+        {
+            using (var manterPedido = new ManterPedido())
+            {
+                var ListaRetorno = manterPedido.GetListaPedidosEmProducao().Select(x => new PedidoModel()
+                {
+                    NumeroPedido = x.NumeroPedido,
+                    IdPedido = x.IdPedido,
+                    Cliente = new ClienteModel()
+                    {
+                        Nome = x.Cliente.Nome
+                    },
+                    LocalEvento = x.LocalEvento,
+                    DataEvento = x.DataEvento,
+                    DataHoraEntrega = x.DataHoraEntrega,
+                    ProdutosProduzidos = manterPedido.VerificaProdutosProduzidos(x)
+
+                }).ToList();
+
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoEmProducao.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
     }
 }

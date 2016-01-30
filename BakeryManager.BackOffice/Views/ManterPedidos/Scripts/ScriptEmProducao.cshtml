@@ -1,0 +1,21 @@
+﻿<script type="text/javascript">
+    $(function () {
+
+
+
+        $.ajax({
+
+            url: '@Url.Action("GetListaPedidosEmProducao", "ManterPedidos")',
+            success: function (data) {
+
+                $("#emproducao").html(data);
+                $('[data-toggle="tooltip"]').tooltip();
+
+
+            }
+
+        });
+
+    });
+</script>
+

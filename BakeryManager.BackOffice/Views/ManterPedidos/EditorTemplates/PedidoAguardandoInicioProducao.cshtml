@@ -1,8 +1,6 @@
 ﻿@using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Pedido
-
 @model IList<PedidoModel>
-
 
 <div class="row">
 
@@ -10,8 +8,8 @@
 
     @foreach (var item in Model)
             {
-        <div class="col-sm-6 col-md-4" >
-            <div class="thumbnail cardEncaminhado" id="@string.Concat("pedido",item.IdPedido.ToString())">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail cadAguardandoInicioProducao" id="@string.Concat("pedido",item.IdPedido.ToString())">
 
 
                 <div class="row">
@@ -28,7 +26,7 @@
 
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
-                        <a href="#" onclick="IniciarProducaoPedido(@item.IdPedido,'@item.NumeroPedido')" data-toggle="tooltip" data-placement="buttom" class="btn btn-info btn-sm">Enc. p/ Produção</a> <b>ou</b>
+                        <a href="#" onclick="EnviarParaLinhadeProducao(@item.IdPedido,'@item.NumeroPedido')" data-toggle="tooltip" data-placement="buttom" class="btn btn-info btn-sm">Iniciar Produção</a> <b>ou</b>
                         <a href="#" onclick="popUpCancelamento(@item.IdPedido)" class="btn btn-danger btn-sm">Cancelar Pedido</a>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ namespace BakeryManager.Entities
     {
         Encaminhado = 1,
         AguardandoInicioProducao = 2,
-        EmProdução = 3,
+        EmProducao = 3,
         AguardandoEntrega = 4,
         Finalizado = 5,
         Cancelado = 6

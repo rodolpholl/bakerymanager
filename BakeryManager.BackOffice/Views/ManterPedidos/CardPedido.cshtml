@@ -1,0 +1,44 @@
+﻿@model BakeryManager.BackOffice.Models.Pedido.PedidoModel
+
+<fieldset>
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Nº Pedido:</label>
+
+            <div class="col-sm-6">
+                <label class="control-label"><i><strong>@Model.NumeroPedido</strong></i></label>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Cliente:</label>
+            <div class="col-sm-6">
+                <label class="control-label"><i>@Model.Cliente.Nome</i></label>
+
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Local:</label>
+            <div class="col-sm-6">
+                <label class="control-label"><i>@Model.LocalEvento</i></label>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Data:</label>
+            <div class="col-sm-6">
+                <label class="control-label"><i>@Model.DataEvento.ToString("dd/MM/yyyy")</i></label>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Hora Entrega:</label>
+            <div class="col-sm-6">
+                <label class="control-label"><i>@Model.DataHoraEntrega.ToString("hh:mm")</i></label>
+
+            </div>
+        </div>
+
+    </form>
+</fieldset>

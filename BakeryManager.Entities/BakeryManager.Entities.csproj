@@ -64,10 +64,12 @@
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="IngredienteTabelaNutricional.cs" />
     <Compile Include="Pedido\MaterialAdicional.cs" />
+    <Compile Include="Pedido\PedidoCancelamento.cs" />
     <Compile Include="Pedido\PedidoHistoricoStatus.cs" />
     <Compile Include="Pedido\PedidoMaterialAdicionalPreConfig.cs" />
     <Compile Include="Pedido\PedidoMaterialAdiconal.cs" />
     <Compile Include="Pedido\PedidoProduto.cs" />
+    <Compile Include="Pedido\PedidoProdutoProduzido.cs" />
     <Compile Include="ProdutoFoto.cs" />
     <Compile Include="Questionario.cs" />
     <Compile Include="QuestionarioPergunta.cs" />

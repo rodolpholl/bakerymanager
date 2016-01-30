@@ -295,6 +295,8 @@
     <Compile Include="Controllers\ManterReceituarioController.cs" />
     <Compile Include="Controllers\Pedidos\ManterPedidosController.cs" />
     <Compile Include="Controllers\Pedidos\PreConfiguracaoTipoPedidoController.cs" />
+    <Compile Include="Controllers\Pedidos\ProducaoPorPedidoController.cs" />
+    <Compile Include="Controllers\Pedidos\ProducaoPorProdutoController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SimuladorController.cs" />
     <Compile Include="Global.asax.cs">
@@ -334,6 +336,7 @@
     <Compile Include="Models\Login\NovoAcessoModel.cs" />
     <Compile Include="Models\ManterReceita\TabelaNutricionalSimuladorModel.cs" />
     <Compile Include="Models\Pedido\MaterialAdicionalModel.cs" />
+    <Compile Include="Models\Pedido\PedidoCancelamentoModel.cs" />
     <Compile Include="Models\Pedido\PedidoHistoricoStatusModel.cs" />
     <Compile Include="Models\Pedido\PedidoMaterialAdicionalPreConfigModel.cs" />
     <Compile Include="Models\Pedido\PedidoMaterialAdiconalModel.cs" />
@@ -461,6 +464,15 @@
     <Content Include="Views\ManterPedidos\PedidosPendentes.cshtml" />
     <Content Include="Views\ManterPedidos\EditorTemplates\PedidosEncaminhadosTemplate.cshtml" />
     <Content Include="Views\ManterPedidos\VizualizarPedido.cshtml" />
+    <Content Include="Views\ManterPedidos\CardPedido.cshtml" />
+    <Content Include="Views\ManterPedidos\Edit.cshtml" />
+    <Content Include="Views\ManterPedidos\CancelamentoPedido.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\PedidoAguardandoInicioProducao.cshtml" />
+    <Content Include="Views\ManterPedidos\Scripts\ScriptEmProducao.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\PedidoEmProducao.cshtml" />
+    <None Include="Views\ManterPedidos\Scripts\ScriptPedidoEncaminhado.cshtml" />
+    <None Include="Views\ManterPedidos\Scripts\ScriptPedidoAguardandoInicioProducao.cshtml" />
+    <Content Include="Views\ProducaoPorPedido\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -497,7 +509,9 @@
       <Name>BakeryManager.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\ProducaoPorProduto\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

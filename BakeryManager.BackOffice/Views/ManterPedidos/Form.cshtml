@@ -38,6 +38,7 @@
                         @Html.LabelFor(x => x.Cliente, new { @class = "col-sm-2 control-label" })
                         <div class="col-sm-10">
                             @(Html.Kendo().DropDownListFor(x => x.Cliente).DataValueField("IdCliente").DataTextField("Nome").OptionLabel("Selecione").HtmlAttributes(new { style = "width: 450px" })
+                            .SelectedIndex(0).Text(string.Empty)
                             .DataSource(datasource =>
                             {
                                 datasource.Read(read => read.Action("GetListaCliente", "ManterPedidos"));
@@ -368,7 +369,7 @@
                            .Batch(true)
                            .Model(model =>
                            {
-                               model.Id(m => m.Material.IdMaterialAdicional);
+                               model.Id(m => m.Material);
                                model.Field(m => m.Material).DefaultValue(new MaterialAdicionalModel()
                                {
                                    IdMaterialAdicional = 0
@@ -542,10 +543,30 @@
 
     }
 
+    function excluirMaterialAdicional(IdMaterialAdicional) {
+        confirm("Deseja Realmente Excluir esse Material do Pedido?", function () {
+
+            var ds = $("#gridMaterialAdicional").data("kendoGrid").dataSource;
+            var data = ds.data();
+            var obj
+            $(data).each(function (index, item) {
+                if (item.Material.IdMaterialAdicional == IdMaterialAdicional) {
+                    ds.remove(item);
+                    return;
+                }
+            });
+
+
+            //ds.remove(data.get(IdMaterialAdicional));
+
+        }, 2);
+    }
+
 
     function getFormPedido() {
 
         return {
+            IdPedido: $("#IdPedido").val(),
             NumeroPedido: $("#NumeroPedido").val(),
             Cliente: { IdCliente: $("#Cliente").val() },
             DataEvento: $("#DataEvento").data("kendoDatePicker").value(),
@@ -574,26 +595,7 @@
     $(function () {
 
 
-        @*$("#Natureza").change(function () {
-
-            var natureza = $("#Natureza").data("kendoDropDownList").value();
-
-            if (natureza == 1) {
-
-                $("#grpTipoEvento").show("slow");
-                $("#liMaterialAdicional").show("slow");
-                $("#fdsEntrega").show("slow");
-                $("#fdsContato").show("slow");
-
-            }
-            else {
-                $("#grpTipoEvento").hide("slow");
-                $("#liMaterialAdicional").hide("slow");
-                $("#fdsEntrega").hide("slow");
-                $("#fdsContato").hide("slow");
-
-            }
-        });*@
+        
 
         $("#TipoPedido").change(function () {
             if ($("#TipoPedido").val() != "") {

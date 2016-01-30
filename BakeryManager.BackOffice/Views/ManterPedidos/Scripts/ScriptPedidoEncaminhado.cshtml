@@ -1,0 +1,81 @@
+﻿
+<script type="text/javascript">
+    /*-------- Scripts para os Pedidos no Status Encaminhado ---------------------*/
+    function readGridMateral() {
+        $("#gridMaterialAdicionalView").data("kendoGrid").refresh();
+    }
+
+    function readGridProduto() {
+        $("#gridProdutoView").data("kendoGrid").refresh();
+    }
+
+    function IniciarProducaoPedido(IdPedido, NumeroPedido) {
+        confirm("Deseja Realmente Iniciar o processo de produção do pedido<b>" + NumeroPedido + "?", function () {
+            $.ajax({
+                url: '@Url.Action("IniciarProducaoPedido", "ManterPedidos")',
+                method: "POST",
+                data: {
+                    IdPedido: IdPedido
+                },
+                success: function (data) {
+                    if (data.TipoMensagem == 1)
+                        alert(data.Mensagem, null, 1)
+                    else
+                        window.location.href = "@Url.Action("Index", "Home")";
+
+
+                }
+            });
+        }, 2)
+    }
+
+    function VisualizarPedido(IdPedido) {
+
+        $.ajax({
+
+            url: '@Url.Action("GetViewPedido", "ManterPedidos")',
+            data: { IdPedido: IdPedido },
+            success: function (data) {
+
+                $("#mdlView").html(data);
+                $("#gridProdutoView").data("kendoGrid").dataSource.read();
+                $("#gridMaterialAdicionalView").data("kendoGrid").dataSource.read();
+                $('a[data-toggle="tab"]').tab();
+
+                $("#mdlView").kendoWindow({
+                    width: "800px",
+                    title: "Dados do Pedido",
+                    visible: false,
+                    actions: [
+
+                    "Minimize",
+                    "Maximize",
+                    "Close"
+                    ]
+                }).data("kendoWindow").center().open();
+            }
+
+        });
+
+    }
+
+
+    $(function () {
+
+
+
+        $.ajax({
+
+            url: '@Url.Action("GetListaPedidosEncaminhados", "ManterPedidos")',
+            success: function (data) {
+
+                $("#encaminhados").html(data);
+                $('[data-toggle="tooltip"]').tooltip();
+
+            }
+
+        });
+
+    });
+    /*--------------------------------------------*/
+</script>

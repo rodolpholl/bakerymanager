@@ -14,5 +14,10 @@ namespace BakeryManager.Repositories
         {
             return Query().Where(x => x.TipoCliente == (TipoCliente)TipoCliente).ToList();
         }
+
+        public IList<Cliente> GetListaClientesAtivos()
+        {
+            return Query().Where(x => x.Ativo).ToList();
+        }
     }
 }
