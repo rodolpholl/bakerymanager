@@ -157,13 +157,20 @@
     <Content Include="Content\Images\wp8_inverseicons.png" />
     <Content Include="Content\img\bread.png" />
     <Content Include="Content\img\bread2.jpg" />
-    <Content Include="Content\img\papel.jpg" />
     <Content Include="Content\img\papelamarelo.jpg" />
     <Content Include="Content\img\papelazul.jpg" />
+    <Content Include="Content\img\papelcinza.jpg" />
     <Content Include="Content\img\papellaranja.jpg" />
     <Content Include="Content\img\papelverde.jpg" />
     <Content Include="Content\img\papelvermelho.jpg" />
     <Content Include="Content\img\uploadify-cancel.png" />
+    <Content Include="Content\jquery.flipcountdown.css" />
+    <Content Include="Content\jqueryCountdown\img\digit-lg.png" />
+    <Content Include="Content\jqueryCountdown\img\digit-md.png" />
+    <Content Include="Content\jqueryCountdown\img\digit-sm.png" />
+    <Content Include="Content\jqueryCountdown\img\digit-xs.png" />
+    <Content Include="Content\jqueryCountdown\screen\1.png" />
+    <Content Include="Content\jqueryCountdown\screen\2.png" />
     <Content Include="Content\kendo.bootstrap.min.css" />
     <Content Include="Content\kendo.bootstrap.mobile.min.css" />
     <Content Include="Content\kendo.common.min.css" />
@@ -231,6 +238,9 @@
     <Content Include="Content\Images\kendoui.ttf" />
     <Content Include="Content\Images\kendoui.woff" />
     <Content Include="Content\img\papel FONTE.psd" />
+    <Content Include="Content\jqueryCountdown\img\am-pm-1.psd" />
+    <Content Include="Content\jqueryCountdown\img\digit-lg-dark.psd" />
+    <Content Include="Content\jqueryCountdown\img\digit-lg.psd" />
     <None Include="Properties\PublishProfiles\PublishLocal.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -241,6 +251,7 @@
     <Content Include="Scripts\jquery.equalheights.js" />
     <Content Include="Scripts\crypto\md5.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.flipcountdown.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
@@ -271,6 +282,7 @@
     <Content Include="Scripts\rateit\jquery.rateit.min.js" />
     <Content Include="Scripts\sb-admin-2.js" />
     <Content Include="Scripts\utils.js" />
+    <Content Include="Content\SiteCustom.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -342,6 +354,7 @@
     <Compile Include="Models\Pedido\PedidoMaterialAdiconalModel.cs" />
     <Compile Include="Models\Pedido\PedidoModel.cs" />
     <Compile Include="Models\Pedido\PedidoProdutoModel.cs" />
+    <Compile Include="Models\Pedido\ProducaoVisaoPedidoModel.cs" />
     <Compile Include="Models\Pedido\TipoPedidoModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
@@ -473,6 +486,8 @@
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoEncaminhado.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoAguardandoInicioProducao.cshtml" />
     <Content Include="Views\ProducaoPorPedido\Index.cshtml" />
+    <Content Include="Views\ProducaoPorPedido\PedidosProducaoPartial.cshtml" />
+    <Content Include="Views\ProducaoPorPedido\ProduzirPedido.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

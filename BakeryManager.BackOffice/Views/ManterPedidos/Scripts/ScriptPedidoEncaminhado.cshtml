@@ -29,36 +29,6 @@
         }, 2)
     }
 
-    function VisualizarPedido(IdPedido) {
-
-        $.ajax({
-
-            url: '@Url.Action("GetViewPedido", "ManterPedidos")',
-            data: { IdPedido: IdPedido },
-            success: function (data) {
-
-                $("#mdlView").html(data);
-                $("#gridProdutoView").data("kendoGrid").dataSource.read();
-                $("#gridMaterialAdicionalView").data("kendoGrid").dataSource.read();
-                $('a[data-toggle="tab"]').tab();
-
-                $("#mdlView").kendoWindow({
-                    width: "800px",
-                    title: "Dados do Pedido",
-                    visible: false,
-                    actions: [
-
-                    "Minimize",
-                    "Maximize",
-                    "Close"
-                    ]
-                }).data("kendoWindow").center().open();
-            }
-
-        });
-
-    }
-
 
     $(function () {
 

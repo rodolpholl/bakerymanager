@@ -2,22 +2,6 @@
 @using BakeryManager.BackOffice.Models.Pedido
 
 
-<style>
-    .cardEncaminhado {
-        background-image: url("@Url.Content("~/Content/img/papel.jpg")");
-        height: 300px;
-    }
-
-    .cadAguardandoInicioProducao {
-        background-image: url("@Url.Content("~/Content/img/papelazul.jpg")");
-        height: 300px;
-    }
-
-    .cadEmProducao {
-        background-image: url("@Url.Content("~/Content/img/papelamarelo.jpg")");
-        height: 300px;
-    }
-</style>
 
 <div class="row">
     <div class="col-lg-12 col-md-12 colsd-12">
@@ -55,6 +39,36 @@
         return {
             IdPedido: $("#IdPedido").val()
         }
+    }
+
+    function VisualizarPedido(IdPedido) {
+
+        $.ajax({
+
+            url: '@Url.Action("GetViewPedido", "ManterPedidos")',
+            data: { IdPedido: IdPedido },
+            success: function (data) {
+
+                $("#mdlView").html(data);
+                $("#gridProdutoView").data("kendoGrid").dataSource.read();
+                $("#gridMaterialAdicionalView").data("kendoGrid").dataSource.read();
+                $('a[data-toggle="tab"]').tab();
+
+                $("#mdlView").kendoWindow({
+                    width: "800px",
+                    title: "Dados do Pedido",
+                    visible: false,
+                    actions: [
+
+                    "Minimize",
+                    "Maximize",
+                    "Close"
+                    ]
+                }).data("kendoWindow").center().open();
+            }
+
+        });
+
     }
 
     function popUpCancelamento(IdPedido) {
@@ -114,7 +128,7 @@
         });
     }
 
-    
+
 
 
 </script>

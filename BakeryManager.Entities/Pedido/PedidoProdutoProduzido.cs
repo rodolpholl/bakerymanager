@@ -13,7 +13,19 @@ namespace BakeryManager.Entities
         public virtual Produto Produto { get; set; }
         public virtual int Quantidade { get; set; }
         public virtual DateTime DataHoraInicioFabricacao { get; set; }
-        public virtual DateTime DataHoraFimFabricacao { get; set; }
-        public virtual int TempoProducao { get; set; }
+        public virtual DateTime? DataHoraFimFabricacao { get; set; }
+        public virtual int? TempoProducao { get; set; }
+        public virtual StatusProducaoProduto StatusAtual { get; set; }
+    }
+
+    public enum StatusProducaoProduto
+    {
+
+        AgardandoInicio = 1,
+        Produzindo = 2,
+        Pausa = 3,
+        Concluido = 4,
+        Cancelado = 5
+
     }
 }

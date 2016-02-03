@@ -1,0 +1,18 @@
+﻿
+.cardEncaminhado {
+    background-image: url("img/papelcinza.jpg");
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+.cadAguardandoInicioProducao {
+    background-image: url("img/papelazul.jpg");
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+.cadEmProducao {
+    background-image: url("img/papelamarelo.jpg");
+    background-repeat: no-repeat;
+    height: 300px;
+}

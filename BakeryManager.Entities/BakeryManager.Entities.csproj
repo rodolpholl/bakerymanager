@@ -70,6 +70,7 @@
     <Compile Include="Pedido\PedidoMaterialAdiconal.cs" />
     <Compile Include="Pedido\PedidoProduto.cs" />
     <Compile Include="Pedido\PedidoProdutoProduzido.cs" />
+    <Compile Include="Pedido\PedidoProdutoProduzidoHistoricoProducao.cs" />
     <Compile Include="ProdutoFoto.cs" />
     <Compile Include="Questionario.cs" />
     <Compile Include="QuestionarioPergunta.cs" />

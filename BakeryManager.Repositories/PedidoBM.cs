@@ -32,15 +32,17 @@ namespace BakeryManager.Repositories
 
         public IList<Pedido> GetPedidosByFiltro(DateTime? DataEntrega, DateTime? HoraEntrega, Cliente Cliente, string NUmeroPedido)
         {
+            
             var query = Query();
 
             if (DataEntrega.HasValue)
-                query = query.Where(x => x.DataEvento.Date == DataEntrega.Value.Date);
+                query = query.Where(x => x.DataEvento.Date >= DataEntrega.Value.Date);
 
 
             if (HoraEntrega.HasValue)
-                query = query.Where(x => x.DataHoraEntrega.Hour == HoraEntrega.Value.Hour &&
-                                         x.DataHoraEntrega.Minute == HoraEntrega.Value.Minute);
+                query = query.Where(x => (x.DataHoraEntrega.Hour == HoraEntrega.Value.Hour &&
+                                         x.DataHoraEntrega.Minute == HoraEntrega.Value.Minute) &&
+                                         (x.DataHoraEntrega.Hour <= 23 && x.DataHoraEntrega.Minute <= 59));
 
 
             if (Cliente != null)
@@ -49,7 +51,7 @@ namespace BakeryManager.Repositories
 
             if (!string.IsNullOrWhiteSpace(NUmeroPedido))
                 query = query.Where(x => x.NumeroPedido == NUmeroPedido);
-
+          
 
             return query.ToList();
 

@@ -1,7 +1,11 @@
 ﻿<script type="text/javascript">
+
+
+    function VisualizarProducao(IdProduto) {
+        window.location.href = "@Url.Action("ProduzirPedido","ProducaoPorPedido")/" + IdProduto;
+    }
+
     $(function () {
-
-
 
         $.ajax({
 
