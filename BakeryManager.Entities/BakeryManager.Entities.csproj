@@ -71,6 +71,7 @@
     <Compile Include="Pedido\PedidoProduto.cs" />
     <Compile Include="Pedido\PedidoProdutoProduzido.cs" />
     <Compile Include="Pedido\PedidoProdutoProduzidoHistoricoProducao.cs" />
+    <Compile Include="Pedido\PedidoRegistroEntrega.cs" />
     <Compile Include="ProdutoFoto.cs" />
     <Compile Include="Questionario.cs" />
     <Compile Include="QuestionarioPergunta.cs" />

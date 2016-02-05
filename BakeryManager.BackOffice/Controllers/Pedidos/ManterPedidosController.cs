@@ -227,6 +227,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                 Nome = x,
                 IdTipoAquisicaoTemporaria = (int)Enum.Parse(typeof(TipoAquisicaoTemporaria), x)
             }).ToList();
+
             ViewData["ListaTipoCancelamento"] = new List<SelectListItem>()
             {
                 new SelectListItem()
@@ -245,7 +246,29 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     Value = "3"
                 },
             };
-                
+
+            
+            ViewData["ListaTipoEventoEntrega"] = new List<SelectListItem>()
+            {
+                new SelectListItem() {
+                    Text = "Sucesso",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "Erro no Pedido",
+                    Value = "2"
+                },
+                new SelectListItem() {
+                    Text = "Endereço não Encontrado",
+                    Value = "3"
+                },
+                new SelectListItem() {
+                    Text = "Edereço de Entrega Errado",
+                    Value = "4"
+                }
+            };
+
             
 
             using (var manterPedido = new ManterPedido())
@@ -613,12 +636,14 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
         public JsonResult PopCancelamento(int IdPedido)
         {
             setViewData();
-            return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/CancelamentoPedido.cshtml"),new PedidoCancelamentoModel()
+            return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/CancelamentoPedido.cshtml"), new PedidoCancelamentoModel()
             {
                 IdPedido = IdPedido
             }), JsonRequestBehavior.AllowGet);
-            
+
         }
+
+        
 
         [HttpPost]
         public JsonResult CancelarPedido(PedidoCancelamentoModel PedidoCancelamento)
@@ -637,6 +662,47 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                         UsuarioCancelamento = manterPedido.GetUsuarioByLogin(User.Identity.Name)
                     });
 
+                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                       new
+                       {
+                           TipoMensagem = TipoMensagemRetorno.Erro,
+                           Mensagem = ex.Message
+
+                       }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult PopRegisrarEntrega(int IdPedido)
+        {
+            setViewData();
+            return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/RegistroEntrega.cshtml"), new PedidoRegistroEntregaModel()
+            {
+                Pedido = new PedidoModel() { IdPedido = IdPedido }
+            }), JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult RegistrarEntrega(int IdPedido, int EventoEntrega, string Justificativa)
+        {
+            try
+            {
+                using (var manterPedido = new ManterPedido())
+                {
+
+                    manterPedido.RegistrarEntrega(new PedidoRegistroEntrega()
+                    {
+                        Pedido = manterPedido.GetPedidoById(IdPedido),
+                        Evento = (EventoEntrega)EventoEntrega,
+                        Justificativa = Justificativa
+                    },User.Identity.Name);
+
+                    
                     return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -721,6 +787,27 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoEmProducao.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+        public JsonResult GetProdutosEmEntrega()
+        {
+            using (var manterPedido = new ManterPedido())
+            {
+                var ListaRetorno = manterPedido.GetPedidosEmEntrega().Select(x => new PedidoModel()
+                {
+                    NumeroPedido = x.NumeroPedido,
+                    IdPedido = x.IdPedido,
+                    Cliente = new ClienteModel()
+                    {
+                        Nome = x.Cliente.Nome
+                    },
+                    LocalEvento = x.LocalEvento,
+                    DataEvento = x.DataEvento,
+                    DataHoraEntrega = x.DataHoraEntrega
+
+                }).ToList();
+                return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoEmEntrega.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
+            }
         }
 
 

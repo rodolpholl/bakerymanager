@@ -25,6 +25,11 @@ namespace BakeryManager.Repositories
             return Query().Where(x => x.StatusAtual == StatusPedido.EmProducao).ToList();
         }
 
+        public IList<Pedido> GetListaPedidosEmEntrega()
+        {
+            return Query().Where(x => x.StatusAtual == StatusPedido.AguardandoEntrega).ToList();
+        }
+
         public Pedido getPedidoByNumero(string NumeroPedido)
         {
             return Query().FirstOrDefault(x => x.NumeroPedido == NumeroPedido);
@@ -56,5 +61,7 @@ namespace BakeryManager.Repositories
             return query.ToList();
 
         }
+
+        
     }
 }

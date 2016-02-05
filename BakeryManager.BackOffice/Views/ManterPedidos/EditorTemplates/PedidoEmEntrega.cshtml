@@ -1,1 +1,39 @@
-﻿
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Pedido
+@model IList<PedidoModel>
+
+<div class="row">
+
+
+
+    @foreach (var item in Model)
+            {
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail cadEmEntrega" id="@string.Concat("pedido",item.IdPedido.ToString())">
+
+
+                <div class="row">
+                    <div class="col-md-offset-10">
+                        <a href="#" onclick="VisualizarPedido(@item.IdPedido)" data-toggle="tooltip" data-placement="top" title="Detalhar Pedido" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in" /></a>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-10">
+                        @Html.Partial("CardPedido", item)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <a href="#" onclick="RegisrarEntrega(@item.IdPedido,'@item.NumeroPedido')" data-toggle="tooltip" data-placement="buttom" class="btn btn-success btn-sm">Registrar Entrega</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+
+</div>

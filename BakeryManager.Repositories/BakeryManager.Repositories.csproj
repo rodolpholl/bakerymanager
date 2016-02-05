@@ -86,6 +86,7 @@
     <Compile Include="PedidoProdutoBM.cs" />
     <Compile Include="PedidoProdutoProduzidoBM.cs" />
     <Compile Include="PedidoProdutoProduzidoHistoricoProducaoBM.cs" />
+    <Compile Include="PedidoRegistroEntregaBM.cs" />
     <Compile Include="ProdutoBM.cs" />
     <Compile Include="ProdutoFotoBM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

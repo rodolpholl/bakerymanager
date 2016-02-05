@@ -354,6 +354,7 @@
     <Compile Include="Models\Pedido\PedidoMaterialAdiconalModel.cs" />
     <Compile Include="Models\Pedido\PedidoModel.cs" />
     <Compile Include="Models\Pedido\PedidoProdutoModel.cs" />
+    <Compile Include="Models\Pedido\PedidoRegistroEntregaModel.cs" />
     <Compile Include="Models\Pedido\ProducaoVisaoPedidoModel.cs" />
     <Compile Include="Models\Pedido\TipoPedidoModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
@@ -485,6 +486,7 @@
     <Content Include="Views\ManterPedidos\EditorTemplates\PedidoEmProducao.cshtml" />
     <Content Include="Views\ManterPedidos\EditorTemplates\PedidoEmEntrega.cshtml" />
     <Content Include="Views\ManterPedidos\Scripts\ScriptEmEntrega.cshtml" />
+    <Content Include="Views\ManterPedidos\RegistroEntrega.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoEncaminhado.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoAguardandoInicioProducao.cshtml" />
     <Content Include="Views\ProducaoPorPedido\Index.cshtml" />

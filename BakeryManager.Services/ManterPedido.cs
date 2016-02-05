@@ -27,7 +27,9 @@ namespace BakeryManager.Services
         private UsuarioBM usuarioBm;
         private PedidoCancelamentoBM pedidoCancelamentoBm;
         private PedidoProdutoProduzidoBM pedidoProdutoProduzidoBm;
-      
+        private PedidoRegistroEntregaBM pedidoRegistroEntregaBm;
+
+
 
         public ManterPedido()
         {
@@ -46,7 +48,9 @@ namespace BakeryManager.Services
             usuarioBm = GetObject<UsuarioBM>();
             pedidoCancelamentoBm = GetObject<PedidoCancelamentoBM>();
             pedidoProdutoProduzidoBm = GetObject<PedidoProdutoProduzidoBM>();
-            
+            pedidoRegistroEntregaBm = GetObject<PedidoRegistroEntregaBM>();
+
+
         }
 
         public IList<TipoPedido> GetListaTipoPedido()
@@ -94,6 +98,7 @@ namespace BakeryManager.Services
             usuarioBm.Dispose();
             pedidoCancelamentoBm.Dispose();
             pedidoProdutoProduzidoBm.Dispose();
+            pedidoRegistroEntregaBm.Dispose();
         }
 
         public IList<Funcionario> GetListaFuncionarios()
@@ -275,6 +280,30 @@ namespace BakeryManager.Services
 
             return !retorno.Any(x => x.StatusAtual != StatusProducaoProduto.Concluido &&
                                      x.StatusAtual != StatusProducaoProduto.Cancelado);
+        }
+
+        public IList<Pedido> GetPedidosEmEntrega()
+        {
+            return pedidoBm.GetListaPedidosEmEntrega();
+        }
+
+        public void RegistrarEntrega(PedidoRegistroEntrega pedidoRegistroEntrega, string UsuarioMudanca)
+        {
+            pedidoRegistroEntrega.DataRegistro = DateTime.Now;
+            pedidoRegistroEntregaBm.Insert(pedidoRegistroEntrega);
+
+            var pedido = pedidoBm.GetByID(pedidoRegistroEntrega.Pedido.IdPedido);
+
+            AtualizaMudancaStatu(pedido, pedido.StatusAtual, StatusPedido.Finalizado,UsuarioMudanca);
+
+            pedido.StatusAtual = StatusPedido.Finalizado;
+            pedidoBm.Update(pedido);
+
+
+
+
+
+
         }
     }
 }

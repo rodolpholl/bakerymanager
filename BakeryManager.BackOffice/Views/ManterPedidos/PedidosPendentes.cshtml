@@ -9,6 +9,7 @@
             <li role="presentation" class="active"><a href="#encaminhados" aria-controls="encaminhados" role="tab" data-toggle="tab">Encaminhados</a></li>
             <li role="presentation"><a href="#aguardandoproducao" aria-controls="aguardandoproducao" role="tab" data-toggle="tab">Aguardando Inicio da Produção</a></li>
             <li role="presentation"><a href="#emproducao" aria-controls="emproducao" role="tab" data-toggle="tab">Em Produção</a></li>
+            <li role="presentation"><a href="#ementrega" aria-controls="ementrega" role="tab" data-toggle="tab">Disponível para Entrega</a></li>
 
         </ul>
         <div class="tab-content" style="padding-top: 20px">
@@ -19,6 +20,9 @@
 
             </div>
             <div class="tab-pane fade" role="tabpanel" id="emproducao">
+
+            </div>
+            <div class="tab-pane fade" role="tabpanel" id="ementrega">
 
             </div>
 
@@ -39,6 +43,14 @@
     function GetIdPedido() {
         return {
             IdPedido: $("#IdPedido").val()
+        }
+    }
+
+    function GetPedidoProduto() {
+        return {
+            IdPedido: $("#IdPedido").val(),
+            IdTipoPedido: null,
+            IgnoraIdPedido: false
         }
     }
 
