@@ -129,7 +129,8 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     IdProduto = x.Produto.IdProduto,
                     NomeProduto = x.Produto.Nome,
                     PrecoUnitario = x.PrecoUnitario,
-                    Quantidade = x.Quantidade
+                    Quantidade = x.Quantidade,
+                    PrecoTotal = x.PrecoTotal
                 }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
@@ -350,7 +351,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
 
 
         [HttpPost]
-        public JsonResult Edit(string strPedido)
+        public JsonResult Editar(string strPedido)
         {
             try
             {

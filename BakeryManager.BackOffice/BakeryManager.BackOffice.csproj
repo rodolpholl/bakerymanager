@@ -483,6 +483,8 @@
     <Content Include="Views\ManterPedidos\EditorTemplates\PedidoAguardandoInicioProducao.cshtml" />
     <Content Include="Views\ManterPedidos\Scripts\ScriptEmProducao.cshtml" />
     <Content Include="Views\ManterPedidos\EditorTemplates\PedidoEmProducao.cshtml" />
+    <Content Include="Views\ManterPedidos\EditorTemplates\PedidoEmEntrega.cshtml" />
+    <Content Include="Views\ManterPedidos\Scripts\ScriptEmEntrega.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoEncaminhado.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoAguardandoInicioProducao.cshtml" />
     <Content Include="Views\ProducaoPorPedido\Index.cshtml" />

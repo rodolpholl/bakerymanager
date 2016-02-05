@@ -83,8 +83,9 @@
 
                 $.ajax({
 
-                    url: '@Url.Action("Edit")',
+                    url: '@Url.Action("Editar", "ManterPedidos")',
                     method: "POST",
+                    dataType: "json",
                     data: { strPedido: JSON.stringify(formPedido) },
                     success: function (data) {
 
@@ -127,6 +128,10 @@
                     }
 
                 });
+            }
+
+            else {
+                alert('Existem campos obrigatórios que não foram preenchidos. Verifique os campos e tente novamente.', null, 2);
             }
         });
 

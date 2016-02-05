@@ -26,6 +26,7 @@ namespace BakeryManager.Services
         private FuncionarioBM functionarioBm;
         private UsuarioBM usuarioBm;
         private PedidoCancelamentoBM pedidoCancelamentoBm;
+        private PedidoProdutoProduzidoBM pedidoProdutoProduzidoBm;
       
 
         public ManterPedido()
@@ -44,6 +45,8 @@ namespace BakeryManager.Services
             functionarioBm = GetObject<FuncionarioBM>();
             usuarioBm = GetObject<UsuarioBM>();
             pedidoCancelamentoBm = GetObject<PedidoCancelamentoBM>();
+            pedidoProdutoProduzidoBm = GetObject<PedidoProdutoProduzidoBM>();
+            
         }
 
         public IList<TipoPedido> GetListaTipoPedido()
@@ -90,6 +93,7 @@ namespace BakeryManager.Services
             functionarioBm.Dispose();
             usuarioBm.Dispose();
             pedidoCancelamentoBm.Dispose();
+            pedidoProdutoProduzidoBm.Dispose();
         }
 
         public IList<Funcionario> GetListaFuncionarios()
@@ -262,7 +266,15 @@ namespace BakeryManager.Services
 
         public bool VerificaProdutosProduzidos(Pedido pedido)
         {
-            return !pedidoProdutoBm.GetPedidoProdutoByPedido(pedido).Any(x => x.Status != StatusPedidoProduto.Pronto);
+
+            var retorno = pedidoProdutoProduzidoBm.GetProdutosByPedido(pedido);
+
+            if (retorno == null || retorno.Count == 0)
+                return false;
+
+
+            return !retorno.Any(x => x.StatusAtual != StatusProducaoProduto.Concluido &&
+                                     x.StatusAtual != StatusProducaoProduto.Cancelado);
         }
     }
 }
