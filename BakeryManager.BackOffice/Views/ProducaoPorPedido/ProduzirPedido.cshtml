@@ -414,18 +414,27 @@
             },
             success: function(data) {
 
-                $("#btnFinalizar"+numLinha).hide();
-                $("#btnCancelar"+numLinha).hide();
-                $("#btnContinuar"+numLinha).hide();
-                $("#btnPausar"+numLinha).hide();
-                $("#btnIniciar"+numLinha).hide();
 
-                $("#rlg" + numLinha).hide();
-                $("#linha"+ numLinha).addClass("success");
+                if (data.PedidoFinalizado == true) {
 
-                $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+                    window.location.href = '@Url.Action("Index")';
 
-                $("#hdlStatus" + numLinha).val("Concluido");
+                } else {
+
+                    $("#btnFinalizar"+numLinha).hide();
+                    $("#btnCancelar"+numLinha).hide();
+                    $("#btnContinuar"+numLinha).hide();
+                    $("#btnPausar"+numLinha).hide();
+                    $("#btnIniciar"+numLinha).hide();
+
+                    $("#rlg" + numLinha).hide();
+                    $("#linha"+ numLinha).addClass("success");
+
+                    $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                    $("#hdlStatus" + numLinha).val("Concluido");
+
+                }
             }
         
         });
@@ -448,18 +457,27 @@
                 },
                 success: function(data) {
 
-                    $("#btnFinalizar"+numLinha).hide();
-                    $("#btnCancelar"+numLinha).hide();
-                    $("#btnContinuar"+numLinha).hide();
-                    $("#btnPausar"+numLinha).hide();
-                    $("#btnIniciar"+numLinha).hide();
 
-                    $("#rlg" + numLinha).hide();
-                    $("#linha"+ numLinha).addClass("danger");
+                    if (data.PedidoFinalizado == true) {
 
-                    $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+                        window.location.href = '@Url.Action("Index")';
 
-                    $("#hdlStatus" + numLinha).val("Cancelado");
+                    } else {
+
+                        $("#btnFinalizar"+numLinha).hide();
+                        $("#btnCancelar"+numLinha).hide();
+                        $("#btnContinuar"+numLinha).hide();
+                        $("#btnPausar"+numLinha).hide();
+                        $("#btnIniciar"+numLinha).hide();
+
+                        $("#rlg" + numLinha).hide();
+                        $("#linha"+ numLinha).addClass("danger");
+
+                        $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                        $("#hdlStatus" + numLinha).val("Cancelado");
+
+                    }
                 }
 
             });

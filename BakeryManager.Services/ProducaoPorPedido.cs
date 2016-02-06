@@ -156,18 +156,19 @@ namespace BakeryManager.Services
 
             AtualiarHistoricoStatusProducao(StatusProducaoHistorico.Finalizacao, UsuarioAtualizacao, IpAtualizacao, PedidoProduzido);
 
-            VerificaPedidoFinalizado(pedido);
+            if (VerificaPedidoFinalizado(pedido))
+            {
+                
+                    pedido.StatusAtual = StatusPedido.AguardandoEntrega;
+                    pedidoBm.Update(pedido);
+                
+            }
         }
 
-        private void VerificaPedidoFinalizado(Pedido pedido)
+        public bool VerificaPedidoFinalizado(Pedido pedido)
         {
-            var pedidoFinalizado = !pedidoProdutoProduzidoBm.GetProdutosByPedido(pedido).Any(x => x.StatusAtual != StatusProducaoProduto.Concluido && x.StatusAtual != StatusProducaoProduto.Cancelado);
-
-            if (pedidoFinalizado)
-            {
-                pedido.StatusAtual = StatusPedido.AguardandoEntrega;
-                pedidoBm.Update(pedido);
-            }
+            return !pedidoProdutoProduzidoBm.GetProdutosByPedido(pedido).Any(x => x.StatusAtual != StatusProducaoProduto.Concluido && x.StatusAtual != StatusProducaoProduto.Cancelado);
+            
         }
 
         public void CancelarProducao(int idProduto, int idPedido, string UsuarioAtualizacao, string IpAtualizacao)
@@ -181,10 +182,16 @@ namespace BakeryManager.Services
 
             AtualiarHistoricoStatusProducao(StatusProducaoHistorico.Cancelado, UsuarioAtualizacao, IpAtualizacao, PedidoProduzido);
 
-            VerificaPedidoFinalizado(pedido);
+            if (VerificaPedidoFinalizado(pedido))
+            {
+
+                pedido.StatusAtual = StatusPedido.AguardandoEntrega;
+                pedidoBm.Update(pedido);
+
+            }
 
         }
-
+        
         public PedidoProdutoProduzido PausarProducao(int idProduto, int idPedido, string UsuarioAtualizacao, string IpAtualizacao)
         {
             var pedido = pedidoBm.GetByID(idPedido);

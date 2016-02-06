@@ -538,7 +538,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     DataEvento = x.DataEvento,
                     DataHoraEntrega = x.DataHoraEntrega
 
-                }).ToList();
+                }).OrderBy(x => x.DataEvento).OrderBy(x => x.DataHoraEntrega).ToList();
 
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidosEncaminhadosTemplate.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
             }
@@ -734,7 +734,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     DataEvento = x.DataEvento,
                     DataHoraEntrega = x.DataHoraEntrega
 
-                }).ToList();
+                }).OrderBy(x => x.DataEvento).OrderBy(x => x.DataHoraEntrega).ToList();
 
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoAguardandoInicioProducao.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
             }
@@ -782,14 +782,14 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     DataHoraEntrega = x.DataHoraEntrega,
                     ProdutosProduzidos = manterPedido.VerificaProdutosProduzidos(x)
 
-                }).ToList();
+                }).OrderBy(x => x.DataEvento).OrderBy(x => x.DataHoraEntrega).ToList();
 
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoEmProducao.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
             }
 
         }
 
-        public JsonResult GetProdutosEmEntrega()
+        public JsonResult GetListaPedidosEmEntrega()
         {
             using (var manterPedido = new ManterPedido())
             {
@@ -805,7 +805,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                     DataEvento = x.DataEvento,
                     DataHoraEntrega = x.DataHoraEntrega
 
-                }).ToList();
+                }).OrderBy(x => x.DataEvento).OrderBy(x => x.DataHoraEntrega).ToList();
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ManterPedidos/EditorTemplates/PedidoEmEntrega.cshtml"), ListaRetorno), JsonRequestBehavior.AllowGet);
             }
         }

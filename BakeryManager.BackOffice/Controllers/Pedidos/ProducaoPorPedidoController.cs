@@ -60,7 +60,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                         DataHoraEntrega = x.DataHoraEntrega,
                         NumeroPedido = x.NumeroPedido
 
-                    }).ToList();
+                    }).OrderBy(x => x.DataEvento).OrderBy(x => x.DataHoraEntrega).ToList();
 
                 return Json(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/ProducaoPorPedido/PedidosProducaoPartial.cshtml"), listaRetorno), JsonRequestBehavior.AllowGet);
             }
@@ -179,7 +179,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                 using (var producaoPorPedido = new ProducaoPorPedido())
                 {
                     producaoPorPedido.FinalizarProducao(IdProduto, IdPedido, User.Identity.Name, Request.ServerVariables["REMOTE_ADDR"]);
-                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, "text/html", JsonRequestBehavior.AllowGet);
+                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok, PedidoFinalizado = producaoPorPedido.VerificaPedidoFinalizado(producaoPorPedido.GetPedidoById(IdPedido)) }, "text/html", JsonRequestBehavior.AllowGet);
                 }
 
             }
@@ -202,7 +202,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
                 using (var producaoPorPedido = new ProducaoPorPedido())
                 {
                     producaoPorPedido.CancelarProducao(IdProduto, IdPedido, User.Identity.Name, Request.ServerVariables["REMOTE_ADDR"]);
-                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok }, "text/html", JsonRequestBehavior.AllowGet);
+                    return Json(new { TipoMensagem = TipoMensagemRetorno.Ok, PedidoFinalizado = producaoPorPedido.VerificaPedidoFinalizado(producaoPorPedido.GetPedidoById(IdPedido)) }, "text/html", JsonRequestBehavior.AllowGet);
                 }
 
             }
