@@ -20,5 +20,12 @@ namespace BakeryManager.Repositories
             return Query().FirstOrDefault(x => x.Pedido.IdPedido == pedido.IdPedido &&
                                                x.Produto.IdProduto == produto.IdProduto);
         }
+
+        public IList<PedidoProdutoProduzido> GetProdutosProduzidosByPedidoList(IList<Pedido> listaPedidos)
+        {
+
+            var listaIdPedido = listaPedidos.Select(x => x.IdPedido).ToArray();
+            return Query().Where(x => listaIdPedido.Contains(x.Pedido.IdPedido)).ToList();
+        }
     }
 }

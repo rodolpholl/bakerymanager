@@ -35,7 +35,7 @@ namespace BakeryManager.Repositories
             return Query().FirstOrDefault(x => x.NumeroPedido == NumeroPedido);
         }
 
-        public IList<Pedido> GetPedidosByFiltro(DateTime? DataEntrega, DateTime? HoraEntrega, Cliente Cliente, string NUmeroPedido)
+        public IList<Pedido> GetPedidosByFiltro(DateTime? DataEntrega, DateTime? HoraEntrega, Cliente Cliente, string NumeroPedido)
         {
             
             var query = Query();
@@ -54,8 +54,8 @@ namespace BakeryManager.Repositories
                 query = query.Where(x => x.Cliente.IdCliente == Cliente.IdCliente);
 
 
-            if (!string.IsNullOrWhiteSpace(NUmeroPedido))
-                query = query.Where(x => x.NumeroPedido == NUmeroPedido);
+            if (!string.IsNullOrWhiteSpace(NumeroPedido))
+                query = query.Where(x => x.NumeroPedido == NumeroPedido);
           
 
             return query.ToList();

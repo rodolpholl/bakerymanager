@@ -93,6 +93,7 @@
     <Compile Include="ManterReceituario.cs" />
     <Compile Include="PreConfiguracaoTipoPedido.cs" />
     <Compile Include="ProducaoPorPedido.cs" />
+    <Compile Include="ProducaoPorProduto.cs" />
     <Compile Include="Seguranca\CadastroPerfil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguranca\CadastroUsuario.cs" />

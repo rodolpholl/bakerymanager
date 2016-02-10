@@ -410,7 +410,8 @@
             dataType: 'json',
             data: {
                 IdProduto: $('#cbxProduto' + numLinha).val(),
-                IdPedido: $("#hdl" + numLinha).val()
+                IdPedido: $("#hdl" + numLinha).val(),
+                TempoDecorrido: $("#hdlTempo"+numLinha).val()
             },
             success: function(data) {
 

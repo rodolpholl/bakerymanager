@@ -1,0 +1,428 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using BakeryManager.BackOffice.Models.Pedido
+@{
+    ViewBag.Title = "Visão de Produção por Produto";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li>
+                    <i class="fa fa-file"></i> Produção
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+
+
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <form role="form" class="form-inline">
+
+                <div class="form-group">
+                    <label for="dtpDataEntrega">Data de Entrega</label>
+                    @Html.Kendo().DatePicker().Name("dtpDataEntrega").Value(DateTime.Now).Min(DateTime.Now).HtmlAttributes(new { @style = "width: 120px" })
+                </div>
+
+                <div class="form-group">
+                    <label for="dtpHoraEntrega">Hora de Entrega</label>
+                    @Html.Kendo().TimePicker().Name("dtpHoraEntrega").Min(DateTime.Now).HtmlAttributes(new { @style = "width: 80px" })
+                </div>
+
+                <button type="button" class="btn btn-sm btn-default" id="btnPesquisa" data-toggle="tooltip" data-placement="top" title="Pesquisar por Pedidos Em Produção"><span class="fa fa-search"></span></button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12" id="divListarProduto">
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+        $(function () {
+
+
+
+
+            $("#btnPesquisa").click(function () {
+
+                $.ajax({
+
+                    url: "@Url.Action("GetListaProdutosProducao")",
+                    data: {
+                        DataEntrega: $("#dtpDataEntrega").val(),
+                        HoraEntrega: $("#dtpHoraEntrega").val()
+                    },
+                    success: function (data) {
+
+                        $("#divListarProduto").html(data);
+                        formatGrid();
+                    }
+
+                });
+
+            });
+
+            $("#btnPesquisa").click();
+
+            $(window).unload(function () {
+
+
+                var listaProdutosProducao = [];
+
+                $("#tblProdutos > tbody > tr").each(function (index, item) {
+
+                    var linha = item.children;
+                    var numlinha = linha[0].innerHTML.trim();
+                    var status = $("#hdlStatus" + numlinha).val();
+
+
+                    listaProdutosProducao.push({
+
+                        
+                        Produto: {
+                            IdProduto: $('#hdlIdProduto' + numlinha).val()
+                        },
+
+                        TempoProducao: $("#hdlTempo" + numlinha).val(),
+                        Quantidade: $("#hdlQuantidade" + numlinha).val(),
+                        StatusAtual: $("#hdlStatus" + numlinha).val()
+                    });
+
+                });
+
+                $.ajax({
+
+                    url: '@Url.Action("SairTelaProducaoPorProduto")',
+                    dataType: "json",
+                    data: {
+                        strProdutos: JSON.stringify(listaProdutosProducao)
+                    },
+                    method: "POST",
+                    success: function () {
+                        return;
+                    }
+
+                });
+
+            });
+
+
+        });
+
+
+
+        function formatGrid() {
+
+            $("button").hide();
+            $(".relogio").hide();
+
+
+            $("#tblProdutos > tbody > tr").each(function (index, item) {
+
+                var linha = item.children;
+                var numlinha = linha[0].innerHTML.trim();
+                var status = $("#hdlStatus" + numlinha).val();
+                var relogio = $("#rlg" + numlinha);
+
+
+                if (status == "AgardandoInicio") {
+                    $("#btnIniciar" + numlinha).show('slow');
+
+                }
+
+                else if (status == "Produzindo") {
+                    $("#btnPausar" + numlinha).show('slow');
+                    $("#btnCancelar" + numlinha).show('slow');
+                    $("#btnFinalizar" + numlinha).show('slow');
+                   
+                    $(relogio).show('slow');
+
+
+                }
+                else if (status == "Pausa") {
+                    $("#btnContinuar" + numlinha).show('slow');
+                    $("#btnCancelar" + numlinha).show('slow');
+                  
+                    $(relogio).hide();
+                }
+                else if (status == "Concluido") {
+          
+                    $(item).addClass("success");
+                }
+
+                else if (status == "Cancelado") {
+     
+                    $(item).addClass("danger");
+                }
+
+
+
+                var tempo = $("#hdlTempo" + numlinha).val();
+
+                if (tempo > 0) {
+
+                    $("#rlg" + numlinha).flipcountdown({
+                        size: "md",
+
+                        tick: function () {
+                            tempo++;
+                            $("#rlg" + numlinha).val(tempo);
+                            return tempo;
+                        }
+                    })
+                }
+                else {
+                    $("#rlg" + numlinha).flipcountdown({ size: "md" });
+                }
+
+
+
+            });
+        }
+
+        function IniciarProducao(numLinha) {
+
+            var idProduto = $('#hdlIdProduto' + numLinha).val();
+
+            $.ajax({
+
+                url: '@Url.Action("InicarProducao")',
+                dataType: 'json',
+                data: {
+                    IdProduto: idProduto
+                },
+                success: function (data) {
+
+
+                    if (data.TipoMensagem == 1) {
+                        alert(data.Mensagem, null, 1);
+
+                    } else {
+
+                        $("#btnIniciar" + numLinha).hide('slow');
+                        $("#btnPesquisa").prop("disabled", "disabled");
+
+                        $("#btnPausar" + numLinha).show('slow');
+                        $("#btnFinalizar" + numLinha).show('slow');
+                        $("#btnCancelar" + numLinha).show('slow');
+
+                
+
+                        $("#hdlStatus" + numLinha).val("Produzindo");
+
+                        var relogio = $("#rlg" + numLinha);
+                        $(relogio).show('slow');
+
+                        var segundo = 0;
+                        $(relogio).flipcountdown({
+
+                            tick: function () {
+                                segundo++;
+                                $("#hdlTempo" + numLinha).val(segundo);
+                                return segundo;
+                            }
+                        });
+
+
+
+                    }
+                }
+
+            });
+
+        }
+
+        function PausarProducao(numLinha) {
+
+            var tempoDecorrido = $("#hdlTempo" + numLinha).val();
+
+            $.ajax({
+
+                url: '@Url.Action("PausarProducao")',
+                dataType: 'json',
+                data: {
+                    IdProduto: $('#hdlIdProduto' + numLinha).val(),
+                    TempoDecorrido: tempoDecorrido
+                },
+                success: function (data) {
+
+                    if (data.TipoMensagem == 1) {
+                        alert(data.Mensagem, null, 1);
+
+                    } else {
+
+                        $("#btnPausar" + numLinha).hide('slow');
+                        $("#btnFinalizar" + numLinha).hide('slow');
+
+
+                        $("#btnContinuar" + numLinha).show('slow');
+                        $("#btnCancelar" + numLinha).show('slow');
+
+                     
+
+                        var relogio = $("#rlg" + numLinha);
+                        $(relogio).hide();
+
+                        $("#hdlStatus" + numLinha).val("Pausa");
+
+                    }
+
+                }
+
+            });
+
+        }
+
+        function ContinuarProducao(numLinha) {
+
+
+            $.ajax({
+
+                url: '@Url.Action("ContinuarProducao")',
+                dataType: 'json',
+                data: {
+                    IdProduto: $('#hdlIdProduto' + numLinha).val()
+                },
+                success: function (data) {
+
+                    if (data.TipoMensagem == 1) {
+                        alert(data.Mensagem, null, 1);
+
+                    } else {
+
+                        $("#btnIniciar" + numLinha).hide('slow');
+
+                        $("#btnPausar" + numLinha).show('slow');
+                        $("#btnFinalizar" + numLinha).show('slow');
+                        $("#btnCancelar" + numLinha).show('slow');
+
+                        $("#btnContinuar" + numLinha).hide('slow');
+
+                  
+
+                        var relogio = $("#rlg" + numLinha);
+                        $(relogio).show('slow');
+
+                        var segundos = data.TempoDecorrido;
+                        $("#hdlTempo" + numLinha).val(segundos);
+
+                        $("#rlg" + numLinha).flipcountdown({
+                            tick: function () {
+
+                                segundos++;
+                                $("#hdlTempo" + numLinha).val(segundos);
+                                return segundos;
+
+                            }
+
+                        });
+
+                        $("#hdlStatus" + numLinha).val("Produzindo");
+
+
+                    }
+
+                }
+
+            });
+
+        }
+
+        function FinalizarProducao(numLinha) {
+
+            $.ajax({
+
+                url: '@Url.Action("FinalizarProducao")',
+                dataType: 'json',
+                data: {
+                    IdProduto: $('#hdlIdProduto' + numLinha).val(),
+                    TempoDecorrido: $("#hdlTempo" + numLinha).val()
+                },
+                success: function (data) {
+
+
+                    $("#btnFinalizar" + numLinha).hide();
+                    $("#btnCancelar" + numLinha).hide();
+                    $("#btnContinuar" + numLinha).hide();
+                    $("#btnPausar" + numLinha).hide();
+                    $("#btnIniciar" + numLinha).hide();
+
+                    $("#rlg" + numLinha).hide();
+                    $("#linha" + numLinha).addClass("success");
+
+              
+
+                    $("#hdlStatus" + numLinha).val("Concluido");
+
+                    
+                }
+
+            });
+
+
+        }
+
+        function CancelarProducao(numLinha) {
+
+            confirm("Deseja Cancelar a Produção deste Produto?", function () {
+
+
+                $.ajax({
+
+                    url: '@Url.Action("CancelarProducao")',
+                    dataType: "JSON",
+                    data: {
+                        IdProduto: $('#hdlIdProduto' + numLinha).val(),
+                        TempoDecorrido: $("#hdlTempo" + numLinha).val()
+                    },
+                    success: function (data) {
+
+
+                        $("#btnFinalizar" + numLinha).hide();
+                        $("#btnCancelar" + numLinha).hide();
+                        $("#btnContinuar" + numLinha).hide();
+                        $("#btnPausar" + numLinha).hide();
+                        $("#btnIniciar" + numLinha).hide();
+
+                        $("#rlg" + numLinha).hide();
+                        $("#linha" + numLinha).addClass("danger");
+
+          
+
+                        $("#hdlStatus" + numLinha).val("Cancelado");
+
+                        
+                    }
+
+                });
+
+            }, 2);
+
+        }
+
+    </script>
+
+}

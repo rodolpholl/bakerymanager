@@ -356,6 +356,7 @@
     <Compile Include="Models\Pedido\PedidoProdutoModel.cs" />
     <Compile Include="Models\Pedido\PedidoRegistroEntregaModel.cs" />
     <Compile Include="Models\Pedido\ProducaoVisaoPedidoModel.cs" />
+    <Compile Include="Models\Pedido\ProducaoVisaoProdutoModel.cs" />
     <Compile Include="Models\Pedido\TipoPedidoModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioModel.cs" />
     <Compile Include="Models\Questionario\QuestionarioPerguntaModel.cs" />
@@ -492,6 +493,8 @@
     <Content Include="Views\ProducaoPorPedido\Index.cshtml" />
     <Content Include="Views\ProducaoPorPedido\PedidosProducaoPartial.cshtml" />
     <Content Include="Views\ProducaoPorPedido\ProduzirPedido.cshtml" />
+    <Content Include="Views\ProducaoPorProduto\Index.cshtml" />
+    <Content Include="Views\ProducaoPorProduto\ProuzirProduto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -528,9 +531,7 @@
       <Name>BakeryManager.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\ProducaoPorProduto\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

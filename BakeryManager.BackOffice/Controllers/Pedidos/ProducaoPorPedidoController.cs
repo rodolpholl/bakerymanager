@@ -1,6 +1,5 @@
 ﻿using BakeryManager.BackOffice.Models;
 using BakeryManager.BackOffice.Models.Cadastros.Clientes;
-using BakeryManager.BackOffice.Models.Cadastros.Funcionarios;
 using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models.Pedido;
 using BakeryManager.Entities;
@@ -9,7 +8,6 @@ using BakeryManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 
@@ -172,13 +170,21 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
             }
         }
 
-        public JsonResult FinalizarProducao(int IdProduto, int IdPedido)
+        public JsonResult FinalizarProducao(int IdProduto, int IdPedido, int TempoDecorrido)
         {
             try
             {
                 using (var producaoPorPedido = new ProducaoPorPedido())
                 {
-                    producaoPorPedido.FinalizarProducao(IdProduto, IdPedido, User.Identity.Name, Request.ServerVariables["REMOTE_ADDR"]);
+
+                    var pedidoPrducao = new PedidoProdutoProduzido()
+                    {
+                        Pedido = producaoPorPedido.GetPedidoById(IdPedido),
+                        Produto = producaoPorPedido.GetProdutoById(IdProduto),
+                        TempoProducao = TempoDecorrido
+                    };
+
+                    producaoPorPedido.FinalizarProducao(pedidoPrducao, User.Identity.Name, Request.ServerVariables["REMOTE_ADDR"]);
                     return Json(new { TipoMensagem = TipoMensagemRetorno.Ok, PedidoFinalizado = producaoPorPedido.VerificaPedidoFinalizado(producaoPorPedido.GetPedidoById(IdPedido)) }, "text/html", JsonRequestBehavior.AllowGet);
                 }
 
@@ -219,7 +225,7 @@ namespace BakeryManager.BackOffice.Controllers.Pedidos
         }
 
         [HttpPost]
-        public JsonResult SairTelaProducaoPorProduto(string strProdutos)
+        public JsonResult SairTelaProducaoPorProduto(string strProdutos, string UsuarioResponsavel, string IpAtualizacao)
         {
 
             var listaProduto = JsonConvert.DeserializeObject<IList<ProducaoVisaoPedidoModel>>(strProdutos);

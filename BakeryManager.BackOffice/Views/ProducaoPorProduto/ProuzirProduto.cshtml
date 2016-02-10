@@ -1,0 +1,89 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using BakeryManager.BackOffice.Models.Pedido
+
+@model IList<ProducaoVisaoProdutoModel>
+
+
+@{
+    ViewBag.Title = string.Concat("Produção pro Produto");
+}
+
+<script src="~/Scripts/jquery.flipcountdown.js"></script>
+<link href="~/Content/jquery.flipcountdown.css" rel="stylesheet" />
+
+<style>
+    .relogio {
+        zoom: 0.5;
+        -moz-transform: scale(0.5);
+    }
+</style>
+
+@{int numLinha = 0; }
+
+<div class="row">
+    <div class="col-lg-12">
+
+        <table class="table table-hover table-striped" id="tblProdutos">
+
+            <thead>
+            <th>#</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th></th>
+            <th></th>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+
+                    numLinha++;
+
+                    <tr id="@string.Concat("linha",numLinha)">
+
+                        <td>
+                            @numLinha.ToString()
+                        </td>
+                        <td>
+                            @Html.Hidden(string.Concat("hdlIdProduto",numLinha.ToString()),item.Produto.IdProduto)
+                            @item.Produto.Nome
+                        </td>
+                        <td>
+                            @item.Quantidade.ToString()
+                            @Html.Hidden(string.Concat("hdlQuantidade", numLinha.ToString()), item.Quantidade)
+                        </td>
+                        <td>
+
+                            @Html.Hidden(string.Concat("hdlStatus", numLinha), item.StatusAtual)
+                           
+
+                            <button class="btn btn-success" onclick="IniciarProducao(@numLinha)" id="@string.Concat("btnIniciar",numLinha)"><span class="fa fa-play" /> Iniciar</button>
+
+                            <button class="btn btn-info" onclick="PausarProducao(@numLinha)" id="@string.Concat("btnPausar",numLinha)"><span class="fa fa-pause" /> Pausar</button>
+
+                            <button class="btn btn-warning" onclick="ContinuarProducao(@numLinha)" id="@string.Concat("btnContinuar",numLinha)"><span class="fa fa-step-forward" /> Continuar</button>
+
+                            <button class="btn btn-success" onclick="FinalizarProducao(@numLinha)" id="@string.Concat("btnFinalizar",numLinha)"><span class="fa fa-check-circle" /> Finalizar</button>
+
+                            <button class="btn btn-danger" onclick="CancelarProducao(@numLinha)" id="@string.Concat("btnCancelar",numLinha)"><span class="fa fa-times-circle" /> Cancelar</button>
+
+
+
+                        </td>
+                        <td>
+                            <div class="relogio" id="@string.Concat("rlg",numLinha)" />
+                            @Html.Hidden(string.Concat("hdlTempo", numLinha), item.TempoProducao.HasValue ? item.TempoProducao : 0)
+
+                            
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>

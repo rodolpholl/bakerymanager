@@ -9,6 +9,7 @@ namespace BakeryManager.Entities
     public class PedidoHistoricoStatus
     {
         public virtual int IdPedidoHistoricoStatus { get; set; }
+        public virtual Pedido Pedido { get; set; }
         public virtual StatusPedido StatusDe { get; set; }
         public virtual StatusPedido StatusPara { get; set; }
         public virtual DateTime DataHoraMudança { get; set; }

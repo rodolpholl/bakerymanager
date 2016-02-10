@@ -84,6 +84,10 @@
 
     }
 
+    function EditarPedido(IdPedido) {
+        window.location.href = '@Url.Action("Edit","ManterPedidos")/'+IdPedido;
+    }
+
     function popUpCancelamento(IdPedido) {
 
         $.ajax({
