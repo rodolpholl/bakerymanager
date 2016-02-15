@@ -91,21 +91,14 @@ namespace BakeryManager.BackOffice.Controllers
                 return Json(listaSimulada.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
         }
-
-        public JsonResult SimuladorComponentesNutricionais([DataSourceRequest] DataSourceRequest request, int IdFormula, int QtdSimulacao)
+        
+        public JsonResult GetQuantidadePadraoProduto(int IdProduto)
         {
             using (var simulador = new Simulador())
             {
-                var listaSimulada = simulador.SimulaComponentesNutricionais(IdFormula, QtdSimulacao).Select(x => new TabelaNutricionalSimuladorModel()
-                {
-                    Nome = x.Componente.Nome,
-                    IdTabelaNutricional = x.Componente.IdTabelaNutricional,
-                    Quantidade = Math.Round(x.Valor,2),
-                    ValorDiario = Math.Round(x.PercValorDiario.Value,2),
-                    UnidadeMedida = x.Componente.UnidadeMedida
-                }).ToList();
-                return Json(listaSimulada.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                var produto = simulador.GetProdutoById(IdProduto);
 
+                return Json(produto.ProporcaoTabelaNutricional, JsonRequestBehavior.AllowGet);
             }
         }
     }

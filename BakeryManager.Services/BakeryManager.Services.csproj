@@ -100,6 +100,7 @@
     <Compile Include="Seguranca\ControleAcesso.cs" />
     <Compile Include="Seguranca\ManterParametros.cs" />
     <Compile Include="Simulador.cs" />
+    <Compile Include="VisualizarTabelaNutricional.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BakeryManager.Entities\BakeryManager.Entities.csproj">

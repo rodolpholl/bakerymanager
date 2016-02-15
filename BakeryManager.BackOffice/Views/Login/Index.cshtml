@@ -103,9 +103,9 @@
 
                 }
 
-                $("#Senha").prop("disabled", "disabled");
-                $("#Login").prop("disabled", "disabled");
-                $("#btnEnviar").prop("disabled", "disabled");
+                $("#Senha").prop("disabled", true);
+                $("#Login").prop("disabled", true);
+                $("#btnEnviar").prop("disabled", true);
 
                 $.ajax({
                     url: '@Url.Action("Index")',
@@ -122,9 +122,9 @@
                         if (data.TipoMensagem == 1) {
                             alert(data.Mensagem, null, data.TipoMensagem);
                             $("#Senha").val("");
-                            $("#Senha").prop("disabled", "");
-                            $("#Login").prop("disabled", "");
-                            $("#btnEnviar").prop("disabled", "");
+                            $("#Senha").prop("disabled", false);
+                            $("#Login").prop("disabled", false);
+                            $("#btnEnviar").prop("disabled", false);
                         }
 
                         else {

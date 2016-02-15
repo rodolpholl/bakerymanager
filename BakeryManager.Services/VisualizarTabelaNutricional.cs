@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace BakeryManager.Services
 {
-    public class Simulador : BusinessProcessBase, IDisposable
+    public class VisualizarTabelaNutricional : BusinessProcessBase, IDisposable
     {
+
 
         private CategoriaProdutoBM categoriaProdutoBm;
         private ProdutoBM produtoBm;
@@ -19,7 +20,9 @@ namespace BakeryManager.Services
         private IngredienteFormulaBM ingredienteFormulaBm;
         private ParametroTabelaNutricionalBM parametroTabelaNutrucionalBm;
         private IngredienteTabelaNutricionalBM ingredienteTabelaNutricionalBm;
-        public Simulador()
+
+
+        public VisualizarTabelaNutricional()
         {
             categoriaProdutoBm = GetObject<CategoriaProdutoBM>();
             produtoBm = GetObject<ProdutoBM>();
@@ -29,6 +32,7 @@ namespace BakeryManager.Services
             parametroTabelaNutrucionalBm = GetObject<ParametroTabelaNutricionalBM>();
             ingredienteTabelaNutricionalBm = GetObject<IngredienteTabelaNutricionalBM>();
         }
+
         public void Dispose()
         {
             categoriaProdutoBm.Dispose();
@@ -39,7 +43,6 @@ namespace BakeryManager.Services
             parametroTabelaNutrucionalBm.Dispose();
             ingredienteTabelaNutricionalBm.Dispose();
         }
-
 
         public IList<CategoriaProduto> GetListaCategoria()
         {
@@ -55,53 +58,26 @@ namespace BakeryManager.Services
             return listaCategoria;
         }
 
+        public Produto GetProdutoById(int idProduto)
+        {
+            return produtoBm.GetByID(idProduto);
+        }
+
         public IList<Produto> GetListaProdutoByCategiria(int idCategoria)
         {
 
             var listaProduto = (from p in produtoBm.GetProdutoByCategoria(categoriaProdutoBm.GetByID(idCategoria))
-                                  join f in formulaBm.GetAll() on p.IdProduto equals f.Produto.IdProduto
-                                 where p.Ativo && f.EmUso
-                                  select p).Distinct().ToList();
+                                join f in formulaBm.GetAll() on p.IdProduto equals f.Produto.IdProduto
+                                where p.Ativo && f.EmUso
+                                select p).Distinct().ToList();
 
             return listaProduto;
         }
 
-        public IList<Formula> GetListaFormulaByCategiria(int idProduto)
-        {
-            return formulaBm.GetFormulasByProduto(produtoBm.GetByID(idProduto)).Where(x => x.EmUso).ToList();
-        }
-
-        public IList<IngredienteFormula> GetIngredientesByFormula(int idFormula)
-        {
-            return ingredienteFormulaBm.GetByFormula(formulaBm.GetByID(idFormula));
-        }
-
-        public IList<IngredienteFormula> SimularReceita(int idFormula, int qtdSimulacao)
-        {
-
-            var formula = formulaBm.GetByID(idFormula);
-            var fatorConversao = qtdSimulacao / formula.RendimentoPadrao;
-
-            var PercDiario = formulaTabelaNutricionalBm.GetByFormula(formula);
-
-            var listaIngredienteFormula = ingredienteFormulaBm.GetByFormula(formula).Select(x => new IngredienteFormula() {
-
-                    AGosto = x.AGosto,
-                    Formula = x.Formula,
-                    IdIngredienteFormula = x.IdIngredienteFormula,
-                    Ingrediente = x.Ingrediente,
-                    Quantidade = Math.Round(x.Quantidade * fatorConversao,2)
-                    
-                }).ToList();
-
-            return listaIngredienteFormula;
-
-        }
-
-        public IList<IngredienteTabelaNutricional> SimulaComponentesNutricionais(int idFormula, int qtdSimulacao)
+        public IList<IngredienteTabelaNutricional> ViualizarDadosNutricioanis(int idFormula, int qtdSimulacao)
         {
             var formula = formulaBm.GetByID(idFormula);
-          
+
 
             var listaIgrediente = SimularReceita(idFormula, qtdSimulacao);
             var listaComponentesExibicao = parametroTabelaNutrucionalBm.GetAll().Select(x => x.Compoonente).ToList();
@@ -115,7 +91,7 @@ namespace BakeryManager.Services
             }).ToList();
 
             //Calculando o valor das porções simuladas
-            foreach(var ing in listaIgrediente)
+            foreach (var ing in listaIgrediente)
             {
                 var componentesPadrao = ingredienteTabelaNutricionalBm.GetInformacoesNutricionaisByIngrediente(ing.Ingrediente)
                                   .Where(x => listaRetorno.Select(y => y.Componente.IdTabelaNutricional).ToList().Contains(x.Componente.IdTabelaNutricional)).ToList();
@@ -130,21 +106,44 @@ namespace BakeryManager.Services
             }
 
             //Calculando o percentual diário
-            foreach(var ret in listaRetorno)
+            foreach (var ret in listaRetorno)
             {
                 var valDiario = listaComponentesExibicao.FirstOrDefault(x => x.IdTabelaNutricional == ret.Componente.IdTabelaNutricional).ValorDiario ?? 0;
                 ret.PercValorDiario = ret.Valor / valDiario * 100;
             }
-            
 
-            
+
+
 
             return listaRetorno;
         }
 
-        public Produto GetProdutoById(int idProduto)
+        private IList<IngredienteFormula> SimularReceita(int idFormula, int qtdSimulacao)
         {
-            return produtoBm.GetByID(idProduto);
+
+            var formula = formulaBm.GetByID(idFormula);
+            var fatorConversao = qtdSimulacao / formula.RendimentoPadrao;
+
+            var PercDiario = formulaTabelaNutricionalBm.GetByFormula(formula);
+
+            var listaIngredienteFormula = ingredienteFormulaBm.GetByFormula(formula).Select(x => new IngredienteFormula()
+            {
+
+                AGosto = x.AGosto,
+                Formula = x.Formula,
+                IdIngredienteFormula = x.IdIngredienteFormula,
+                Ingrediente = x.Ingrediente,
+                Quantidade = Math.Round(x.Quantidade * fatorConversao, 2)
+
+            }).ToList();
+
+            return listaIngredienteFormula;
+
+        }
+
+        public IList<Formula> GetListaFormulaByCategiria(int idProduto)
+        {
+            return formulaBm.GetFormulasByProduto(produtoBm.GetByID(idProduto)).Where(x => x.EmUso).ToList();
         }
     }
 }

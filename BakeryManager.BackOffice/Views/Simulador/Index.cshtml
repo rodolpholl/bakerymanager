@@ -78,7 +78,7 @@
                         <label class="col-sm-2 control-label">Quantidade</label>
                         <div class="col-sm-5">
                             <div class="input-group">
-                                @(Html.Kendo().NumericTextBox().Placeholder("Informe a quantidade a ser simulada.").Name("txtQuantidadeSimulacao").Decimals(0).Min(0).Step(1))
+                                @(Html.Kendo().NumericTextBox().Placeholder("Em gramas (g)").Name("txtQuantidadeSimulacao").Decimals(0).Min(0).Step(1))
                                 <span class="input-group-btn" title="Simular Pedido"><button id="btnPesquisa" class="btn btn-default btn-sm" type="button"><i class="fa fa-search"></i></button></span>
                             </div>
                         </div>
@@ -97,15 +97,15 @@
     <!-- /.row -->
     <div class="row">
 
-        <div class="col-sm-4">
+        <div class="col-sm-6">
 
             <div class="row">
-                <div class="col-sm-4">
-                    <label>Proporções Padrão</label>
+                <div class="col-sm-12">
+                    <label>Rendimento Total da Fórmula</label>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     @(Html.Kendo().Grid<IngredienteFormulaModel>()
                     .Name("gridFormulaPadrao")
                     .Columns(column =>
@@ -148,15 +148,15 @@
             
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-6">
 
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-12">
                     <label>Proporções Simuladas</label>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     @(Html.Kendo().Grid<IngredienteFormulaModel>()
                     .Name("gridFormulaSimulado")
                     .Columns(column =>
@@ -197,59 +197,8 @@
             </div>
 
 
-
         </div>
-        <div class="col-sm-4">
-
-            <div class="row">
-                <div class="col-sm-4">
-                    <label>Tab. Nutricional</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10">
-                    @(Html.Kendo().Grid<TabelaNutricionalSimuladorModel>()
-                    .Name("gridTabelaNutricionalSimulado")
-                    .Columns(column =>
-                    {
-                        column.Bound(x => x.Nome).Title("Componente");
-                        column.Bound(x => x.Quantidade).Title("Qtd").Width(50).ClientTemplate("#=Quantidade# #=UnidadeMedida#");
-                        column.Bound(x => x.ValorDiario).Title("VD %").Width(50).ClientTemplate("#=ValorDiario# %");
-                    })
-                    .AutoBind(false)
-                    .Sortable()
-                    .Scrollable(scr => scr.Height(400))
-                    .Editable(ed => ed.Enabled(true).Mode(GridEditMode.InCell))
-                    .Navigatable()
-                    .Resizable(r => r.Columns(true))
-                    .DataSource(ds => ds
-                        .Ajax()
-                        .Batch(true)
-                        .ServerOperation(false)
-                        .Model(model =>
-                        {
-                            model.Id(x => x.IdTabelaNutricional);
-                            model.Field(x => x.Nome).Editable(false);
-                            model.Field(x => x.ValorDiario).Editable(false);
-                            model.Field(x => x.Quantidade).Editable(false);
-
-                        })
-                        .Aggregates(aggregate =>
-                        {
-                            aggregate.Add(x => x.Quantidade).Sum();
-                        })
-                        .Read(read => read.Action("SimuladorComponentesNutricionais", "Simulador").Data("getDataSimulacao"))
-
-
-                    )
-
-                    )
-                </div>
-            </div>
-
-
-
-        </div>
+        
 
 
 
@@ -296,11 +245,25 @@
             if ($("#cbxProdutoPesquisa").data("kendoDropDownList").value() != "") {
                 $("#cbxFormulaPesquisa").data("kendoDropDownList").dataSource.read();
                 $("#cbxFormulaPesquisa").data("kendoDropDownList").enable(true);
+
+                $.ajax({
+
+                    url: '@Url.Action("GetQuantidadePadraoProduto")',
+                    dataType: "json",
+                    data: {
+                        IdProduto: $("#cbxProdutoPesquisa").data("kendoDropDownList").value()
+                    },
+                    success: function (data) {
+
+                        $("#txtQuantidadeSimulacao").data("kendoNumericTextBox").value(data);
+                    }
+                });
             }
         }
 
         function FormulaPesquisaChange() {
             $("#gridFormulaPadrao").data("kendoGrid").dataSource.read();
+            $("#btnPesquisa").prop("disabled", $("#cbxFormulaPesquisa").val() == '');
         }
 
         function getDataPesquisa() {
@@ -325,10 +288,12 @@
 
         $(function () {
 
+            $("#btnPesquisa").prop("disabled", true);
+
             $("#btnPesquisa").click(function () {
 
                 $("#gridFormulaSimulado").data("kendoGrid").dataSource.read();
-                $("#gridTabelaNutricionalSimulado").data("kendoGrid").dataSource.read();
+            
 
             });
 

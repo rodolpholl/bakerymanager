@@ -28,7 +28,7 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Produtos
         [Display(Name = "Dias para contagem da Validade")]
         public int DiasPrazoValidade { get; set; }
 
-        [Display(Name = "Porção para tabela nutricional", Prompt = "Proção utilizada para cáculo da tabela nutricional (em gramas)")]
+        [Display(Name = "Porção para tabela nutricional (g)", Prompt = "Proção utilizada para cáculo da tabela nutricional (em gramas)")]
         public int ProporcaoTabelaNutricional { get; set; }
 
         [Display(Name = "Preço de Custo")]

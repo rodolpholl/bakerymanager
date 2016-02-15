@@ -311,6 +311,7 @@
     <Compile Include="Controllers\Pedidos\ProducaoPorProdutoController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SimuladorController.cs" />
+    <Compile Include="Controllers\VisualizarTabelaNutricionalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -495,6 +496,7 @@
     <Content Include="Views\ProducaoPorPedido\ProduzirPedido.cshtml" />
     <Content Include="Views\ProducaoPorProduto\Index.cshtml" />
     <Content Include="Views\ProducaoPorProduto\ProuzirProduto.cshtml" />
+    <Content Include="Views\VisualizarTabelaNutricional\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
