@@ -52,6 +52,14 @@ namespace BakeryManager.BackOffice.Models.Cadastros.Funcionarios
         [Required(ErrorMessage = "Campo Obrigatório")]
         [Display(Name = "Situação Atual")]
         public SituacaoFucionarioModel SituacaoAtual { get; set; }
+        [Display(Name ="Possui acesso ao sistema?")]
+        public bool PossuiAcessoSistema { get; set; }
+        [Display(Name = "Login")]
+        public string Login { get; set; }
+        [Display(Name = "Usa Senha do Dia?")]
+        public bool UsaSenhaDia { get; set; }
+        [Display(Name ="Perfil")]
+        public int IdPefil { get; set; }
     }
 
     public class SituacaoFucionarioModel

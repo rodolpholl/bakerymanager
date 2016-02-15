@@ -52,17 +52,33 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                         {
                             Descricao = Enum.GetName(typeof(SituacaoFuncionario), x.SituacaoAtual),
                             IdSituacaoFuncionario = (int)x.SituacaoAtual
-                        }
+                        }                        
+
                     }).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
 
         }
 
         public ActionResult Criar()
         {
-           
 
+            setViewData();
             return View(new FuncionarioModel());
         }
+
+        private void setViewData()
+        {
+            using (var manterFuncionario = new ManterFuncionarios())
+            {
+                ViewData["ListaPerfil"] = manterFuncionario.GetListaPerfil().Select(x => new SelectListItem()
+                {
+                    Value = x.IdPerfil.ToString(),
+                    Text = x.Nome
+                }).ToList();
+
+                
+            }
+        }
+        
 
         [HttpPost]
         public JsonResult Criar(string strFuncionario)
@@ -100,6 +116,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
                     manterFuncionario.InserirFuncionario(funcionario);
 
+                    AtualizarUsuarioFuncionario(funcionario, pFuncionario);
+
                     return Json(new
                     {
                         TipoMensagem = TipoMensagemRetorno.Ok,
@@ -109,12 +127,30 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
             }
             catch (Exception ex)
             {
-                return Json(new
+                
+                    return Json(new
                 {
                     TipoMensagem = TipoMensagemRetorno.Erro,
                     Mensagem = ex.Message,
                 }, "text/html", JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private void AtualizarUsuarioFuncionario(Funcionario Funcionario, FuncionarioModel FuncionarioModel)
+        {
+           
+            using (var manterFuncionario = new ManterFuncionarios())
+            {
+                if (FuncionarioModel.PossuiAcessoSistema)
+                {
+                    manterFuncionario.AtualizarFuncionario(Funcionario, FuncionarioModel.Login, FuncionarioModel.UsaSenhaDia,FuncionarioModel.IdPefil);
+                }
+                else
+                {
+                    manterFuncionario.DesativarUsuario(Funcionario);
+                }
+            }
+            
         }
 
         public JsonResult GetListaSituacaoFuncionario()
@@ -161,8 +197,15 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     {
                         Descricao = Enum.GetName(typeof(SituacaoFuncionario), funcionario.SituacaoAtual),
                         IdSituacaoFuncionario = (int)funcionario.SituacaoAtual
-                    }
+                    },
+                    PossuiAcessoSistema = manterFuncionario.GetUsuarioPorFuncionario(funcionario) != null,
+                    Login = manterFuncionario.GetUsuarioPorFuncionario(funcionario) != null ? manterFuncionario.GetUsuarioPorFuncionario(funcionario).Login : string.Empty,
+                    UsaSenhaDia = manterFuncionario.GetUsuarioPorFuncionario(funcionario) != null ? manterFuncionario.GetUsuarioPorFuncionario(funcionario).AutenticaSenhaDia : false,
+                    IdPefil = manterFuncionario.GetUsuarioPorFuncionario(funcionario) != null ? manterFuncionario.GetPerfilByUsuario(manterFuncionario.GetUsuarioPorFuncionario(funcionario)).IdPerfil : 2
                 };
+
+
+                setViewData();
 
                 return View(funcionarioModel);
             }
@@ -202,6 +245,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     funcionario.SituacaoAtual = (SituacaoFuncionario)Enum.Parse(typeof(SituacaoFuncionario), pFuncionario.SituacaoAtual.IdSituacaoFuncionario.ToString());
                    
                     manterFuncionario.AlterarFuncionario(funcionario);
+
+                    AtualizarUsuarioFuncionario(funcionario, pFuncionario);
 
                     return Json(new
                     {

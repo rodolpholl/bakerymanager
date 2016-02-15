@@ -4,6 +4,8 @@
 
 @Html.ValidationSummary(true)
 
+
+
 <div style="padding-top: 40px">
 
     <form id="frmFuncionario" rule="form" class="form-horizontal">
@@ -17,7 +19,7 @@
 
                 @Html.LabelFor(x => x.Nome, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new {  style = "width: 450px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.Nome).HtmlAttributes(new { style = "width: 450px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -33,7 +35,7 @@
 
                 @Html.LabelFor(x => x.RG, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.RG).HtmlAttributes(new {  style = "width: 150px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.RG).HtmlAttributes(new { style = "width: 150px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -41,7 +43,7 @@
 
                 @Html.LabelFor(x => x.CTPS, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.CTPS).HtmlAttributes(new {  style = "width: 150px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.CTPS).HtmlAttributes(new { style = "width: 150px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -50,7 +52,7 @@
                 @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new {  style= "width: 150px;" })
+                    @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new { style = "width: 150px;" })
                 </div>
             </div>
 
@@ -66,7 +68,7 @@
                 @Html.LabelFor(x => x.Numero, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.Numero).HtmlAttributes(new {  style = "width: 50px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.Numero).HtmlAttributes(new { style = "width: 50px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -74,7 +76,7 @@
                 @Html.LabelFor(x => x.Complemento, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.Complemento).HtmlAttributes(new {  style = "width: 300px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.Complemento).HtmlAttributes(new { style = "width: 300px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -82,7 +84,7 @@
                 @Html.LabelFor(x => x.Bairro, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.Bairro).HtmlAttributes(new {  style = "width: 300px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.Bairro).HtmlAttributes(new { style = "width: 300px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -90,7 +92,7 @@
                 @Html.LabelFor(x => x.Cidade, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.Cidade).HtmlAttributes(new {  style = "width: 300px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.Cidade).HtmlAttributes(new { style = "width: 300px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -98,7 +100,7 @@
                 @Html.LabelFor(x => x.UF, new { @class = "col-sm-2 control-label" })
 
                 <div class="col-sm-10">
-                    @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new {  style = "width: 50px; text-transform: uppercase;" })
+                    @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new { style = "width: 50px; text-transform: uppercase;" })
                 </div>
             </div>
 
@@ -150,27 +152,82 @@
                 @Html.LabelFor(x => x.SituacaoAtual, new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10">
                     @(Html.Kendo().DropDownListFor(x => x.SituacaoAtual).HtmlAttributes(new { style = "width: 130px;" })
-                    .DataTextField("Descricao").DataValueField("IdSituacaoFuncionario")
-                    .DataSource(ds =>                    
-                        ds.Read(read => read.Action("GetListaSituacaoFuncionario", "ManterFunconarios"))
+                        .DataTextField("Descricao").DataValueField("IdSituacaoFuncionario")
+                        .DataSource(ds =>
+                            ds.Read(read => read.Action("GetListaSituacaoFuncionario", "ManterFunconarios"))
+                        )
+
                     )
-                    
-                    )
-                     
+
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.PossuiAcessoSistema, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @Html.CheckBoxFor(x => x.PossuiAcessoSistema)
+                </div>
+            </div>
+            
+        <div id="divUsuario">
+            <div class="form-group" >
+                @Html.LabelFor(x => x.Login, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+
+                    @Html.TextBoxFor(x => x.Login, new { @class = "form-control", style = "width: 200px; text-transform: uppercase;" })
+                    
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.UsaSenhaDia, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @Html.CheckBoxFor(x => x.UsaSenhaDia)
+                </div>
+                
+            </div>
+            <div class="form-group">
+
+                @Html.LabelFor(x => x.IdPefil, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @(
+                        Html.Kendo().DropDownListFor(x => x.IdPefil).DataValueField("Value").DataTextField("Text")
+                        .BindTo((IList<SelectListItem>)ViewData["ListaPerfil"])
+                     )
+                </div>
+
+            </div>
+        </div>
 
         </div>
     </form>
 
 </div>
+
+
+@if (!Model.PossuiAcessoSistema)
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $("#divUsuario").hide("slow");
+        });
+
+    </script>
+        
+
+}
+
 <script type="text/javascript">
+
+
+    
+
 
     function getFormObject() {
 
         return {
 
-            Bairro: $("#Bairro").val(),
+        Bairro: $("#Bairro").val(),
             CEP: $("#CEP").val(),
             Cidade: $("#Cidade").val(),
             CPF: $("#CPF").val(),
@@ -188,8 +245,12 @@
             HorarioEntrada: $("#HorarioEntrada").data("kendoTimePicker").value(),
             HorarioSaida: $("#HorarioSaida").data("kendoTimePicker").value(),
             RemuneracaoAtual: $("#RemuneracaoAtual").data("kendoNumericTextBox").value(),
+            PossuiAcessoSistema: $("#PossuiAcessoSistema").is(":checked"),
+            Login: $("#Login").val(),
+            UsaSenhaDia: $("#UsaSenhaDia").is(":checked"),
+            IdPefil: $("#IdPefil").val(),
             SituacaoAtual: {
-                IdSituacaoFuncionario: $("#SituacaoAtual").val()
+            IdSituacaoFuncionario: $("#SituacaoAtual").val()
             },
 
             IdFuncionario: $("#IdFuncionario").val()
@@ -205,7 +266,7 @@
         if (cep.length == 8) {
 
             $.ajax({
-                url: 'https://viacep.com.br/ws/' + cep + '/json/',
+            url: 'https://viacep.com.br/ws/' + cep + '/json/',
                 data: 'json',
                 success: function (data) {
 
@@ -220,6 +281,20 @@
                 }
 
             });
+
+        }
+
+    });
+
+    $("#PossuiAcessoSistema").change(function () {
+
+        if ($("#PossuiAcessoSistema").is(":checked")) {
+
+            $("#divUsuario").show("slow");
+
+        } else {
+
+            $("#divUsuario").hide("slow");
 
         }
 

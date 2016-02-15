@@ -105,6 +105,8 @@
 
                 $("#Senha").prop("disabled", "disabled");
                 $("#Login").prop("disabled", "disabled");
+                $("#btnEnviar").prop("disabled", "disabled");
+
                 $.ajax({
                     url: '@Url.Action("Index")',
                     data: {
@@ -122,6 +124,7 @@
                             $("#Senha").val("");
                             $("#Senha").prop("disabled", "");
                             $("#Login").prop("disabled", "");
+                            $("#btnEnviar").prop("disabled", "");
                         }
 
                         else {

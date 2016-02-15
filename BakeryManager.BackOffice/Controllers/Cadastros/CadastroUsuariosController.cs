@@ -72,8 +72,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
                     Ativo = x.Ativo,
                     Nome = x.Nome,
                     IdPerfil = x.IdPerfil
-                }
-                                                                ).ToList(), JsonRequestBehavior.AllowGet);
+                }).OrderBy(x => x.Nome).ToList(), JsonRequestBehavior.AllowGet);
             }
         }
 
