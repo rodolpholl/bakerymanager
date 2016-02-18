@@ -204,6 +204,50 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\arrow.png" />
+    <Content Include="Content\images\arrow2.gif" />
+    <Content Include="Content\images\arrows.png" />
+    <Content Include="Content\images\b-arrow.png" />
+    <Content Include="Content\images\bag.png" />
+    <Content Include="Content\images\banner_img.png" />
+    <Content Include="Content\images\banner_img2.jpg" />
+    <Content Include="Content\images\border.png" />
+    <Content Include="Content\images\b_star.png" />
+    <Content Include="Content\images\cards.jpg" />
+    <Content Include="Content\images\cart.png" />
+    <Content Include="Content\images\close_1.png" />
+    <Content Include="Content\images\down_arrow.png" />
+    <Content Include="Content\images\follow.png" />
+    <Content Include="Content\images\f_icon.png" />
+    <Content Include="Content\images\f_icon1.png" />
+    <Content Include="Content\images\f_icon2.png" />
+    <Content Include="Content\images\grid_view.png" />
+    <Content Include="Content\images\icon1.png" />
+    <Content Include="Content\images\img-sprite.png" />
+    <Content Include="Content\images\l1.jpg" />
+    <Content Include="Content\images\l2.jpg" />
+    <Content Include="Content\images\l3.jpg" />
+    <Content Include="Content\images\l4.jpg" />
+    <Content Include="Content\images\l5.jpg" />
+    <Content Include="Content\images\list_view.png" />
+    <Content Include="Content\images\nz.png" />
+    <Content Include="Content\images\p1.jpg" />
+    <Content Include="Content\images\p2.jpg" />
+    <Content Include="Content\images\p3.jpg" />
+    <Content Include="Content\images\p4.jpg" />
+    <Content Include="Content\images\p5.jpg" />
+    <Content Include="Content\images\p6.jpg" />
+    <Content Include="Content\images\p7.jpg" />
+    <Content Include="Content\images\p8.jpg" />
+    <Content Include="Content\images\p9.jpg" />
+    <Content Include="Content\images\plus.png" />
+    <Content Include="Content\images\radius.png" />
+    <Content Include="Content\images\s-icons.png" />
+    <Content Include="Content\images\shipping.png" />
+    <Content Include="Content\images\star.png" />
+    <Content Include="Content\images\s_arrow.png" />
+    <Content Include="Content\images\wish.png" />
+    <Content Include="Content\images\zoom.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -215,6 +259,16 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\images\arrows.psd" />
+    <Content Include="Content\images\fb.psd" />
+    <Content Include="Content\images\g+.psd" />
+    <Content Include="Content\images\img-sprite.psd" />
+    <Content Include="Content\images\logo.psd" />
+    <Content Include="Content\images\radius.psd" />
+    <Content Include="Content\images\social.psd" />
+    <Content Include="Content\images\star.psd" />
+    <Content Include="Content\images\s_arrow.psd" />
+    <Content Include="Content\images\tw.psd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -244,7 +298,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\images\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
