@@ -1,0 +1,106 @@
+﻿@model BakeryManager.BackOffice.Models.ManterReceita.FormulaModel
+
+@{
+    ViewBag.Title = "Inserir Nova Refceita";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Receitas</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+
+
+
+        @using (Html.BeginForm("Criar", "ManterReceituario", FormMethod.Post, new { id = "frmCriar", @class = "form-horizontal " }))
+        {
+            @Html.Partial("Form", Model)
+        }
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <hr />
+                <button class="btn btn-primary" type="button" id="btnSalvar">Salvar</button>
+                Ou
+                <button class="btn btn-default" onclick="window.history.back(-1);">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts{
+
+
+    <script type="text/javascript">
+
+        var validator = $("#frmCriar").kendoValidator().data("kendoValidator");
+
+        $("#btnSalvar").click(function (evt) {
+
+            evt.preventDefault();
+            
+            if (validator.validate()) {
+
+
+                var formulaModel = {
+                    DataEmissao: $("#DataEmissao").val(),
+                    DataFimValidade: $("#DataFimValidade").val(),
+                    Descricao: $("#Descricao").val(),
+                    DescricaoReceita: $("#DescricaoReceita").data("kendoEditor").value(),
+                    IdProduto: $("#Produto").data("kendoDropDownList").value(),
+                    Produto: {
+                        IdProduto: $("#Produto").data("kendoDropDownList").value(),
+                        Nome: $("#Produto").data("kendoDropDownList").text()
+                    }
+                }
+
+                $.ajax({
+
+                    url: '@Url.Action("Criar")',
+                    dataType: 'json',
+                    data: formulaModel,
+                    method: "POST",
+                    success: function (data) {
+
+                        if (data.TipoMensagem == 0)
+                            alert(data.Mensagem, function () {
+                                if (data.URLDestino != undefined)
+                                    window.location.href = data.URLDestino;
+                            }, data.TipoMensagem);
+                        else
+                            AtualizaFormula(data.IdFormula, false);
+
+                    }
+
+                });
+
+
+            }
+
+        });
+
+    </script>
+
+
+}

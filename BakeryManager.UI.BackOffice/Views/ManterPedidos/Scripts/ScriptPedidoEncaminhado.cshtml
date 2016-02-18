@@ -1,0 +1,51 @@
+﻿
+<script type="text/javascript">
+    /*-------- Scripts para os Pedidos no Status Encaminhado ---------------------*/
+    function readGridMateral() {
+        $("#gridMaterialAdicionalView").data("kendoGrid").refresh();
+    }
+
+    function readGridProduto() {
+        $("#gridProdutoView").data("kendoGrid").refresh();
+    }
+
+    function IniciarProducaoPedido(IdPedido, NumeroPedido) {
+        confirm("Deseja Realmente Iniciar o processo de produção do pedido<b>" + NumeroPedido + "?", function () {
+            $.ajax({
+                url: '@Url.Action("IniciarProducaoPedido", "ManterPedidos")',
+                method: "POST",
+                data: {
+                    IdPedido: IdPedido
+                },
+                success: function (data) {
+                    if (data.TipoMensagem == 1)
+                        alert(data.Mensagem, null, 1)
+                    else
+                        window.location.href = "@Url.Action("Index", "Home")";
+
+
+                }
+            });
+        }, 2)
+    }
+
+
+    $(function () {
+
+
+
+        $.ajax({
+
+            url: '@Url.Action("GetListaPedidosEncaminhados", "ManterPedidos")',
+            success: function (data) {
+
+                $("#encaminhados").html(data);
+                $('[data-toggle="tooltip"]').tooltip();
+
+            }
+
+        });
+
+    });
+    /*--------------------------------------------*/
+</script>

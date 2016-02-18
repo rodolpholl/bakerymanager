@@ -1,0 +1,492 @@
+﻿@using BakeryManager.BackOffice.Models.Pedido
+@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+@model IList<ProducaoVisaoPedidoModel>
+
+@{
+    ViewBag.Title = string.Concat("Produção do Pedido Nº:", Model[0].Pedido.NumeroPedido);
+}
+
+
+<script src="~/Scripts/jquery.flipcountdown.js"></script>
+<link href="~/Content/jquery.flipcountdown.css" rel="stylesheet" />
+
+<style>
+    .relogio {
+       zoom: 0.5;
+       -moz-transform: scale(0.5);
+    }
+</style>
+
+<div class="container-fluid">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-tasks"></i>  <a href="@Url.Action("Index", "Home")">Producao</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    @{int numLinha = 0; }
+
+    <div class="row">
+        <div class="col-lg-12">
+
+
+            <table class="table table-hover table-striped" id="tblProdutos">
+
+
+                <thead>
+                    <th>#</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th></th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+
+                         numLinha++; 
+                        
+
+
+                        <tr id="@string.Concat("linha",numLinha)">
+                            <td>
+                                @numLinha.ToString()
+                            </td>
+                            <td>
+                                @(
+                                    Html.Kendo().DropDownList().Name(string.Concat("cbxProduto",numLinha))
+                                    .DataTextField("Nome").DataValueField("IdProduto").Enable(item.StatusAtual == StatusProducaoProdutoModel.AgardandoInicio)
+                                    .BindTo((IList<ProdutoModel>)ViewData["ListaProduto"]).Value(item.Produto.IdProduto.ToString())
+                                 )
+                            </td>
+                            <td>
+                                <b><i> @item.Quantidade</i></b>
+                                @Html.Hidden(string.Concat("hdlQuantidade", numLinha.ToString()),item.Quantidade)
+                            </td>
+                            <td>
+
+                                    @Html.Hidden(string.Concat("hdlStatus", numLinha),item.StatusAtual)
+                                    @Html.Hidden(string.Concat("hdl", numLinha.ToString()), item.Pedido.IdPedido)
+
+                                    <button class="btn btn-success" onclick="IniciarProducao(@numLinha)" id="@string.Concat("btnIniciar",numLinha)" ><span class="fa fa-play"/> Iniciar</button>
+                               
+                                    <button class="btn btn-info" onclick="PausarProducao(@numLinha)" id="@string.Concat("btnPausar",numLinha)"><span  class="fa fa-pause" /> Pausar</button>
+                                
+                                    <button class="btn btn-warning" onclick="ContinuarProducao(@numLinha)" id="@string.Concat("btnContinuar",numLinha)"><span class="fa fa-step-forward" /> Continuar</button>
+                                                   
+                                    <button class="btn btn-success" onclick="FinalizarProducao(@numLinha)" id="@string.Concat("btnFinalizar",numLinha)"><span class="fa fa-check-circle" /> Finalizar</button>
+                                
+                                    <button class="btn btn-danger" onclick="CancelarProducao(@numLinha)" id="@string.Concat("btnCancelar",numLinha)"><span class="fa fa-times-circle" /> Cancelar</button>
+                                
+                                    
+
+                            </td>
+                            <td>
+                                <div class="relogio" id="@string.Concat("rlg",numLinha)"/>
+                                @Html.Hidden(string.Concat("hdlTempo", numLinha), item.TempoProducao.HasValue ? item.TempoProducao : 0)
+
+                                <script type="text/javascript">
+
+                                    
+
+                                    $(function () {
+
+                                        var tempo = @(item.TempoProducao.HasValue ? item.TempoProducao.ToString() : "0");
+
+                                        if(tempo > 0)
+                                        {
+                                            
+                                            $("#@string.Concat("rlg", numLinha)").flipcountdown({size: "md", 
+                                                      
+                                                tick: function(){ 
+                                                    tempo++;
+                                                    $("#@string.Concat("hdlTempo", numLinha)").val(tempo);
+                                                    return tempo;
+                                                }
+                                            })
+                                        }
+                                        else
+                                        {
+                                            $("#@string.Concat("rlg", numLinha)").flipcountdown({size: "md"});
+                                        }
+
+                                     });
+
+                                </script>
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section scripts{
+    
+<script type="text/javascript">
+
+
+    $(function () {
+
+        
+
+        
+        $("button").hide();
+        $(".relogio").hide();
+        
+
+        $("#tblProdutos > tbody > tr").each(function (index, item) {
+
+            var linha = item.children;
+            var numlinha = linha[0].innerHTML.trim();
+            var status = $("#hdlStatus" + numlinha).val();
+            var relogio = $("#rlg" + numlinha);
+
+
+            if (status == "AgardandoInicio") {
+                $("#btnIniciar" + numlinha).show('slow');
+               
+            }
+
+             else if (status == "Produzindo") {
+                $("#btnPausar" + numlinha).show('slow');
+                $("#btnCancelar" + numlinha).show('slow');
+                $("#btnFinalizar" + numlinha).show('slow');
+                $('#cbxProduto' + numlinha).prop("disabled", true);
+                $(relogio).show('slow');
+               
+                
+            }
+             else if (status == "Pausa") {
+                $("#btnContinuar" + numlinha).show('slow');
+                $("#btnCancelar" + numlinha).show('slow');
+                $('#cbxProduto' + numlinha).prop("disabled", true);
+                $(relogio).hide();
+            }
+            else if (status == "Concluido") {
+                $('#cbxProduto' + numlinha).prop("disabled", true);
+                $(item).addClass("success");
+            }
+
+            else if (status == "Cancelado") {
+                $('#cbxProduto' + numlinha).prop("disabled", true);
+                $(item).addClass("danger");
+            }
+            
+            
+
+        });
+
+
+        $(window).unload(function() {
+
+
+            var listaProdutosProducao = [];
+
+            $("#tblProdutos > tbody > tr").each(function (index, item) {
+
+                var linha = item.children;
+                var numlinha = linha[0].innerHTML.trim();
+                var status = $("#hdlStatus" + numlinha).val();
+                
+
+                listaProdutosProducao.push({
+
+                    Pedido: {
+                        IdPedido:  $("#hdl" + numlinha).val()
+                    },
+
+                    Produto: {
+                        IdProduto: $('#cbxProduto' + numlinha).val()
+                    },
+                    
+                    TempoProducao: $("#hdlTempo"+numlinha).val(),
+                    Quantidade:  $("#hdlQuantidade"+numlinha).val(),
+                    StatusAtual: $("#hdlStatus"+numlinha).val()
+                });
+
+            });
+
+            $.ajax({
+                    
+                url: '@Url.Action("SairTelaProducaoPorProduto")',
+                dataType: "json",
+                data: {
+                    strProdutos: JSON.stringify(listaProdutosProducao)
+                },
+                method: "POST",
+                success: function(){
+                    return;
+                }
+                
+            });
+
+        });
+
+    });
+
+
+    function IniciarProducao(numLinha) {
+
+        var idProduto = $('#cbxProduto' + numLinha).val();
+
+        $.ajax({
+        
+            url: '@Url.Action("InicarProducao")',
+            dataType: 'json',
+            data: {
+                IdProduto: idProduto,
+                IdPedido: $("#hdl" + numLinha).val(),
+                Quantidade: $("#hdlQuantidade" + numLinha).val()
+            },
+            success: function (data) {
+
+
+                if (data.TipoMensagem == 1) {
+                    alert(data.Mensagem, null, 1);
+
+                } else {
+
+                    $("#btnIniciar" + numLinha).hide('slow');
+
+                    $("#btnPausar" + numLinha).show('slow');
+                    $("#btnFinalizar" + numLinha).show('slow');
+                    $("#btnCancelar" + numLinha).show('slow');
+
+                    $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                    $("#hdlStatus" + numLinha).val("Produzindo");
+
+                    var relogio = $("#rlg" + numLinha);
+                    $(relogio).show('slow');
+
+                    var segundo = 0;
+                    $(relogio).flipcountdown({
+
+                        tick: function(){
+                            segundo++;
+                            $("#hdlTempo"+numLinha).val(segundo);
+                        return segundo;
+                    }});
+
+                    
+
+                }
+            }
+        
+        });
+
+    }
+
+    function PausarProducao(numLinha) {
+
+        var tempoDecorrido = $("#hdlTempo"+numLinha).val();
+
+        $.ajax({
+
+            url: '@Url.Action("PausarProducao")',
+            dataType: 'json',
+            data: {
+                IdProduto: $('#cbxProduto' + numLinha).val(),
+                IdPedido: $("#hdl" + numLinha).val(),
+                TempoDecorrido: tempoDecorrido
+            },
+            success: function(data) {
+
+                if (data.TipoMensagem == 1) {
+                    alert(data.Mensagem, null, 1);
+
+                } else {
+
+                    $("#btnPausar" + numLinha).hide('slow');
+                    $("#btnFinalizar" + numLinha).hide('slow');
+                    
+
+                    $("#btnContinuar" + numLinha).show('slow');
+                    $("#btnCancelar" + numLinha).show('slow');
+
+                    $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                    var relogio = $("#rlg" + numLinha);
+                    $(relogio).hide();
+                    
+                    $("#hdlStatus" + numLinha).val("Pausa");
+
+                }
+
+            }
+
+        });
+
+    }
+
+    function ContinuarProducao(numLinha) {
+
+       
+        $.ajax({
+
+            url: '@Url.Action("ContinuarProducao")',
+            dataType: 'json',
+            data: {
+                IdProduto: $('#cbxProduto' + numLinha).val(),
+                IdPedido: $("#hdl" + numLinha).val()
+            },
+            success: function (data) {
+
+                if (data.TipoMensagem == 1) {
+                    alert(data.Mensagem, null, 1);
+
+                } else {
+
+                    $("#btnIniciar" + numLinha).hide('slow');
+
+                    $("#btnPausar" + numLinha).show('slow');
+                    $("#btnFinalizar" + numLinha).show('slow');
+                    $("#btnCancelar" + numLinha).show('slow');
+
+                    $("#btnContinuar" + numLinha).hide('slow');
+
+                    $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                    var relogio = $("#rlg" + numLinha);
+                    $(relogio).show('slow');
+
+                    var segundos = data.TempoDecorrido; 
+                    $("#hdlTempo"+numLinha).val(segundos);
+
+                    $("#rlg" + numLinha).flipcountdown({
+                        tick: function() { 
+                            
+                            segundos++;
+                            $("#hdlTempo"+numLinha).val(segundos);
+                            return segundos;
+                        
+                        } 
+                    
+                    });
+
+                    $("#hdlStatus" + numLinha).val("Produzindo");
+                    
+
+                }
+
+            }
+
+        });
+
+    }
+
+    function FinalizarProducao(numLinha) {
+
+        $.ajax({
+        
+            url: '@Url.Action("FinalizarProducao")',
+            dataType: 'json',
+            data: {
+                IdProduto: $('#cbxProduto' + numLinha).val(),
+                IdPedido: $("#hdl" + numLinha).val(),
+                TempoDecorrido: $("#hdlTempo"+numLinha).val()
+            },
+            success: function(data) {
+
+
+                if (data.PedidoFinalizado == true) {
+
+                    window.location.href = '@Url.Action("Index")';
+
+                } else {
+
+                    $("#btnFinalizar"+numLinha).hide();
+                    $("#btnCancelar"+numLinha).hide();
+                    $("#btnContinuar"+numLinha).hide();
+                    $("#btnPausar"+numLinha).hide();
+                    $("#btnIniciar"+numLinha).hide();
+
+                    $("#rlg" + numLinha).hide();
+                    $("#linha"+ numLinha).addClass("success");
+
+                    $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                    $("#hdlStatus" + numLinha).val("Concluido");
+
+                }
+            }
+        
+        });
+
+        
+    }
+
+    function CancelarProducao(numLinha){
+
+        confirm("Deseja Cancelar a Produção deste Produto?",function(){
+
+
+            $.ajax({
+                
+                url: '@Url.Action("CancelarProducao")',
+                dataType: "JSON",
+                data: {
+                    IdProduto: $('#cbxProduto' + numLinha).val(),
+                    IdPedido: $("#hdl" + numLinha).val()
+                },
+                success: function(data) {
+
+
+                    if (data.PedidoFinalizado == true) {
+
+                        window.location.href = '@Url.Action("Index")';
+
+                    } else {
+
+                        $("#btnFinalizar"+numLinha).hide();
+                        $("#btnCancelar"+numLinha).hide();
+                        $("#btnContinuar"+numLinha).hide();
+                        $("#btnPausar"+numLinha).hide();
+                        $("#btnIniciar"+numLinha).hide();
+
+                        $("#rlg" + numLinha).hide();
+                        $("#linha"+ numLinha).addClass("danger");
+
+                        $('#cbxProduto' + numLinha).data("kendoDropDownList").enable(false);
+
+                        $("#hdlStatus" + numLinha).val("Cancelado");
+
+                    }
+                }
+
+            });
+
+        },2);
+
+    }
+
+</script>    
+    
+}

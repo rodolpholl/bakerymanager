@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewBag.Title = "Manter Parâmetros Gerais";
+}
+
+<style>
+    .CustomPanelHeight {
+        height: 350px;
+        overflow: auto;
+        /*width: 210px;*/
+        min-height: 40px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+    }
+
+        .CustomPanelHeight ul {
+            padding: 0 10px 0 10px;
+        }
+
+    .list-item {
+        list-style-type: none;
+        margin: 1px;
+        line-height: 25px;
+        background-color: #222222;
+        color: #ffffff;
+        border-radius: 3px;
+        padding-left: 8px;
+        cursor: grab, default;
+    }
+
+    #listaSemExibicao .list-item {
+        background-color: #ff879e;
+        color: #000000;
+    }
+
+    #listaExibicao .list-item {
+        background-color: #54b8fa;
+        color: #000000;
+    }
+
+    #placeholder.list-item {
+        background-color: #beb7b7;
+        color: #777;
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Configuração</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> Manter Parâmetros
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+
+    <ul class="nav nav-tabs" data-tabs="tabs">
+        <li role="presentation" class="active"><a href="#condicaopagamento" data-toggle="tab">Condições de Pagamento</a></li>
+        <li role="presentation"><a href="#ComponentesTACO" data-toggle="tab">Componentes TACO p/ Exibição</a></li>
+    </ul>
+
+
+    <div class="tab-content" style="padding: 30px;">
+        <div class="tab-pane active" id="condicaopagamento">
+            @Html.Partial("CondicaoPagamento")
+        </div>
+        <div class="tab-pane" id="ComponentesTACO">
+            @Html.Partial("ComponentesPadrao")
+        </div>
+    </div>
+
+    
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li><button type="button" class="btn btn-primary" id="btnSalvar">Salvar</button></li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+@section scripts{
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#btnSalvar").click(function () {
+
+            gravarComponentesPadrao();
+
+            gravarCondicaoPagamento();
+
+            alert("Operação Realizada com sucesso!");
+            
+            
+        });
+
+    });
+
+    function gravarComponentesPadrao() {
+        var listaExibicao = $("#listaExibicao").children();
+        var listaEnvio = [];
+
+
+        $.each(listaExibicao, function (index, listItem) {
+
+            listaEnvio.push({
+                IdTabelaNutricionalModel: $(listItem).attr('data-IdTabelaNutricional'),
+                Nome: $(listItem).text(),
+                UnidadeMedida: ''
+            });
+
+
+
+        });
+
+        $.ajax({
+            url: '@Url.Action("SalvarConfiguracao")',
+            data: { ListaComponentes: listaEnvio },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+
+               @*  alert(data.Mensagem, function () {
+                    if (data.URLDestino != undefined)
+                        window.location.href = data.URLDestino;
+                }, data.TipoMensagem);*@
+
+                return data.Mensagem;
+
+            }
+
+        });
+    }
+
+    function gravarCondicaoPagamento() {
+
+
+        var listaEnvio = $("#gridCondicaoPagamento").data("kendoGrid").dataSource.view().toJSON();
+
+        $.ajax({
+            url: '@Url.Action("SalvarCondicaoPagamento")',
+            data: { ListaCondicao: listaEnvio },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+
+                return data.Mensagem;
+
+            }
+
+        });
+
+
+    }
+
+</script>    
+    
+}

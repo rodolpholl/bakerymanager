@@ -1,0 +1,149 @@
+﻿@model BakeryManager.BackOffice.Models.Login.NovoAcessoModel
+
+@{
+    ViewBag.Title = "Registrar Nova Senha";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+
+            <div class="panel panel-default" style="margin-top: 100px;">
+
+                <div class="panel-heading">
+                    <h3 class="panel-title">Registrar Primeiro Acesso</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form class="form-horizontal" id="frmNovoAcesso" rule="form">
+                        <fieldset>
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            <div class="form-group">
+
+
+                                @Html.PasswordFor(x => x.NewPassword, new { @class = "form-control", placeHolder = "Informe sua nova Senha" })
+                                @Html.ValidationMessageFor(m => m.NewPassword)
+
+                            </div>
+                            <div class="form-group">
+
+
+                                @Html.PasswordFor(x => x.ConfirmNewPassword, new { @class = "form-control", placeHolder = "Confirme a nova Senha Informada" })
+                                @Html.ValidationMessageFor(m => m.ConfirmNewPassword)
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" id="btnNovoAcesso" class="btn btn-primary">
+                                        Atualizar
+                                    </button>
+                                    Ou
+                                    <button type="button" id="btnCancelar" class="btn btn-default">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/crypto/sha256.js"></script>
+    <script src="~/Scripts/crypto/enc-base64-min.js"></script>
+    <script src="~/Scripts/utils.js"></script>
+    <script type="text/javascript">
+
+
+        $(function () {
+            $("#btnNovoAcesso").click(function (e) {
+
+                if ($("#frmNovoAcesso").valid()) {
+
+                    e.preventDefault();
+
+                    if (!validarFormatoPassword($("#NewPassword").val(), $("#ConfirmNewPassword").val(), false, "")) {
+                        return;
+                    }
+
+
+                    var novaSenhaCriptoHash = CryptoJS.SHA256($("#NewPassword").val());
+                    var novaSenhaCripto = novaSenhaCriptoHash.toString(CryptoJS.enc.Base64).toString();
+                    var confirmaSenhaCriptHash = CryptoJS.SHA256($("#ConfirmNewPassword").val());
+                    var confirmaSenhaCripto = confirmaSenhaCriptHash.toString(CryptoJS.enc.Base64).toString();
+
+                    $("#NewPassword").val(novaSenhaCripto);
+                    $("#ConfirmNewPassword").val(confirmaSenhaCripto);
+
+
+                    $.ajax({
+                        url: '@Url.Action("RegistrarNovoAcesso")',
+                        method: 'POST',
+                        data: $("#frmNovoAcesso").serialize(),
+                        success: function (data) {
+
+                            if (data.TipoMensagem == 1)
+                                alert(data.Mensagem, "", data.TipoMensagem);
+                            else {
+                                alert("Alteração Realizada com sucesso!", function () {
+                                    window.location.href = '@Url.Action("Index","Home")';
+                                }, 3);
+
+                            }
+                        },
+                        error: function (data, er) {
+                            alert(er, "", data.TipoMensagem);
+                        }
+                    });
+                }
+
+            });
+
+            $("#btnCancelar").click(function () {
+                $.ajax({
+
+                    url: '@Url.Action("LogOut")',
+                    success: function () {
+
+                        window.location.href = '@Url.Action("Index")';
+
+                    }
+
+                });
+            });
+
+            $(window).unload(function () {
+
+
+                $.ajax({
+
+                    url: '@Url.Action("VerificaUsuarioSenhaVaziaasync")',
+                    data: { Login: window.localStorage.loginUsuarioLogado },
+                    async: true,
+                    success: function () {
+
+                        return;
+
+                    }
+
+                });
+
+
+            });
+
+        });
+
+    </script>
+
+
+}

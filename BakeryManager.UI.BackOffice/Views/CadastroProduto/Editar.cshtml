@@ -1,0 +1,126 @@
+﻿@model BakeryManager.BackOffice.Models.Cadastros.Produtos.ProdutoModel
+
+@{
+    ViewBag.Title = "Editar Produto";
+}
+
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> Produto
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+
+
+
+        @using (Html.BeginForm("Editar", "CadastroInProduto", FormMethod.Post, new { id = "frmEditar", @class = "form-horizontal " }))
+        {
+            @Html.Partial("Form", Model)
+        }
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-6">
+                <hr />
+                <button class="btn btn-primary" type="button" id="btnSalvar">Salvar</button>
+                Ou
+                <button class="btn btn-default" onclick="window.history.back(-1);">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+        $(function () {
+            var validator = $("#frmEditar").kendoValidator().data("kendoValidator");
+
+
+
+
+            $("#btnSalvar").click(function (evt) {
+
+                evt.preventDefault();
+
+                if (validator.validate()) {
+
+                    $.ajax({
+
+                        url: '@Url.Action("Editar")',
+                        dataType: 'json',
+                        data: $("#frmEditar").serialize(),
+                        method: "POST",
+                        success: function (data) {
+
+
+                            $.ajax({
+                                url: "@Url.Action("AtualizarGaleiraFotos")",
+                                dataType: "json",
+                                data: {
+                                    galeriaFotosUID: $("#hdlGaleriaFotoUID").val(),
+                                    IdProduto: data.IdProduto
+                                },
+                                success: function (data) {
+
+                                    alert(data.Mensagem, function () {
+                                        window.location.href = '@Url.Action("Index")';
+                                    }, data.TipoMensagem);
+
+                                }
+
+                            });
+
+
+
+                        }
+
+                    });
+                }
+            });
+
+
+            $(window).unload(function () {
+                $.ajax({
+
+                    url: '@Url.Action("ExcluirGaleriaTemporaria")',
+                    data: {
+                        galeriaFotoUID: $("#hdlGaleriaFotoUID").val()
+                    },
+
+                    success: function () {
+                        return;
+                    }
+
+                });
+            });
+
+        });
+
+      
+    </script>
+
+}

@@ -1,0 +1,48 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Pedido
+@model IList<PedidoModel>
+
+
+<div class="row">
+
+
+
+    @foreach (var item in Model)
+            {
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail cadEmProducao" id="@string.Concat("pedido",item.IdPedido.ToString())">
+
+
+                <div class="row">
+                    <div class="col-md-offset-10">
+                        <a href="#" onclick="VisualizarPedido(@item.IdPedido)" data-toggle="tooltip" data-placement="top" title="Detalhar Pedido" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-zoom-in" /></a>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-10">
+                        @Html.Partial("CardPedido", item)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                                                @if (item.ProdutosProduzidos)
+                                                {
+                                                    <a href="#" onclick="EncaminharEntrega(@item.IdPedido,'@item.NumeroPedido')" data-toggle="tooltip" data-placement="buttom" class="btn btn-success btn-sm">Enviar para Entrega</a> <b>ou</b>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#" onclick="VisualizarProducao(@item.IdPedido)" data-toggle="tooltip" data-placement="buttom" class="btn btn-info btn-sm">Ver Produção</a> <b>ou</b>
+                        }
+                        <a href="#" onclick="popUpCancelamento(@item.IdPedido)" class="btn btn-danger btn-sm">Cancelar Pedido</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+
+</div>

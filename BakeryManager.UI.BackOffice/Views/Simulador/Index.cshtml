@@ -1,0 +1,305 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.ManterReceita
+
+@{
+    ViewBag.Title = "Simulador de Quantidades variadas de Receitas";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li>
+                    <i class="fa fa-file"></i> Receituario
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <form role="form" class="form-horizontal">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Categoria</label>
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownList().Name("cbxCategoriaPesquisa").DataTextField("Nome").DataValueField("IdCategoriaProduto")
+                                .OptionLabel("Selecione...").Events(evt => evt.Change("cbxCategoriaPesquisaChange"))
+                                  .DataSource(ds =>
+                                  {
+                                      ds.Read("ListarCategorias", "Simulador");
+                                      ds.ServerFiltering(false);
+                                  }))
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Fórmula</label>
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownList().Name("cbxFormulaPesquisa").DataTextField("Descricao").DataValueField("IdFormula")
+                                .OptionLabel("Selecione...").Events(evt => evt.Change("FormulaPesquisaChange"))
+                                  .DataSource(ds =>
+                                  {
+                                      ds.Read(read => read.Action("ListarFormulaByProduto", "Simulador").Data("getProdutoPesquisaValue"));
+
+                                  }).AutoBind(false).Enable(false))
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Produto</label>
+                        <div class="col-sm-10">
+                            @(Html.Kendo().DropDownList().Name("cbxProdutoPesquisa").DataTextField("Nome").DataValueField("IdProduto")
+                            .OptionLabel("Selecione...").Events(evt => evt.Change("cbxProdutoPesquisaChange"))
+                                .DataSource(ds =>
+                                {
+                                    ds.Read(read => read.Action("ListarProdutoByCategoria", "Simulador").Data("getCategoriaProdutoValue"));
+
+                                }).AutoBind(false).Enable(false))
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Quantidade</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                @(Html.Kendo().NumericTextBox().Placeholder("Em gramas (g)").Name("txtQuantidadeSimulacao").Decimals(0).Min(0).Step(1))
+                                <span class="input-group-btn" title="Simular Pedido"><button id="btnPesquisa" class="btn btn-default btn-sm" type="button"><i class="fa fa-search"></i></button></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <hr />
+    </div>
+    <!-- /.row -->
+    <div class="row">
+
+        <div class="col-sm-6">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Rendimento Total da Fórmula</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @(Html.Kendo().Grid<IngredienteFormulaModel>()
+                    .Name("gridFormulaPadrao")
+                    .Columns(column =>
+                    {
+                        column.Bound(x => x.Nome).Title("Ingrediente"); 
+                        column.Bound(x => x.Quantidade).Title("Qtd").EditorTemplateName("tmplQuantidade").Width(100)
+                        .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
+                    })
+                    .AutoBind(false)
+                    .Sortable()
+                    .Scrollable(scr => scr.Height(400))
+                    .Editable(ed => ed.Enabled(true).Mode(GridEditMode.InCell))
+                    .Navigatable()
+                    .Resizable(r => r.Columns(true))
+                    .DataSource(ds => ds
+                        .Ajax()
+                        .Batch(true)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(x => x.IdIngrediente);
+                            model.Field(x => x.Nome).Editable(false);
+                            model.Field(x => x.IdIngrediente).Editable(false);
+                            model.Field(x => x.Quantidade);
+                        })
+                        .Aggregates(aggregate =>
+                        {
+                            aggregate.Add(x => x.Quantidade).Sum();
+                        })
+                        .Read(read => read.Action("GetIngredietesFormula", "Simulador").Data("getDataPesquisa"))
+
+
+                    )
+
+                    )
+                </div>
+            </div>
+
+               
+            
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Proporções Simuladas</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @(Html.Kendo().Grid<IngredienteFormulaModel>()
+                    .Name("gridFormulaSimulado")
+                    .Columns(column =>
+                    {
+                        column.Bound(x => x.Nome).Title("Ingrediente");
+                        column.Bound(x => x.Quantidade).Title("Qtd").ClientTemplate("#=Quantidade# g").Width(100)
+                        .ClientFooterTemplate("<div>Total: #= formataQuantidade(sum) #</div>");
+                    })
+                    .AutoBind(false)
+                    .Sortable()
+                    .Scrollable(scr => scr.Height(400))
+                    .Editable(ed => ed.Enabled(true).Mode(GridEditMode.InCell))
+                    .Navigatable()
+                    .Resizable(r => r.Columns(true))
+                    .DataSource(ds => ds
+                        .Ajax()
+                        .Batch(true)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(x => x.IdIngrediente);
+                            model.Field(x => x.Nome).Editable(false);
+                            model.Field(x => x.IdIngrediente).Editable(false);
+                            model.Field(x => x.Quantidade);
+                            
+                        })
+                        .Aggregates(aggregate =>
+                        {
+                            aggregate.Add(x => x.Quantidade).Sum();
+                        })
+                        .Read(read => read.Action("SimularReceita", "Simulador").Data("getDataSimulacao"))
+
+
+                    )
+
+                    )
+                </div>
+            </div>
+
+
+        </div>
+        
+
+
+
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+
+
+        function getCategoriaProdutoValue() {
+            return {
+                IdCategoria: $("#cbxCategoriaPesquisa").data("kendoDropDownList").value()
+            }
+        }
+
+        function getProdutoPesquisaValue() {
+            return {
+                IdProduto: $("#cbxProdutoPesquisa").data("kendoDropDownList").value()
+            }
+        }
+
+        function cbxCategoriaPesquisaChange() {
+
+            $("#cbxProdutoPesquisa").data("kendoDropDownList").dataSource.data("");
+            $("#cbxFormulaPesquisa").data("kendoDropDownList").dataSource.data("");
+
+            $("#cbxProdutoPesquisa").data("kendoDropDownList").enable(false);
+            $("#cbxFormulaPesquisa").data("kendoDropDownList").enable(false);
+
+            if ($("#cbxCategoriaPesquisa").data("kendoDropDownList").value() != "") {
+                $("#cbxProdutoPesquisa").data("kendoDropDownList").dataSource.read();
+                $("#cbxProdutoPesquisa").data("kendoDropDownList").enable(true);
+            }
+        }
+
+        function cbxProdutoPesquisaChange() {
+
+            $("#cbxFormulaPesquisa").data("kendoDropDownList").dataSource.data("");
+            $("#cbxFormulaPesquisa").data("kendoDropDownList").enable(false);
+
+            if ($("#cbxProdutoPesquisa").data("kendoDropDownList").value() != "") {
+                $("#cbxFormulaPesquisa").data("kendoDropDownList").dataSource.read();
+                $("#cbxFormulaPesquisa").data("kendoDropDownList").enable(true);
+
+                $.ajax({
+
+                    url: '@Url.Action("GetQuantidadePadraoProduto")',
+                    dataType: "json",
+                    data: {
+                        IdProduto: $("#cbxProdutoPesquisa").data("kendoDropDownList").value()
+                    },
+                    success: function (data) {
+
+                        $("#txtQuantidadeSimulacao").data("kendoNumericTextBox").value(data);
+                    }
+                });
+            }
+        }
+
+        function FormulaPesquisaChange() {
+            $("#gridFormulaPadrao").data("kendoGrid").dataSource.read();
+            $("#btnPesquisa").prop("disabled", $("#cbxFormulaPesquisa").val() == '');
+        }
+
+        function getDataPesquisa() {
+            return {
+                IdFormula: $("#cbxFormulaPesquisa").data("kendoDropDownList").value()
+            }
+        }
+
+        function getDataSimulacao() {
+            return {
+                IdFormula: $("#cbxFormulaPesquisa").data("kendoDropDownList").value(),
+                QtdSimulacao: $("#txtQuantidadeSimulacao").data("kendoNumericTextBox").value()
+            }
+        }
+
+        function formataQuantidade(valor) {
+
+            @*Esta função encontra-se no Utils.js*@
+            return FormatarQuantidade(valor);
+        }
+
+
+        $(function () {
+
+            $("#btnPesquisa").prop("disabled", true);
+
+            $("#btnPesquisa").click(function () {
+
+                $("#gridFormulaSimulado").data("kendoGrid").dataSource.read();
+            
+
+            });
+
+        });
+
+    </script>
+
+
+}

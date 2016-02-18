@@ -1,0 +1,76 @@
+﻿@using BakeryManager.BackOffice.Models.Cadastros.Produtos
+@using Kendo.Mvc.UI
+@model ProdutoModel
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Tabela Nutricional de <strong>@Model.Nome</strong></h4>
+        </div>
+        <div class="modal-body">
+
+
+            @Html.HiddenFor(x => x.IdProduto)
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <form role="form" class="form-horizontal">
+                        <label class="control-label col-md-2">
+                            Fórmula
+                        </label>
+                        <div class="col-md-10">
+                            @(Html.Kendo().DropDownList().Name("cbxFormulaPesquisa").OptionLabel("Selecione...").DataValueField("IdFormula").DataTextField("Descricao")
+                            .DataSource(ds => ds.Read(read => read.Action("GetListaFormulaProduto", "CadastroProduto").Data("GetIdProdutoFormula")))
+                            .Events(evt => evt.Change("SelecaoFormulaTabelaNutricional")).HtmlAttributes(new { @class = "form-control", style = "min-width: 650px;" })
+                            )
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-12" id="divTabela">
+                        @(
+                           Html.Kendo().Grid<IngredienteTabelaNutricionalProduto>()
+                           .Name("GridTabelaNutricional")
+                           .Columns(column =>
+                           {
+                               column.Bound(x => x.Ingrediente);
+                               column.Bound(x => x.Valor).Width(120).ClientTemplate("#=kendo.toString(Valor,\"n2\")# #=UnidadeMedida#").Format("{0:c}");
+                               column.Bound(x => x.PercValorDiario).Width(120).ClientTemplate("#if (PercValorDiario > 0) {##=kendo.toString(PercValorDiario,\"n2\")# %#}#");
+                           })
+                           .Scrollable(src => src.Height(300))
+                           .DataSource(ds => ds
+
+                              .Ajax()
+                              .Model(model =>
+                              {
+                                  model.Id(x => x.IdIngredienteTabelaNutricional);
+                                  model.Field(f => f.UnidadeMedida);
+                                  model.Field(f => f.Ingrediente);
+                                  model.Field(f => f.UnidadeMedida);
+                                  model.Field(f => f.Valor);
+                                  model.Field(f => f.PercValorDiario);
+                              })
+                             .Read(read => read.Action("GetTabelaNutricional", "CadastroProduto").Data("GetDadosGrid"))
+                           )
+                        )
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>

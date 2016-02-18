@@ -1,0 +1,4 @@
+﻿@using Kendo.Mvc.UI
+@model double?
+
+@Html.Kendo().NumericTextBoxFor(x => x).Decimals(2).Step(1).Min(0).Format("{0:C}")

@@ -1,0 +1,123 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.BackOffice.Models.Cadastros
+@using BakeryManager.BackOffice.Models.Pedido
+@{
+    ViewBag.Title = "Visão de Produção por Pedido";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-table"></i>  <a href="@Url.Action("Index","Home")">Cadastros</a>
+                </li>
+                <li>
+                    <i class="fa fa-file"></i> Produção
+                </li>
+                <li class="active">
+                    <i class="fa fa-file"></i> @ViewBag.Title
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <form role="form" class="form-inline">
+                <div class="form-group">
+                    <label for="dtpDataEntrega">Data de Entrega</label>
+                    @Html.Kendo().DatePicker().Name("dtpDataEntrega").Value(DateTime.Now).Min(DateTime.Now).HtmlAttributes(new {@style = "width: 120px" })
+                </div>
+
+                <div class="form-group">
+                    <label for="dtpHoraEntrega">Hora de Entrega</label>
+                    @Html.Kendo().TimePicker().Name("dtpHoraEntrega").Min(DateTime.Now).HtmlAttributes(new { @style = "width: 80px" })
+                </div>
+
+                <div class="form-group">
+                    <label for="cbxCliente">Cliente</label>
+                    @(Html.Kendo().DropDownList().Name("cbxCliente").DataTextField("Text").DataValueField("Value").OptionLabel("Selecione...")
+                          .BindTo((IList<SelectListItem>)ViewData["ListaCliente"]).HtmlAttributes(new { @style = "width: 300px" }).Filter(FilterType.Contains)
+                      )
+                </div>
+
+                <div class="form-group">
+                    <label for="txtNumeroPedido">Nº do Pedido</label>
+                    @Html.Kendo().TextBox().Name("txtNumeroPedido").HtmlAttributes(new { @style = "width: 80px" })
+                </div>
+
+                <button type="button" class="btn btn-sm btn-default" id="btnPesquisa" data-toggle="tooltip" data-placement="top" title="Pesquisar por Pedidos Em Produção"><span class="fa fa-search"></span></button>
+
+            </form>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-12" id="divListaPedidos">
+            
+            
+
+        </div>
+    </div>
+
+</div>
+
+
+<div id="mdlView" />
+<div id="mdlCancelamento" />
+
+@section scripts{
+
+<script type="text/javascript">
+
+    function ProduzirPedido(IdPedido) {
+
+        window.location.href = '@Url.Action("ProduzirPedido")/'+IdPedido;
+        
+    }
+
+    $(function () {
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $("#btnPesquisa").click(function () {
+
+
+            if($("#dtpDataEntrega").data("kendoDatePicker").value() == undefined){
+                alert('Informe uma Data de referência para os pedidos.');
+                return;
+            }
+
+            $.ajax({
+
+                url: '@Url.Action("GetListaPedidosByFiltro")',
+                dataType: 'json',
+                data: {
+                    DataEntrega: kendo.toString($("#dtpDataEntrega").data("kendoDatePicker").value(),"yyyy-MM-dd"), 
+                    HorarioEntrega: kendo.toString($("#dtpHoraEntrega").val(), "HH:mm"),
+                    IdCliente: $("#cbxCliente").val(), 
+                    NumeroPedido: $("#txtNumeroPedido").val()
+                },
+                success: function (data) {
+                    $('#divListaPedidos').html(data);
+                }
+            });
+
+        });
+
+        $("#btnPesquisa").click();
+
+    });
+
+
+
+
+</script>
+    
+    
+}
