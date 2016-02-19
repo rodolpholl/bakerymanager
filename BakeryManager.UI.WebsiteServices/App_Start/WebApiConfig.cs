@@ -21,7 +21,7 @@ namespace BakeryManager.UI.WebsiteServices
             );
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
-            config.Formatters.JsonFormatter.Indent = true;
+            //config.Formatters.JsonFormatter.Indent = true;
 
         }
     }
