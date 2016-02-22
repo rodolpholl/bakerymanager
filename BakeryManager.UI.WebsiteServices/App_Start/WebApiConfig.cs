@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace BakeryManager.UI.WebsiteServices
 {
@@ -22,6 +24,9 @@ namespace BakeryManager.UI.WebsiteServices
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             //config.Formatters.JsonFormatter.Indent = true;
+
+            var cors = new EnableCorsAttribute(ConfigurationManager.AppSettings["EnderecoAcessoCORS"], "*", "*");
+            config.EnableCors(cors);
 
         }
     }
