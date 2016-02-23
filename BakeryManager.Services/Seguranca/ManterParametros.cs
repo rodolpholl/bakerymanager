@@ -16,6 +16,7 @@ namespace BakeryManager.Services.Seguranca
         private TabelaNutricionalBM tabelaNutricionalBm;
         private CondicaoPagamentoBM condicaoPagamentoBm;
         private DadosBasicosBM dadosBasicosBm;
+        private AssuntoMensagemContatoBM assuntoMensagemContatoBm;
         public ManterParametros()
         {
             parametrosGeraisBm = GetObject<ParametrosGeraisBM>();
@@ -23,6 +24,7 @@ namespace BakeryManager.Services.Seguranca
             tabelaNutricionalBm = GetObject<TabelaNutricionalBM>();
             condicaoPagamentoBm = GetObject<CondicaoPagamentoBM>();
             dadosBasicosBm = GetObject<DadosBasicosBM>();
+            assuntoMensagemContatoBm = GetObject<AssuntoMensagemContatoBM>();
         }
         public void Dispose()
         {
@@ -31,6 +33,7 @@ namespace BakeryManager.Services.Seguranca
             tabelaNutricionalBm.Dispose();
             condicaoPagamentoBm.Dispose();
             dadosBasicosBm.Dispose();
+            assuntoMensagemContatoBm.Dispose();
 
         }
 
@@ -134,6 +137,33 @@ namespace BakeryManager.Services.Seguranca
                 dadosBasicosBm.Insert(NovosDados);
             else
                 dadosBasicosBm.Update(NovosDados);
+
+        }
+
+        public IList<AssuntoMensagemContato> GetListaAssuntoMensagem()
+        {
+            return assuntoMensagemContatoBm.GetAll();
+        }
+
+        public void SalvarListaAssuntoMensagemContato(List<AssuntoMensagemContato> ListaAssunto)
+        {
+            foreach (var assuntoAtual in assuntoMensagemContatoBm.GetAll().Where(x => !ListaAssunto.Select(y => y.IdAssuntoMensagemContato).ToList().Contains(x.IdAssuntoMensagemContato)).ToList())
+                assuntoMensagemContatoBm.Delete(assuntoAtual);
+
+            foreach (var assunto in ListaAssunto)
+            {
+                if (assunto.IdAssuntoMensagemContato > 0)
+                {
+                    var assuntoNovo = assuntoMensagemContatoBm.GetByID(assunto.IdAssuntoMensagemContato);
+                    assuntoNovo.Descricao = assunto.Descricao;
+                    assuntoMensagemContatoBm.Update(assuntoNovo);
+                }
+                else
+                    assuntoMensagemContatoBm.Insert(new AssuntoMensagemContato()
+                    {
+                        Descricao = assunto.Descricao
+                    });
+            }
 
         }
     }

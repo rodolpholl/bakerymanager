@@ -72,6 +72,7 @@
         <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais da Empresa</a></li>
         <li role="presentation" ><a href="#condicaopagamento" data-toggle="tab">Condições de Pagamento</a></li>
         <li role="presentation"><a href="#ComponentesTACO" data-toggle="tab">Componentes TACO p/ Exibição</a></li>
+        <li role="presentation"><a href="#AssuntoMensagem" data-toggle="tab">Assuntos de Mensagens de Contato</a></li>
     </ul>
 
 
@@ -84,6 +85,9 @@
         </div>
         <div class="tab-pane" id="ComponentesTACO">
             @Html.Partial("ComponentesPadrao")
+        </div>
+        <div class="tab-pane" id="AssuntoMensagem">
+            @Html.Partial("AssuntoMensagem")
         </div>
     </div>
 
@@ -125,7 +129,9 @@
 
                 gravarCondicaoPagamento();
 
-                
+                gravarAssuntoMensagemContato();
+
+
                 alert("Operação Realizada com sucesso!");
 
             } else {
@@ -133,8 +139,8 @@
                 alert('Existem campos obrigatórios pendentees de preenchimento. Verifique e tente novamente.', null, 2)
 
             }
-            
-            
+
+
         });
 
     });
@@ -206,7 +212,28 @@
             dataType: "json",
             success: function (data) {
 
-                return data.Mensagem;
+                $("#gridCondicaoPagamento").data("kendoGrid").dataSource.read();
+
+            }
+
+        });
+
+
+    }
+
+    function gravarAssuntoMensagemContato() {
+
+
+        var listaEnvio = $("#gridAssuntoMensagemContato").data("kendoGrid").dataSource.view().toJSON();
+
+        $.ajax({
+            url: '@Url.Action("SalvarAssuntoMensagemContato")',
+            data: { ListaAssunto: listaEnvio },
+            method: "POST",
+            dataType: "json",
+            success: function (data) {
+
+                $("#gridAssuntoMensagemContato").data("kendoGrid").dataSource.read();
 
             }
 

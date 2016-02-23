@@ -1,0 +1,41 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.UI.BackOffice.Models.Cadastros
+
+
+<div class="row">
+    <div class="col-md-12">
+        @(Html.Kendo().Grid<AssuntoMensagemContatoModel>()
+
+            .Name("gridAssuntoMensagemContato")
+
+            .Columns(column =>
+            {
+                column.Bound(c => c.Descricao).Title("Assunto");
+                column.Command(cmd => cmd.Destroy().Text("Excluir")).Width(100);
+            })
+            .ToolBar(tbl => tbl.Create().Text("Adicionar"))
+            .Editable(edt => edt.Mode(GridEditMode.InCell).DisplayDeleteConfirmation(false))
+
+            .Navigatable()
+            .Sortable()
+            .Filterable()
+            .Scrollable(scr => scr.Height(450))
+            .DataSource(datasource => datasource
+
+                   .Ajax()
+                   .Batch(true)
+                   .PageSize(50)
+                   .ServerOperation(true)
+                   .Model(model =>
+                   {
+                       model.Id(m => m.IdAssuntoMensagemContato);
+                       model.Field(m => m.Descricao);
+                   })
+                   .Read(read => read.Action("ReadAssuntoMensagemContato", "ManterParametros"))
+
+            )
+
+
+        )
+    </div>
+</div>

@@ -242,5 +242,55 @@ namespace BakeryManager.BackOffice.Controllers
             }
         }
 
+        public JsonResult ReadAssuntoMensagemContato([DataSourceRequest] DataSourceRequest request)
+        {
+            using (var parametros = new ManterParametros())
+            {
+
+                return Json(parametros.GetListaAssuntoMensagem().Select(x => new AssuntoMensagemContatoModel()
+                {
+                    Descricao = x.Descricao,
+                    IdAssuntoMensagemContato = x.IdAssuntoMensagemContato
+                }).OrderBy(x => x.Descricao).ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SalvarAssuntoMensagemContato(IList<AssuntoMensagemContatoModel> ListaAssunto)
+        {
+            try
+            {
+                using (var parametros = new ManterParametros())
+                {
+
+                    parametros.SalvarListaAssuntoMensagemContato(ListaAssunto.Select(x => new AssuntoMensagemContato()
+                    {
+                        Descricao = x.Descricao,
+                        IdAssuntoMensagemContato = x.IdAssuntoMensagemContato
+                    }).ToList());
+
+                    return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Ok,
+                                Mensagem = "Operação Realizada Com sucesso!"
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Erro,
+                                Mensagem = ex.Message
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

@@ -382,6 +382,7 @@
     <Compile Include="Helpers\BMWebHelper.cs" />
     <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Controllers\Cadastros\CadastroIngredientesController.cs" />
+    <Compile Include="Models\Cadastros\AssuntoMensagemContatoModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\ClienteContatoModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\ClienteModel.cs" />
     <Compile Include="Models\Cadastros\Clientes\TipoClienteModel.cs" />
@@ -556,6 +557,7 @@
     <Content Include="Views\ManterPedidos\Scripts\ScriptEmEntrega.cshtml" />
     <Content Include="Views\ManterPedidos\RegistroEntrega.cshtml" />
     <Content Include="Views\ManterParametros\DadosGerais.cshtml" />
+    <Content Include="Views\ManterParametros\AssuntoMensagem.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoEncaminhado.cshtml" />
     <None Include="Views\ManterPedidos\Scripts\ScriptPedidoAguardandoInicioProducao.cshtml" />
     <Content Include="Views\ProducaoPorPedido\Index.cshtml" />

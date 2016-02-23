@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssuntoMensagemContato.cs" />
     <Compile Include="CategoriaIngrediente.cs" />
     <Compile Include="CategoriaProduto.cs" />
     <Compile Include="Cliente.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="IngredienteFormula.cs" />
     <Compile Include="IngredienteHistoricoDesativacao.cs" />
     <Compile Include="IngredienteTabelaNutricional.cs" />
+    <Compile Include="MensagemContato.cs" />
     <Compile Include="Pedido\MaterialAdicional.cs" />
     <Compile Include="Pedido\PedidoCancelamento.cs" />
     <Compile Include="Pedido\PedidoHistoricoStatus.cs" />
