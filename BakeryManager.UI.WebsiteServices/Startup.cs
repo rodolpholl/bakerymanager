@@ -12,7 +12,7 @@ namespace BakeryManager.UI.WebsiteServices
         public void Configuration(IAppBuilder app)
         {
             app.MapSignalR();
-            var a = "";
+           
         }
     }
 }
