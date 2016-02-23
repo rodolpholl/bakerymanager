@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace BakeryManager.UI.DeliciaDiPane.Controllers
 {
-    public class ContatoController : Controller
+    public class ContatoController : BaseController
     {
         // GET: Contato
         public ActionResult Index()

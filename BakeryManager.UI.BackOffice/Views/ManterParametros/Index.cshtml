@@ -1,4 +1,6 @@
 ﻿
+@using BakeryManager.UI.BackOffice.Models.Cadastros
+
 @{
     ViewBag.Title = "Manter Parâmetros Gerais";
 }
@@ -67,13 +69,17 @@
 
 
     <ul class="nav nav-tabs" data-tabs="tabs">
-        <li role="presentation" class="active"><a href="#condicaopagamento" data-toggle="tab">Condições de Pagamento</a></li>
+        <li role="presentation" class="active"><a href="#dadosgerais" data-toggle="tab">Dados Gerais da Empresa</a></li>
+        <li role="presentation" ><a href="#condicaopagamento" data-toggle="tab">Condições de Pagamento</a></li>
         <li role="presentation"><a href="#ComponentesTACO" data-toggle="tab">Componentes TACO p/ Exibição</a></li>
     </ul>
 
 
     <div class="tab-content" style="padding: 30px;">
-        <div class="tab-pane active" id="condicaopagamento">
+        <div class="tab-pane active" id="dadosgerais">
+            @Html.Partial("DadosGerais",(DadosGeraisModel)ViewData["DadosGerais"])
+        </div>
+        <div class="tab-pane" id="condicaopagamento">
             @Html.Partial("CondicaoPagamento")
         </div>
         <div class="tab-pane" id="ComponentesTACO">
@@ -98,20 +104,59 @@
 
 <script type="text/javascript">
 
+
+    var validator = $("#frmDadosGerais").kendoValidator().data("kendoValidator");
+
     $(function () {
 
-        $("#btnSalvar").click(function () {
 
-            gravarComponentesPadrao();
 
-            gravarCondicaoPagamento();
+        $("#btnSalvar").click(function (evt) {
 
-            alert("Operação Realizada com sucesso!");
+            evt.preventDefault();
+
+
+            if (validator.validate()) {
+
+
+                gravarDadosGerais();
+
+                gravarComponentesPadrao();
+
+                gravarCondicaoPagamento();
+
+                
+                alert("Operação Realizada com sucesso!");
+
+            } else {
+
+                alert('Existem campos obrigatórios pendentees de preenchimento. Verifique e tente novamente.', null, 2)
+
+            }
             
             
         });
 
     });
+
+    function gravarDadosGerais() {
+
+
+        var formSerialized = JSON.stringify(GetFormDadosGerais());
+
+        $.ajax({
+
+            url: '@Url.Action("AtualizarDadosGerais")',
+            method: "POST",
+            data: {
+                pDadosGerais: formSerialized
+            },
+            success: function () {
+                return;
+            }
+        })
+
+    }
 
     function gravarComponentesPadrao() {
         var listaExibicao = $("#listaExibicao").children();

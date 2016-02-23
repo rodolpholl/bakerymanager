@@ -38,6 +38,23 @@ namespace BakeryManager.UI.WebsiteServices.Controllers
             }
         }
 
+        [HttpGet]
+        public IEnumerable<ProdutoModel> GetListaNomeProduto()
+        {
+
+            using (var layoutInfo = new LayouInfo())
+            {
+                var listaRetorno = layoutInfo.GetListaNomeTipoProduto().Select(x => new ProdutoModel()
+                {
+                    Nome = x.Nome,
+                    PrecoVenda = x.PrecoVenda
+                }).OrderBy(x => x.Nome).ToList();
+
+                return listaRetorno;
+            }
+
+        }
+
         //// POST: api/LayoutInfo
         //public void Post([FromBody]string value)
         //{

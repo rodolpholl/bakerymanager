@@ -1,0 +1,40 @@
+﻿@using System.Configuration
+
+<div class="col-md-3 span1_of_4">
+    <h4>Serviços</h4>
+    <ul class="f_nav" id="ListaTipoServico">
+        
+    </ul>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $.ajax({
+
+
+            url: '@ServiceParams.ServiceRoot/LayoutInfo/GetListaTipoServico',
+            dataType: "json",
+            method: "GET",
+            success: function (data) {
+
+                $("#ListaTipoServico").html("");
+
+                var linha = "";
+
+                $(data).each(function (index, item) {
+
+                    linha = linha + "<li><a href=\"#\">" + item.Nome + "</a></li>";
+
+                });
+
+                $("#ListaTipoServico").html(linha);
+
+            }
+
+        });
+
+    });
+
+</script>

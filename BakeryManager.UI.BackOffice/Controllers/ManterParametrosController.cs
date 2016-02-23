@@ -2,8 +2,10 @@
 using BakeryManager.BackOffice.Models.Cadastros;
 using BakeryManager.Entities;
 using BakeryManager.Services.Seguranca;
+using BakeryManager.UI.BackOffice.Models.Cadastros;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,8 +50,62 @@ namespace BakeryManager.BackOffice.Controllers
 
                 param.ParametrosNutricionais = ListaTabelaExibicao;
 
+                ViewData["DadosGerais"] = ParseDadosBasicosToModel(parametros.GetDadosBasicos());
+
                 return View(param);
             }
+        }
+
+        private DadosGeraisModel ParseDadosBasicosToModel(DadosBasicos pDadosBasicos)
+        {
+
+            if (pDadosBasicos == null)
+                return new DadosGeraisModel();
+            else
+                return new DadosGeraisModel()
+                {
+                    Alvara = pDadosBasicos.Alvara,
+                    Bairro = pDadosBasicos.Bairro,
+                    CEP = pDadosBasicos.CEP,
+                    Cidade = pDadosBasicos.Cidade,
+                    CNPJ = pDadosBasicos.CNPJ,
+                    Complemento = pDadosBasicos.Complemento,
+                    IdDadosBasicos = pDadosBasicos.IdDadosBasicos,
+                    InscricaoEstadual = pDadosBasicos.InscricaoEstadual,
+                    LatitudeMapa = pDadosBasicos.LatitudeMapa,
+                    Logradouro = pDadosBasicos.Logradouro,
+                    LongitudeMapa = pDadosBasicos.LongitudeMapa,
+                    NomeFantasia = pDadosBasicos.NomeFantasia,
+                    Numero = pDadosBasicos.Numero,
+                    RazaoSocial = pDadosBasicos.RazaoSocial,
+                    UF = pDadosBasicos.UF
+                };
+        }
+
+        private DadosBasicos ParseModelToDadosBasicos(DadosGeraisModel pDadosGeraisModel)
+        {
+
+            if (pDadosGeraisModel == null)
+                return new DadosBasicos();
+            else
+                return new DadosBasicos()
+                {
+                    Alvara = pDadosGeraisModel.Alvara,
+                    Bairro = pDadosGeraisModel.Bairro.ToUpper(),
+                    CEP = pDadosGeraisModel.CEP,
+                    Cidade = pDadosGeraisModel.Cidade.ToUpper(),
+                    CNPJ = pDadosGeraisModel.CNPJ,
+                    Complemento = pDadosGeraisModel.Complemento.ToUpper(),
+                    IdDadosBasicos = pDadosGeraisModel.IdDadosBasicos,
+                    InscricaoEstadual = pDadosGeraisModel.InscricaoEstadual,
+                    LatitudeMapa = pDadosGeraisModel.LatitudeMapa,
+                    Logradouro = pDadosGeraisModel.Logradouro,
+                    LongitudeMapa = pDadosGeraisModel.LongitudeMapa,
+                    NomeFantasia = pDadosGeraisModel.NomeFantasia.ToUpper(),
+                    Numero = pDadosGeraisModel.Numero,
+                    RazaoSocial = pDadosGeraisModel.RazaoSocial.ToUpper(),
+                    UF = pDadosGeraisModel.UF.ToUpper()
+                };
         }
 
         [HttpPost]
@@ -92,6 +148,37 @@ namespace BakeryManager.BackOffice.Controllers
                             }, "text/html", JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public JsonResult AtualizarDadosGerais(string pDadosGerais)
+        {
+            try
+            {
+
+                var DadosGerais = JsonConvert.DeserializeObject<DadosGeraisModel>(pDadosGerais);
+
+                using (var parametros = new ManterParametros())
+                {
+
+                    var dadosGerais = ParseModelToDadosBasicos(DadosGerais);
+
+                    parametros.AtualizarDadosGerais(dadosGerais);
+
+                    return Json(new { DadosOK = true }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                TipoMensagem = TipoMensagemRetorno.Erro,
+                                Mensagem = ex.Message
+
+                            }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         public JsonResult ReadCondicaoPagamento([DataSourceRequest] DataSourceRequest request)
         {

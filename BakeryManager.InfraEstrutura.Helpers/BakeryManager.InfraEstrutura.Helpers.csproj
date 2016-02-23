@@ -43,6 +43,10 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.dll</HintPath>
       <Private>True</Private>
@@ -91,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnnotationsAttributes.cs" />
+    <Compile Include="JSONHelper.cs" />
     <Compile Include="Validators\AttributesHelpers.cs" />
     <Compile Include="Data\DataHelper.cs" />
     <Compile Include="DisplayNameClass.cs" />
@@ -108,6 +113,7 @@
     <Folder Include="Export\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

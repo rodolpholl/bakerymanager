@@ -12,6 +12,7 @@ using BakeryManager.BackOffice.Models.Cadastros.Produtos;
 using BakeryManager.BackOffice.Models;
 using BakeryManager.InfraEstrutura.Helpers;
 using BakeryManager.BackOffice.Helpers;
+using System.Configuration;
 
 namespace BakeryManager.BackOffice.Controllers.Cadastros
 {
@@ -127,8 +128,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
 
             //Carregando as fotos do produto no diretório temporário
-            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", ViewData["galeriaFotoUID"].ToString())));
-            var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/", Id.ToString())));
+            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/temp/", ViewData["galeriaFotoUID"].ToString())));
+            var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/", Id.ToString())));
             if (!directoryProd.Exists)
                 directoryProd.Create();
 
@@ -211,7 +212,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         {
 
             var UID = WebHelpers.ObterNovoUID();
-            var path = Server.MapPath("~/Content/uploads/Produto/temp/");
+            var path = Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/temp/"));
             path += UID;
             Directory.CreateDirectory(path);
 
@@ -364,7 +365,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         {
             
             var file = Request.Files["Filedata"];
-            var path = Server.MapPath(string.Concat("~\\Content\\uploads\\Produto\\temp\\",galeriaFotoUID,"\\", file.FileName));
+            var path = Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"].Replace("/","\\"),"\\temp\\", galeriaFotoUID, "\\", file.FileName));
+
             file.SaveAs(path);
             var modelGaleria = CarregaGaleriaFoto(galeriaFotoUID);
             return Content(MVCHelper.RenderRazorViewToString(this, Url.Content("~/Views/CadastroProduto/Carousel.cshtml"),modelGaleria));
@@ -374,11 +376,11 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
         private IList<ProdutoGaleriaFotoModel> CarregaGaleriaFoto(string galeriaFotoUID)
         {
             
-            var direcotry = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID)));
+            var direcotry = new DirectoryInfo(Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"], "/temp/", galeriaFotoUID)));
 
             var retorno = direcotry.GetFiles().OrderByDescending(f => f.LastAccessTime).Select(f => new ProdutoGaleriaFotoModel
             {
-                CaminhoArquivo = Url.Content(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID,"/", f.Name)),
+                CaminhoArquivo = Url.Content(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/temp/", galeriaFotoUID,"/", f.Name)),
                 NomeFisico = f.Name,
                 Tamanho = f.Length
             }).ToList();
@@ -389,8 +391,8 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
      
         public JsonResult AtualizarGaleiraFotos(string galeriaFotosUID,int IdProduto)
         {
-            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotosUID)));
-            var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/", IdProduto.ToString())));
+            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/temp/", galeriaFotosUID)));
+            var directoryProd = new DirectoryInfo(Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/", IdProduto.ToString())));
 
             if (!directoryProd.Exists)
                 directoryProd.Create();
@@ -427,7 +429,7 @@ namespace BakeryManager.BackOffice.Controllers.Cadastros
 
         public ActionResult ExcluirGaleriaTemporaria(string galeriaFotoUID)
         {
-            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat("~/Content/uploads/Produto/temp/", galeriaFotoUID)));
+            var direcotryTemp = new DirectoryInfo(Server.MapPath(string.Concat(ConfigurationManager.AppSettings["CaminhoImagensProduto"],"/temp/", galeriaFotoUID)));
             if (direcotryTemp.Exists)
                 direcotryTemp.Delete(true);
 

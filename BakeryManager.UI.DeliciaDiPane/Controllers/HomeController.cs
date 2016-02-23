@@ -6,8 +6,13 @@ using System.Web.Mvc;
 
 namespace BakeryManager.UI.DeliciaDiPane.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+
+        public HomeController() : base()
+        {
+            JsonHelper.URI += "/Contato";
+        }
         public ActionResult Index()
         {
             return View();

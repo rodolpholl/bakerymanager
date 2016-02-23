@@ -1,0 +1,172 @@
+﻿@using Kendo.Mvc.UI
+@using BakeryManager.UI.BackOffice.Models.Cadastros
+@using System.Configuration
+
+@model DadosGeraisModel
+
+
+<form id="frmDadosGerais" rule="form" class="form-horizontal">
+
+    @Html.HiddenFor(x => x.IdDadosBasicos)
+
+
+    <div class="col-lg-8">
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.NomeFantasia, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.NomeFantasia).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group" id="divRazaoSocial">
+            @Html.LabelFor(x => x.RazaoSocial, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.RazaoSocial).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group" id="divCNPJ">
+            @Html.LabelFor(x => x.CNPJ, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().MaskedTextBoxFor(x => x.CNPJ).Mask("00,000,000/0000-00").HtmlAttributes(new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.InscricaoEstadual,new  { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.InscricaoEstadual).HtmlAttributes(new { @class = "form-control", style = "text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Alvara, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.Alvara).HtmlAttributes(new { @class = "form-control", style = "text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.CEP, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().MaskedTextBoxFor(x => x.CEP).Mask("00000-000").HtmlAttributes(new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Logradouro, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.Logradouro).HtmlAttributes(new { @class = "form-control", style = "width: 450px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Numero, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.Numero).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Complemento, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.Complemento).HtmlAttributes(new { @class = "form-control", style = "width: 300px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Bairro, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.Bairro).HtmlAttributes(new { @class = "form-control", style = "width: 300px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Cidade, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.Cidade).HtmlAttributes(new { @class = "form-control", style = "width: 300px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.UF, new { @class = "col-sm-2 control-label" })
+
+            <div class="col-sm-10">
+                @Html.Kendo().TextBoxFor(x => x.UF).HtmlAttributes(new { @class = "form-control", style = "width: 50px; text-transform: uppercase;" })
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+
+    function GetFormDadosGerais() {
+
+        return {
+
+            CEP: $("#CEP").val(),
+            Cidade: $("#Cidade").val(),
+            CNPJ: $("#CNPJ").val(),
+            Complemento: $("#Complemento").val(),
+            Logradouro: $("#Logradouro").val(),
+            NomeFantasia: $("#NomeFantasia").val(),
+            Numero: $("#Numero").val(),
+            Bairro: $("#Bairro").val(),
+            UF: $("#UF").val(),
+            RazaoSocial: $("#RazaoSocial").val(),
+            InscricaoEstadual: $("#InscricaoEstadual").val(),
+            Alvara: $("#Alvara").val(),
+        }
+
+
+
+    }
+
+    $(function () {
+
+
+        $("#CEP").focusout(function (evt) {
+
+            var cep = $("#CEP").val().replace("_", "").replace("-", "");
+
+            if (cep.length == 8) {
+
+                $.ajax({
+                    url: '@ConfigurationManager.AppSettings["ServicoBuscaCep"]' + cep + '/json/',
+                    data: 'json',
+                    success: function (data) {
+
+                        $("#Logradouro").val(data.logradouro);
+                        $("#Complemento").val(data.complemento);
+                        $("#Bairro").val(data.bairro);
+                        $("#Cidade").val(data.localidade);
+                        $("#UF").val(data.uf);
+
+                        document.getElementById("Numero").focus();
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    });
+
+</script>

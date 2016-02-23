@@ -63,6 +63,7 @@
     <Compile Include="ClienteContatoBM.cs" />
     <Compile Include="CondicaoPagamentoBM.cs" />
     <Compile Include="CredenciamentoFornecedorIngredienteBM.cs" />
+    <Compile Include="DadosBasicosBM.cs" />
     <Compile Include="FormulaBM.cs" />
     <Compile Include="FormulaTabelaNutricionalBM.cs" />
     <Compile Include="FornecedorAvaliacaoBM.cs" />
@@ -123,6 +124,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

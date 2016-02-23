@@ -1,6 +1,8 @@
 ﻿
 @using Kendo.Mvc.UI
 @using BakeryManager.BackOffice.Models.Cadastros.Clientes
+@using System.Configuration
+
 @model ClienteModel
 
 @Html.ValidationSummary(true)
@@ -240,7 +242,7 @@
             if (cep.length == 8) {
 
                 $.ajax({
-                    url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                    url: '@ConfigurationManager.AppSettings["ServicoBuscaCep"]' + cep + '/json/',
                     data: 'json',
                     success: function (data) {
 

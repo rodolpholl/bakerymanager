@@ -15,12 +15,14 @@ namespace BakeryManager.Services.Seguranca
         private ParametroTabelaNutricionalBM parametroTabelaNutricionalBm;
         private TabelaNutricionalBM tabelaNutricionalBm;
         private CondicaoPagamentoBM condicaoPagamentoBm;
+        private DadosBasicosBM dadosBasicosBm;
         public ManterParametros()
         {
             parametrosGeraisBm = GetObject<ParametrosGeraisBM>();
             parametroTabelaNutricionalBm = GetObject<ParametroTabelaNutricionalBM>();
             tabelaNutricionalBm = GetObject<TabelaNutricionalBM>();
             condicaoPagamentoBm = GetObject<CondicaoPagamentoBM>();
+            dadosBasicosBm = GetObject<DadosBasicosBM>();
         }
         public void Dispose()
         {
@@ -28,6 +30,7 @@ namespace BakeryManager.Services.Seguranca
             parametroTabelaNutricionalBm.Dispose();
             tabelaNutricionalBm.Dispose();
             condicaoPagamentoBm.Dispose();
+            dadosBasicosBm.Dispose();
 
         }
 
@@ -67,6 +70,11 @@ namespace BakeryManager.Services.Seguranca
             
         }
 
+        public DadosBasicos GetDadosBasicos()
+        {
+            return dadosBasicosBm.GetAll().FirstOrDefault();
+        }
+
         public IList<CondicaoPagamento> GetListaCondicaoPagamento()
         {
             return condicaoPagamentoBm.GetAll();
@@ -96,9 +104,36 @@ namespace BakeryManager.Services.Seguranca
                 
             }
 
+            
+        }
+
+        public void AtualizarDadosGerais(DadosBasicos pDadosGerais)
+        {
+            var NovosDados = dadosBasicosBm.GetByID(1);
+
+            if (NovosDados == null)
+                NovosDados = new DadosBasicos();
 
 
+            NovosDados.Alvara = pDadosGerais.Alvara;
+            NovosDados.Bairro = pDadosGerais.Bairro;
+            NovosDados.CEP = pDadosGerais.CEP;
+            NovosDados.Cidade = pDadosGerais.Cidade;
+            NovosDados.CNPJ = pDadosGerais.CNPJ;
+            NovosDados.Complemento = pDadosGerais.Complemento;
+            NovosDados.InscricaoEstadual = pDadosGerais.InscricaoEstadual;
+            NovosDados.LatitudeMapa = pDadosGerais.LatitudeMapa;
+            NovosDados.Logradouro = pDadosGerais.Logradouro;
+            NovosDados.LongitudeMapa = pDadosGerais.LongitudeMapa;
+            NovosDados.NomeFantasia = pDadosGerais.NomeFantasia;
+            NovosDados.Numero = pDadosGerais.Numero;
+            NovosDados.RazaoSocial = pDadosGerais.RazaoSocial;
+            NovosDados.UF = pDadosGerais.UF;
 
+            if (NovosDados.IdDadosBasicos == 0)
+                dadosBasicosBm.Insert(NovosDados);
+            else
+                dadosBasicosBm.Update(NovosDados);
 
         }
     }
