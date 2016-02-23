@@ -101,6 +101,7 @@
     <Compile Include="Seguranca\ManterParametros.cs" />
     <Compile Include="Simulador.cs" />
     <Compile Include="VisualizarTabelaNutricional.cs" />
+    <Compile Include="WebsiteServices\EnviarMensagemContato.cs" />
     <Compile Include="WebsiteServices\LayouInfo.cs" />
   </ItemGroup>
   <ItemGroup>
