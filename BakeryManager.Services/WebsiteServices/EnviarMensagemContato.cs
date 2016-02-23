@@ -37,7 +37,7 @@ namespace BakeryManager.Services.WebsiteServices
             return assuntoMensagemContatoBm.GetByID(idAssuntoMensagemContato);
         }
 
-        public object GetDadosContatoEmpresa()
+        public DadosBasicos GetDadosContatoEmpresa()
         {
             return dadosBasicosBm.GetAll().First();
         }

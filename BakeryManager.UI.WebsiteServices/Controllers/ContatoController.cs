@@ -31,6 +31,12 @@ namespace BakeryManager.UI.WebsiteServices.Controllers
             using (var mensagemContato = new EnviarMensagemContato())
             {
                 var retorno = mensagemContato.GetDadosContatoEmpresa();
+
+                return new DadosBasicosModel()
+                {
+                    LatitudeMapa = retorno.LatitudeMapa,
+                    LongitudeMapa  =retorno.LongitudeMapa
+                };
             }
         }
 
