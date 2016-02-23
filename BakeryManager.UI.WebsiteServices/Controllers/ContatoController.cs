@@ -25,6 +25,15 @@ namespace BakeryManager.UI.WebsiteServices.Controllers
             }
         }
 
+        [HttpGet]
+        public DadosBasicosModel GetCoordenadasEmpresa()
+        {
+            using (var mensagemContato = new EnviarMensagemContato())
+            {
+                var retorno = mensagemContato.GetDadosContatoEmpresa();
+            }
+        }
+
         [HttpPost]
         public void InserirMensagemContato(MensgemContatoModel Mensagem)
         {

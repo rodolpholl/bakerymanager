@@ -13,15 +13,18 @@ namespace BakeryManager.Services.WebsiteServices
 
         private AssuntoMensagemContatoBM assuntoMensagemContatoBm;
         private MensagemContatoBM mensagemContatoBm;
+        private DadosBasicosBM dadosBasicosBm;
         public EnviarMensagemContato()
         {
             assuntoMensagemContatoBm = GetObject<AssuntoMensagemContatoBM>();
             mensagemContatoBm = GetObject<MensagemContatoBM>();
+            dadosBasicosBm = GetObject<DadosBasicosBM>();
         }
         public void Dispose()
         {
             assuntoMensagemContatoBm.Dispose();
             mensagemContatoBm.Dispose();
+            dadosBasicosBm.Dispose();
         }
 
         public IList<AssuntoMensagemContato> GetListaAssuntos()
@@ -34,9 +37,14 @@ namespace BakeryManager.Services.WebsiteServices
             return assuntoMensagemContatoBm.GetByID(idAssuntoMensagemContato);
         }
 
+        public object GetDadosContatoEmpresa()
+        {
+            return dadosBasicosBm.GetAll().First();
+        }
+
         public void InserirMensagem(MensagemContato mensagemContato)
         {
-            throw new NotImplementedException();
+            mensagemContatoBm.Insert(mensagemContato);
         }
     }
 }
